@@ -1,0 +1,19 @@
+{
+  "name": "winestore",
+  "version": "1.0.0",
+  "description": "Wine Store",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Koteterov/WineStore.git"
+  },
+  "author": "Koteterov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Koteterov/WineStore/issues"
+  },
+  "homepage": "https://github.com/Koteterov/WineStore#readme"
+}
