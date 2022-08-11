@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/Koteterov/WineStore/issues"
   },
-  "homepage": "https://github.com/Koteterov/WineStore#readme"
+  "homepage": "https://github.com/Koteterov/WineStore#readme",
+  "dependencies": {
+    "isarray": "^0.0.1",
+    "lit-html": "^2.2.7",
+    "page": "^1.11.6",
+    "path-to-regexp": "^1.2.1"
+  }
 }

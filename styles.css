@@ -275,11 +275,15 @@ Navbar
     left: 50%;
   }
 }
-#logo {
+.logo-text {
   font-family: 'Kaushan Script';
   color: white;
   font-size: 2.25rem;
 
+}
+
+#logo-black {
+  color: black;
 }
 /* page navbar */
 .page .nav-link {
