@@ -1,7 +1,7 @@
 import { html, repeat } from "../lib.js";
 import { getList } from "../api/data.js";
 
-const productsTemplate = (data, toggleCart, closeCart, types) =>
+const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseType) =>
   html`
     <!-- navbar -->
     <nav class="navbar page">
@@ -109,8 +109,9 @@ const productsTemplate = (data, toggleCart, closeCart, types) =>
           <!-- categories -->
           <h4>Wine Type</h4>
           <article class="companies">
+            <button @click=${chooseAll} class="company-btn">All</button>
             ${repeat(types, i => i._id, data => html `
-            <button class="company-btn">${data}</button>
+            <button @click=${chooseType} id=${data} class="company-btn">${data}</button>
             `)}
           </article>
           <!-- price -->
@@ -132,7 +133,7 @@ const productsTemplate = (data, toggleCart, closeCart, types) =>
         ${ repeat(data, i => i._id, data => html ` <article class="product">
           <div class="product-container">
             <img src="${data.imgUrl}" class="product-img img" alt="${data.imgUrl}" />
-           
+
             <div class="product-icons">
               <a href="product.html?id=${data._id}" class="product-icon">
                 <i class="fas fa-search"></i>
@@ -156,51 +157,76 @@ const productsTemplate = (data, toggleCart, closeCart, types) =>
 
     `
 
-
 export async function productsPage(ctx) {
-    try {
-        const data = await getList()
-        const types = new Set(data.map(t => t.type))
-        console.log(types);
-        ctx.render(productsTemplate(data, toggleCart, closeCart, types));
-      
-    } catch (error) {
-        console.log(error);
+  try {
+    const data = await getList();
+    const types = new Set(data.map((t) => t.type));
+    ctx.render(
+      productsTemplate(
+        data,
+        toggleCart,
+        closeCart,
+        types,
+        chooseAll,
+        chooseType
+      )
+    );
+
+    const cartOverlay = document.querySelector(".cart-overlay");
+
+    function chooseAll() {
+      ctx.render(
+        productsTemplate(
+          data,
+          toggleCart,
+          closeCart,
+          types,
+          chooseAll,
+          chooseType
+        )
+      );
     }
 
+    function chooseType(e) {
+      const chosenType = e.target.id;
 
-  const cartOverlay = document.querySelector('.cart-overlay');
+      const selectedWines = data.filter((w) => w.type == chosenType);
 
-  function toggleCart() {
-    cartOverlay.classList.add('show');
+      ctx.render(
+        productsTemplate(
+          selectedWines,
+          toggleCart,
+          closeCart,
+          types,
+          chooseAll,
+          chooseType
+        )
+      );
+    }
 
+    function toggleCart() {
+      cartOverlay.classList.add("show");
+    }
+
+    function closeCart() {
+      cartOverlay.classList.remove("show");
+    }
+  } catch (error) {
+    console.log(error);
   }
 
-  function closeCart() {
-    cartOverlay.classList.remove('show');
+  //===
+  const toggleNav = document.querySelector(".toggle-nav");
+  const sidebarOverlay = document.querySelector(".sidebar-overlay");
+  const closeBtn = document.querySelector(".sidebar-close");
 
-  }
-
-
-
-
-//===
-const toggleNav = document.querySelector('.toggle-nav');
-const sidebarOverlay = document.querySelector('.sidebar-overlay');
-const closeBtn = document.querySelector('.sidebar-close');
-
-toggleNav.addEventListener('click', () => {
-  sidebarOverlay.classList.add('show');
-});
-closeBtn.addEventListener('click', () => {
-  sidebarOverlay.classList.remove('show');
-});
-
-
+  toggleNav.addEventListener("click", () => {
+    sidebarOverlay.classList.add("show");
+  });
+  closeBtn.addEventListener("click", () => {
+    sidebarOverlay.classList.remove("show");
+  });
 }
-
-  
-
 
 //=================================
 // const cartItemsDOM = getElement('.cart-items');
@@ -212,13 +238,13 @@ closeBtn.addEventListener('click', () => {
 //     <img src="${image}"
 //               class="cart-item-img"
 //               alt="${name}"
-//             />  
+//             />
 //             <div>
 //               <h4 class="cart-item-name">${name}</h4>
 //               <p class="cart-item-price">${formatPrice(price)}</p>
 //               <button class="cart-item-remove-btn" data-id="${id}">remove</button>
 //             </div>
-          
+
 //             <div>
 //               <button class="cart-item-increase-btn" data-id="${id}">
 //                 <i class="fas fa-chevron-up"></i>
@@ -231,6 +257,3 @@ closeBtn.addEventListener('click', () => {
 //   `;
 //   cartItemsDOM.appendChild(article);
 // };
-
-
-
