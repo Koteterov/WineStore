@@ -1,7 +1,7 @@
 import { html, repeat } from "../lib.js";
 import { getList } from "../api/data.js";
 
-const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseType, showPrice, value) =>
+const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseType, showPrice, value, showNoWines) =>
   html`
     <!-- navbar -->
     <nav class="navbar page">
@@ -125,12 +125,18 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
               max="100"
             />
           </form>
-          <p class="price-value">${value} Lv</p>
+          ${value == undefined 
+            ? html `
+          <p class="price-value">Choose Price Range</p>
+          `: html ` 
+          <p class="price-value">Value: ${value } Lv</p>`}
         </div>
       </div>
       <!-- products -->
       <div class="products-container">
-        ${ repeat(data, i => i._id, data => html ` <article class="product">
+        ${ showNoWines 
+          ? html `<h3 class="filter-error">sorry, no wines matched this range</h3>` 
+          : repeat(data, i => i._id, data => html ` <article class="product">
           <div class="product-container">
             <img src="${data.imgUrl}" class="product-img img" alt="${data.imgUrl}" />
 
@@ -178,24 +184,28 @@ export async function productsPage(ctx) {
       )
     );
     const priceInput = document.querySelector('.price-filter')
-    priceInput.value = maxPrice
     const priceToDispaly = Math.ceil(maxPrice)
     priceInput.max = priceToDispaly
     priceInput.min = 0
 
     function showPrice() {
         const value = parseInt(priceInput.value);
+        const winesByPrice = data.filter((w) => w.price < value);
+
+        const showNoWines = winesByPrice == 0
+
 
         ctx.render(
             productsTemplate(
-              data,
+              winesByPrice,
               toggleCart,
               closeCart,
               types,
               chooseAll,
               chooseType,
               showPrice,
-              value
+              value,
+              showNoWines
         
             )
           );
