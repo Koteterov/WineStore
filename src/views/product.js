@@ -1,8 +1,9 @@
 import { html, nothing } from "../lib.js";
 
-const homeTemplate = () => html`
+const productTemplate = () => html `
+
     <!-- navbar -->
-    <nav class="navbar">
+    <nav class="navbar page">
       <div class="nav-center">
         <!-- links -->
         <div>
@@ -11,24 +12,24 @@ const homeTemplate = () => html`
           </button>
           <ul class="nav-links">
             <li>
-              <a href="/" class="nav-link">
+              <a href="index.html" class="nav-link">
                 home
               </a>
             </li>
             <li>
-              <a href="/products" class="nav-link">
+              <a href="products.html" class="nav-link">
                 products
               </a>
             </li>
             <li>
-              <a href="/about" class="nav-link">
+              <a href="about.html" class="nav-link">
                 about
               </a>
             </li>
           </ul>
         </div>
         <!-- logo -->
-        <span class="logo-text nav-logo">'Wine is Fine'</span>
+        <span id="logo-black" class="logo-text nav-logo">'Wine is Fine'</span>
         <!-- cart icon -->
         <div class="toggle-container">
           <button class="toggle-cart">
@@ -39,15 +40,9 @@ const homeTemplate = () => html`
       </div>
     </nav>
     <!-- hero -->
-    <section class="hero">
-      <div class="hero-container">
-        <h1 class="text-slanted">
-          chose, taste, come back
-        </h1>
-        <h3>Make your choice - we are here to help</h3>
-        <a href="/products" class="hero-btn">
-          show now
-        </a>
+    <section class="page-hero">
+      <div class="section-center">
+        <h3 class="page-hero-title">Home / Single Product</h3>
       </div>
     </section>
     <!-- sidebar -->
@@ -60,19 +55,19 @@ const homeTemplate = () => html`
         <!-- links -->
         <ul class="sidebar-links">
           <li>
-            <a href="/" class="sidebar-link">
+            <a href="index.html" class="sidebar-link">
               <i class="fas fa-home fa-fw"></i>
               home
             </a>
           </li>
           <li>
-            <a href="/products" class="sidebar-link">
+            <a href="products.html" class="sidebar-link">
               <i class="fas fa-couch fa-fw"></i>
               products
             </a>
           </li>
           <li>
-            <a href="/about" class="sidebar-link">
+            <a href="about.html" class="sidebar-link">
               <i class="fas fa-book fa-fw"></i>
               about
             </a>
@@ -100,46 +95,41 @@ const homeTemplate = () => html`
         </footer>
       </aside>
     </div>
-    <!-- featured products -->
-    <section class="section featured">
-      <div class="title">
-        <h2><span>/</span>Wines of the Week</h2>
-      </div>
-      <div class="featured-center section-center">
-        <!-- <h2 class="section-loading">
-          loading...
-        </h2> -->
-
-        
-        <!-- single product -->
-        <!-- <article class="product">
-          <div class="product-container">
-            <img src="./images/main-bcg.jpeg" class="product-img img" alt="" />
-           
-            <div class="product-icons">
-              <a href="product.html?id=1" class="product-icon">
-                <i class="fas fa-search"></i>
-              </a>
-              <button class="product-cart-btn product-icon" data-id="1">
-                <i class="fas fa-shopping-cart"></i>
-              </button>
-            </div>
+    <!-- product info -->
+    <section class="single-product">
+      <div class="section-center single-product-center">
+        <img
+          src="./images/main-bcg.webp"
+          class="single-product-img img"
+          alt=""
+        />
+        <article class="single-product-info">
+          <div>
+            <h2 class="single-product-title">couch</h2>
+            <p class="single-product-company text-slanted">
+              by marcos
+            </p>
+            <p class="single-product-price">$30.00</p>
+            <div class="single-product-colors"></div>
+            <p class="single-product-desc">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id,
+              modi? Minima libero doloremque necessitatibus! Praesentium
+              recusandae quod nesciunt animi voluptatem!
+            </p>
+            <button class="addToCartBtn btn" data-id="id">
+              add to cart
+            </button>
           </div>
-          <footer>
-            <p class="product-name">name</p>
-            <h4 class="product-price">$9.99</h4>
-          </footer>
-        </article> -->
-        <!-- end of single product -->
+        </article>
       </div>
-      <a href="/products" class="btn">
-        all products
-      </a>
     </section>
+    <!-- <div class="page-loading">
+      <h2>loading...</h2>
+    </div> -->
 
 `
 
-export async function homePage(ctx) {
-    ctx.render(homeTemplate());
+export async function productPage(ctx) {
+    ctx.render(productTemplate());
   }
   

@@ -1,7 +1,9 @@
 import { html, nothing } from "../lib.js";
+import { getList } from "../api/data.js";
 
-const productsTemplate = () =>
-  html`<!-- navbar -->
+const productsTemplate = (toggleCart, closeCart) =>
+  html`
+    <!-- navbar -->
     <nav class="navbar page">
       <div class="nav-center">
         <!-- links -->
@@ -11,13 +13,19 @@ const productsTemplate = () =>
           </button>
           <ul class="nav-links">
             <li>
-              <a href="/" class="nav-link"> home </a>
+              <a href="/" class="nav-link">
+                home
+              </a>
             </li>
             <li>
-              <a href="/products" class="nav-link"> products </a>
+              <a href="/products" class="nav-link">
+                products
+              </a>
             </li>
             <li>
-              <a href="/about" class="nav-link"> about </a>
+              <a href="/about" class="nav-link">
+                about
+              </a>
             </li>
           </ul>
         </div>
@@ -25,13 +33,14 @@ const productsTemplate = () =>
         <span id="logo-black" class="logo-text nav-logo">'Wine is Fine'</span>
         <!-- cart icon -->
         <div class="toggle-container">
-          <button class="toggle-cart">
+          <button @click=${toggleCart} class="toggle-cart">
             <i class="fas fa-shopping-cart"></i>
           </button>
           <span class="cart-item-count">1</span>
         </div>
       </div>
     </nav>
+
     <!-- hero -->
     <section class="page-hero">
       <div class="section-center">
@@ -48,7 +57,7 @@ const productsTemplate = () =>
         <!-- links -->
         <ul class="sidebar-links">
           <li>
-            <a href="index.html" class="sidebar-link">
+            <a href="/" class="sidebar-link">
               <i class="fas fa-home fa-fw"></i>
               home
             </a>
@@ -71,7 +80,7 @@ const productsTemplate = () =>
     <!-- cart -->
     <div class="cart-overlay">
       <aside class="cart">
-        <button class="cart-close">
+        <button @click=${closeCart} class="cart-close">
           <i class="fas fa-times"></i>
         </button>
         <header>
@@ -81,7 +90,9 @@ const productsTemplate = () =>
         <div class="cart-items"></div>
         <!-- footer -->
         <footer>
-          <h3 class="cart-total text-slanted">total : $12.99</h3>
+          <h3 class="cart-total text-slanted">
+            total : $12.99
+          </h3>
           <button class="cart-checkout btn">checkout</button>
         </footer>
       </aside>
@@ -119,12 +130,81 @@ const productsTemplate = () =>
       <div class="products-container"></div>
     </section>
     <!-- page loading -->
-
     <!-- <div class="page-loading">
-      <h2>Loading...!!!!!</h2>
-    </div>  -->
+      <h2>Loading...</h2>
+    </div> -->
+
+
     `
 
+
 export async function productsPage(ctx) {
-  ctx.render(productsTemplate());
+  ctx.render(productsTemplate(toggleCart, closeCart));
+
+  const cartOverlay = document.querySelector('.cart-overlay');
+
+  function toggleCart() {
+    cartOverlay.classList.add('show');
+
+  }
+
+  function closeCart() {
+    cartOverlay.classList.remove('show');
+
+  }
+
+  const data = await getList()
+
+  console.log(data);
+
+
+//===
+const toggleNav = document.querySelector('.toggle-nav');
+const sidebarOverlay = document.querySelector('.sidebar-overlay');
+const closeBtn = document.querySelector('.sidebar-close');
+
+toggleNav.addEventListener('click', () => {
+  sidebarOverlay.classList.add('show');
+});
+closeBtn.addEventListener('click', () => {
+  sidebarOverlay.classList.remove('show');
+});
+
+
 }
+
+  
+
+
+//=================================
+// const cartItemsDOM = getElement('.cart-items');
+// const addToCartDOM = ({ id, name, price, image, amount }) => {
+//   const article = document.createElement('article');
+//   article.classList.add('cart-item');
+//   article.setAttribute('data-id', id);
+//   article.innerHTML = `
+//     <img src="${image}"
+//               class="cart-item-img"
+//               alt="${name}"
+//             />  
+//             <div>
+//               <h4 class="cart-item-name">${name}</h4>
+//               <p class="cart-item-price">${formatPrice(price)}</p>
+//               <button class="cart-item-remove-btn" data-id="${id}">remove</button>
+//             </div>
+          
+//             <div>
+//               <button class="cart-item-increase-btn" data-id="${id}">
+//                 <i class="fas fa-chevron-up"></i>
+//               </button>
+//               <p class="cart-item-amount" data-id="${id}">${amount}</p>
+//               <button class="cart-item-decrease-btn" data-id="${id}">
+//                 <i class="fas fa-chevron-down"></i>
+//               </button>
+//             </div>
+//   `;
+//   cartItemsDOM.appendChild(article);
+// };
+
+
+
