@@ -1,7 +1,7 @@
 import { html, repeat } from "../lib.js";
 import { getList } from "../api/data.js";
 
-const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseType) =>
+const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseType, showPrice, value) =>
   html`
     <!-- navbar -->
     <nav class="navbar page">
@@ -117,7 +117,7 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
           <!-- price -->
           <h4>Price</h4>
           <form class="price-form">
-            <input
+            <input @input=${showPrice}
               type="range"
               class="price-filter"
               min="0"
@@ -125,7 +125,7 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
               max="100"
             />
           </form>
-          <p class="price-value"></p>
+          <p class="price-value">${value} Lv</p>
         </div>
       </div>
       <!-- products -->
@@ -145,7 +145,7 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
           </div>
           <footer>
             <p class="product-name">${data.name}</p>
-            <h4 class="product-price">${data.price}</h4>
+            <h4 class="product-price">${data.price} Lv</h4>
           </footer>
         </article>  `)}
       </div>
@@ -158,9 +158,15 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
     `
 
 export async function productsPage(ctx) {
-  try {
-    const data = await getList();
-    const types = new Set(data.map((t) => t.type));
+
+    
+    try {
+        const data = await getList();
+        const types = new Set(data.map((t) => t.type));
+        const prices = data.map(p => p.price)
+        const maxPrice = Math.max(...prices)
+        
+
     ctx.render(
       productsTemplate(
         data,
@@ -168,9 +174,49 @@ export async function productsPage(ctx) {
         closeCart,
         types,
         chooseAll,
-        chooseType
+        chooseType,
       )
     );
+    const priceInput = document.querySelector('.price-filter')
+    priceInput.value = maxPrice
+    const priceToDispaly = Math.ceil(maxPrice)
+    priceInput.max = priceToDispaly
+    priceInput.min = 0
+
+    function showPrice() {
+        const value = parseInt(priceInput.value);
+
+        ctx.render(
+            productsTemplate(
+              data,
+              toggleCart,
+              closeCart,
+              types,
+              chooseAll,
+              chooseType,
+              showPrice,
+              value
+        
+            )
+          );
+    
+
+    }
+
+
+    ctx.render(
+        productsTemplate(
+          data,
+          toggleCart,
+          closeCart,
+          types,
+          chooseAll,
+          chooseType,
+          showPrice
+    
+        )
+      );
+  
 
     const cartOverlay = document.querySelector(".cart-overlay");
 
@@ -203,6 +249,7 @@ export async function productsPage(ctx) {
         )
       );
     }
+
 
     function toggleCart() {
       cartOverlay.classList.add("show");
