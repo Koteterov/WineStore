@@ -1,7 +1,7 @@
-import { html, nothing } from "../lib.js";
+import { html, repeat } from "../lib.js";
 import { getList } from "../api/data.js";
 
-const productsTemplate = (toggleCart, closeCart) =>
+const productsTemplate = (data, toggleCart, closeCart, types) =>
   html`
     <!-- navbar -->
     <nav class="navbar page">
@@ -107,10 +107,11 @@ const productsTemplate = (toggleCart, closeCart) =>
             <input type="text" class="search-input" placeholder="search..." />
           </form>
           <!-- categories -->
-          <h4>Company</h4>
+          <h4>Wine Type</h4>
           <article class="companies">
-            <button class="company-btn">all</button>
-            <button class="company-btn">ikea</button>
+            ${repeat(types, i => i._id, data => html `
+            <button class="company-btn">${data}</button>
+            `)}
           </article>
           <!-- price -->
           <h4>Price</h4>
@@ -127,19 +128,46 @@ const productsTemplate = (toggleCart, closeCart) =>
         </div>
       </div>
       <!-- products -->
-      <div class="products-container"></div>
+      <div class="products-container">
+        ${ repeat(data, i => i._id, data => html ` <article class="product">
+          <div class="product-container">
+            <img src="${data.imgUrl}" class="product-img img" alt="${data.imgUrl}" />
+           
+            <div class="product-icons">
+              <a href="product.html?id=${data._id}" class="product-icon">
+                <i class="fas fa-search"></i>
+              </a>
+              <button class="product-cart-btn product-icon" data-id="${data._id}">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
+            </div>
+          </div>
+          <footer>
+            <p class="product-name">${data.name}</p>
+            <h4 class="product-price">${data.price}</h4>
+          </footer>
+        </article>  `)}
+      </div>
     </section>
     <!-- page loading -->
     <!-- <div class="page-loading">
       <h2>Loading...</h2>
     </div> -->
 
-
     `
 
 
 export async function productsPage(ctx) {
-  ctx.render(productsTemplate(toggleCart, closeCart));
+    try {
+        const data = await getList()
+        const types = new Set(data.map(t => t.type))
+        console.log(types);
+        ctx.render(productsTemplate(data, toggleCart, closeCart, types));
+      
+    } catch (error) {
+        console.log(error);
+    }
+
 
   const cartOverlay = document.querySelector('.cart-overlay');
 
@@ -153,9 +181,7 @@ export async function productsPage(ctx) {
 
   }
 
-  const data = await getList()
 
-  console.log(data);
 
 
 //===

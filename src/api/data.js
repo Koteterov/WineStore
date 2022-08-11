@@ -5,7 +5,7 @@ api.settings.host = host;
 
 
 const endpoints = {
-  catalog: "/data/wines?sortBy=_createdOn%20desc&distinct=name",
+  catalog: "/data/wines",
   details: (id) => `/data/wines/${id}`,
 
 };
