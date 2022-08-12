@@ -28,4 +28,3 @@ function decorateContext(ctx, next) {
 }  
 
 
-console.log(11);

@@ -128,7 +128,7 @@ export async function detailsPage(ctx) {
 
   try {
     const wine = await getSingleWine(ctx.params.id)
-    console.log(wine);
+    
       ctx.render(productTemplate(wine));
   
     

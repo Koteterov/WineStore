@@ -1,7 +1,19 @@
-import { html, repeat } from "../lib.js";
-import { getList } from "../api/data.js";
+import { html, repeat, nothing } from "../lib.js";
+import { getList, getSingleWine } from "../api/data.js";
 
-const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseType, showPrice, value, showNoWines) =>
+const productsTemplate = (
+  data,
+  toggleCart,
+  closeCart,
+  types,
+  chooseAll,
+  chooseType,
+  addToCart,
+  removeFromCart,
+  showPrice,
+  value,
+  showNoWines
+) =>
   html`
     <!-- navbar -->
     <nav class="navbar page">
@@ -13,19 +25,13 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
           </button>
           <ul class="nav-links">
             <li>
-              <a href="/" class="nav-link">
-                home
-              </a>
+              <a href="/" class="nav-link"> home </a>
             </li>
             <li>
-              <a href="/products" class="nav-link">
-                products
-              </a>
+              <a href="/products" class="nav-link"> products </a>
             </li>
             <li>
-              <a href="/about" class="nav-link">
-                about
-              </a>
+              <a href="/about" class="nav-link"> about </a>
             </li>
           </ul>
         </div>
@@ -86,13 +92,46 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
         <header>
           <h3 class="text-slanted">your bag</h3>
         </header>
+
         <!-- cart items -->
-        <div class="cart-items"></div>
+        <div class="cart-items">
+          ${data
+            ? html`
+                <article class="cart-item" data-id=${data._id}>
+                  <img
+                    src=${data.imgUrl}
+                    class="cart-item-img"
+                    alt=${data.imgUrl}
+                  />
+                  <div>
+                    <h4 class="cart-item-name">${data.name}</h4>
+                    <p class="cart-item-price">${data.price} Lv</p>
+                    <button
+                      @click=${removeFromCart}
+                      class="cart-item-remove-btn"
+                      data-id=${data._id}
+                    >
+                      remove
+                    </button>
+                  </div>
+
+                  <div>
+                    <button class="cart-item-increase-btn" data-id=${data._id}>
+                      <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <p class="cart-item-amount" data-id=${data._id}>2</p>
+                    <button class="cart-item-decrease-btn" data-id=${data._id}>
+                      <i class="fas fa-chevron-down"></i>
+                    </button>
+                  </div>
+                </article>
+              `
+            : nothing}
+        </div>
+
         <!-- footer -->
         <footer>
-          <h3 class="cart-total text-slanted">
-            total : $12.99
-          </h3>
+          <h3 class="cart-total text-slanted">total : $12.99</h3>
           <button class="cart-checkout btn">checkout</button>
         </footer>
       </aside>
@@ -110,14 +149,21 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
           <h4>Wine Type</h4>
           <article class="companies">
             <button @click=${chooseAll} class="company-btn">All</button>
-            ${repeat(types, i => i._id, data => html `
-            <button @click=${chooseType} id=${data} class="company-btn">${data}</button>
-            `)}
+            ${repeat(
+              types,
+              (i) => i._id,
+              (data) => html`
+                <button @click=${chooseType} id=${data} class="company-btn">
+                  ${data}
+                </button>
+              `
+            )}
           </article>
           <!-- price -->
           <h4>Price</h4>
           <form class="price-form">
-            <input @input=${showPrice}
+            <input
+              @input=${showPrice}
               type="range"
               class="price-filter"
               min="0"
@@ -126,43 +172,58 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
             />
           </form>
           ${value == undefined
-            ? html `
-          <p class="price-value">Choose Price Range</p>
-          `: html `
-          <p class="price-value">Value: ${value } Lv</p>`}
+            ? html` <p class="price-value">Choose Price Range</p> `
+            : html` <p class="price-value">Value: ${value} Lv</p>`}
         </div>
       </div>
       <!-- products -->
       <div class="products-container">
-        ${ showNoWines
-          ? html `<h3 class="filter-error">sorry, no wines matched this range</h3>`
-          : repeat(data, i => i._id, data => html ` <article class="product">
-          <div class="product-container">
-            <img src="${data.imgUrl}" class="product-img img" alt="${data.imgUrl}" />
+        ${showNoWines
+          ? html`<h3 class="filter-error">
+              sorry, no wines matched this range
+            </h3>`
+          : repeat(
+              data,
+              (i) => i._id,
+              (data) => html`
+                <article class="product">
+                  <div class="product-container">
+                    <img
+                      src="${data.imgUrl}"
+                      class="product-img img"
+                      alt="${data.imgUrl}"
+                    />
 
-            <div class="product-icons">
-              <a href="/details/${data._id}" class="product-icon">
-                <i class="fas fa-search"></i>
-              </a>
-              <button class="product-cart-btn product-icon" data-id="${data._id}">
-                <i class="fas fa-shopping-cart"></i>
-              </button>
-            </div>
-          </div>
-          <footer>
-            <p class="product-name">${data.name}</p>
-            <h4 class="product-price">${data.price} Lv</h4>
-          </footer>
-        </article>  `)}
+                    <div class="product-icons">
+                      <a href="/details/${data._id}" class="product-icon">
+                        <i class="fas fa-search"></i>
+                      </a>
+                      <button
+                        @click=${addToCart}
+                        class="product-cart-btn product-icon"
+                        data-id="${data._id}"
+                      >
+                        <i class="fas fa-shopping-cart"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <footer>
+                    <p class="product-name">${data.name}</p>
+                    <h4 class="product-price">${data.price} Lv</h4>
+                  </footer>
+                </article>
+              `
+            )}
       </div>
     </section>
     <!-- page loading -->
     <!-- <div class="page-loading">
       <h2>Loading...</h2>
     </div> -->
+  `;
 
-    `
 
+// initial page rendering
 export async function productsPage(ctx) {
   try {
     const data = await getList();
@@ -177,9 +238,12 @@ export async function productsPage(ctx) {
         closeCart,
         types,
         chooseAll,
-        chooseType
+        chooseType,
+        addToCart,
+        removeFromCart
       )
     );
+
     const priceInput = document.querySelector(".price-filter");
     const priceToDispaly = Math.ceil(maxPrice);
     priceInput.max = priceToDispaly;
@@ -201,12 +265,13 @@ export async function productsPage(ctx) {
           types,
           chooseAll,
           chooseType,
+          addToCart,
+          removeFromCart,
           showPrice,
           value,
           showNoWines
         )
       );
-
     }
 
     ctx.render(
@@ -217,12 +282,13 @@ export async function productsPage(ctx) {
         types,
         chooseAll,
         chooseType,
-        showPrice,
-
+        addToCart,
+        removeFromCart,
+        showPrice
       )
     );
-
-
+    
+    // choose all wine types
     function chooseAll() {
       ctx.render(
         productsTemplate(
@@ -232,42 +298,81 @@ export async function productsPage(ctx) {
           types,
           chooseAll,
           chooseType,
+          addToCart,
+          removeFromCart,
           showPrice
         )
       );
     }
 
+
+    // choose type of wine
     function chooseType(e) {
       const chosenType = e.target.id;
 
       const selectedWines = data.filter((w) => w.type == chosenType);
 
+
+
       // show price of chosen wines
       function showChosenByPrice() {
         const value = parseInt(priceInput.value);
-        const SelectedWinesByPrice = selectedWines.filter((w) => w.price < value);
+        const SelectedWinesByPrice = selectedWines.filter(
+          (w) => w.price < value
+        );
         const showNoWines = SelectedWinesByPrice == 0;
 
-
-   ctx.render(
-    productsTemplate(
-      SelectedWinesByPrice,
-      toggleCart,
-      closeCart,
-      types,
-      chooseAll,
-      chooseType,
-      showChosenByPrice,
-      value,
-      showNoWines
-    )
-  );
+        ctx.render(
+          productsTemplate(
+            SelectedWinesByPrice,
+            toggleCart,
+            closeCart,
+            types,
+            chooseAll,
+            chooseType,
+            addToCart,
+            removeFromCart,
+            showChosenByPrice,
+            value,
+            showNoWines
+          )
+        );
       }
 
-      showChosenByPrice()
+      showChosenByPrice();
     }
 
-    
+    // add wine to cart
+    async function addToCart(e) {
+      const wineId = e.currentTarget.dataset.id;
+      const singleWine = await getSingleWine(wineId);
+
+      toggleCart();
+
+      ctx.render(
+        productsTemplate(
+          singleWine,
+          toggleCart,
+          closeCart,
+          types,
+          chooseAll,
+          chooseType,
+          addToCart,
+          removeFromCart
+        )
+      );
+    }
+    // clear cart
+    function removeFromCart(e) {
+      console.log(document.querySelector(".cart-close"));
+
+      document.querySelector(".cart-close").addEventListener("click", () => {
+        cartOverlay.classList.remove("show");
+      });
+
+      ctx.render(productsTemplate());
+    }
+
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
     function toggleCart() {
@@ -277,58 +382,8 @@ export async function productsPage(ctx) {
     function closeCart() {
       cartOverlay.classList.remove("show");
     }
-
-
   } catch (error) {
     console.log(error);
   }
-
-  //=========
-  //toggle navbar
-  const toggleNav = document.querySelector(".toggle-nav");
-  const sidebarOverlay = document.querySelector(".sidebar-overlay");
-  const closeBtn = document.querySelector(".sidebar-close");
-
-  toggleNav.addEventListener("click", () => {
-    sidebarOverlay.classList.add("show");
-  });
-
-  closeBtn.addEventListener("click", () => {
-    sidebarOverlay.classList.remove("show");
-  });
-
-
-
 }
 
-
-
-//=================================
-// const cartItemsDOM = getElement('.cart-items');
-// const addToCartDOM = ({ id, name, price, image, amount }) => {
-//   const article = document.createElement('article');
-//   article.classList.add('cart-item');
-//   article.setAttribute('data-id', id);
-//   article.innerHTML = `
-//     <img src="${image}"
-//               class="cart-item-img"
-//               alt="${name}"
-//             />
-//             <div>
-//               <h4 class="cart-item-name">${name}</h4>
-//               <p class="cart-item-price">${formatPrice(price)}</p>
-//               <button class="cart-item-remove-btn" data-id="${id}">remove</button>
-//             </div>
-
-//             <div>
-//               <button class="cart-item-increase-btn" data-id="${id}">
-//                 <i class="fas fa-chevron-up"></i>
-//               </button>
-//               <p class="cart-item-amount" data-id="${id}">${amount}</p>
-//               <button class="cart-item-decrease-btn" data-id="${id}">
-//                 <i class="fas fa-chevron-down"></i>
-//               </button>
-//             </div>
-//   `;
-//   cartItemsDOM.appendChild(article);
-// };
