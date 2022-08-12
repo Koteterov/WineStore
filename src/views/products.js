@@ -10,6 +10,7 @@ const productsTemplate = (
   chooseType,
   addToCart,
   removeFromCart,
+  onCheckout,
   showPrice,
   value,
   showNoWines
@@ -131,8 +132,14 @@ const productsTemplate = (
 
         <!-- footer -->
         <footer>
-          <h3 class="cart-total text-slanted">total : $12.99</h3>
-          <button class="cart-checkout btn">checkout</button>
+          ${data
+            ? html`
+                <h3 class="cart-total text-slanted">
+                  total : ${data.price} Lv
+                </h3>
+              `
+            : html` <h3 class="cart-total text-slanted">total : 0.00 Lv</h3> `}
+          <button @click=${onCheckout} class="cart-checkout btn">checkout</button>
         </footer>
       </aside>
     </div>
@@ -222,7 +229,6 @@ const productsTemplate = (
     </div> -->
   `;
 
-
 // initial page rendering
 export async function productsPage(ctx) {
   try {
@@ -240,7 +246,8 @@ export async function productsPage(ctx) {
         chooseAll,
         chooseType,
         addToCart,
-        removeFromCart
+        removeFromCart, 
+        onCheckout
       )
     );
 
@@ -248,7 +255,6 @@ export async function productsPage(ctx) {
     const priceToDispaly = Math.ceil(maxPrice);
     priceInput.max = priceToDispaly;
     priceInput.min = 0;
-
 
     // show price of all wines
     function showPrice() {
@@ -267,6 +273,7 @@ export async function productsPage(ctx) {
           chooseType,
           addToCart,
           removeFromCart,
+          onCheckout,
           showPrice,
           value,
           showNoWines
@@ -284,10 +291,11 @@ export async function productsPage(ctx) {
         chooseType,
         addToCart,
         removeFromCart,
+        onCheckout,
         showPrice
       )
     );
-    
+
     // choose all wine types
     function chooseAll() {
       ctx.render(
@@ -300,19 +308,17 @@ export async function productsPage(ctx) {
           chooseType,
           addToCart,
           removeFromCart,
+          onCheckout,
           showPrice
         )
       );
     }
-
 
     // choose type of wine
     function chooseType(e) {
       const chosenType = e.target.id;
 
       const selectedWines = data.filter((w) => w.type == chosenType);
-
-
 
       // show price of chosen wines
       function showChosenByPrice() {
@@ -332,6 +338,7 @@ export async function productsPage(ctx) {
             chooseType,
             addToCart,
             removeFromCart,
+            onCheckout,
             showChosenByPrice,
             value,
             showNoWines
@@ -358,12 +365,13 @@ export async function productsPage(ctx) {
           chooseAll,
           chooseType,
           addToCart,
-          removeFromCart
+          removeFromCart,
+          onCheckout
         )
       );
     }
     // clear cart
-    function removeFromCart(e) {
+    function removeFromCart() {
       console.log(document.querySelector(".cart-close"));
 
       document.querySelector(".cart-close").addEventListener("click", () => {
@@ -372,6 +380,12 @@ export async function productsPage(ctx) {
 
       ctx.render(productsTemplate());
     }
+
+    // checkout btn
+    function onCheckout() {
+      ctx.page.redirect("/")
+    }
+
 
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
@@ -386,4 +400,3 @@ export async function productsPage(ctx) {
     console.log(error);
   }
 }
-
