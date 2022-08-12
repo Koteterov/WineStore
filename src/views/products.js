@@ -141,7 +141,7 @@ const productsTemplate = (data, toggleCart, closeCart, types, chooseAll, chooseT
             <img src="${data.imgUrl}" class="product-img img" alt="${data.imgUrl}" />
 
             <div class="product-icons">
-              <a href="product.html?id=${data._id}" class="product-icon">
+              <a href="/details/${data._id}" class="product-icon">
                 <i class="fas fa-search"></i>
               </a>
               <button class="product-cart-btn product-icon" data-id="${data._id}">
@@ -267,9 +267,9 @@ export async function productsPage(ctx) {
       showChosenByPrice()
     }
 
-
+    
+    // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
-
     function toggleCart() {
       cartOverlay.classList.add("show");
     }
@@ -277,12 +277,14 @@ export async function productsPage(ctx) {
     function closeCart() {
       cartOverlay.classList.remove("show");
     }
+
+
   } catch (error) {
     console.log(error);
   }
 
-  //===
-
+  //=========
+  //toggle navbar
   const toggleNav = document.querySelector(".toggle-nav");
   const sidebarOverlay = document.querySelector(".sidebar-overlay");
   const closeBtn = document.querySelector(".sidebar-close");
@@ -290,10 +292,16 @@ export async function productsPage(ctx) {
   toggleNav.addEventListener("click", () => {
     sidebarOverlay.classList.add("show");
   });
+
   closeBtn.addEventListener("click", () => {
     sidebarOverlay.classList.remove("show");
   });
+
+
+
 }
+
+
 
 //=================================
 // const cartItemsDOM = getElement('.cart-items');

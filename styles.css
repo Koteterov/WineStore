@@ -753,7 +753,8 @@ Single Product Page
   gap: 1rem 2rem;
 }
 .single-product-img {
-  height: 25rem;
+  height: 24rem;
+  width: 18rem;
   border-radius: var(--radius);
   object-fit: cover;
 }
@@ -782,7 +783,10 @@ Single Product Page
 .single-product-desc {
   max-width: 25em;
   line-height: 1.8;
+  margin-top: 2rem;
+  margin-bottom: 5.25rem;
 }
+
 @media screen and (min-width: 992px) {
   .single-product-center {
     grid-template-columns: 1fr 1fr;

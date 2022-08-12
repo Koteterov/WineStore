@@ -1,6 +1,7 @@
 import { html, nothing } from "../lib.js";
+import { getSingleWine } from "../api/data.js";
 
-const productTemplate = () => html `
+const productTemplate = (wine) => html `
 
     <!-- navbar -->
     <nav class="navbar page">
@@ -12,17 +13,17 @@ const productTemplate = () => html `
           </button>
           <ul class="nav-links">
             <li>
-              <a href="index.html" class="nav-link">
+              <a href="/" class="nav-link">
                 home
               </a>
             </li>
             <li>
-              <a href="products.html" class="nav-link">
+              <a href="/products" class="nav-link">
                 products
               </a>
             </li>
             <li>
-              <a href="about.html" class="nav-link">
+              <a href="/about" class="nav-link">
                 about
               </a>
             </li>
@@ -99,24 +100,18 @@ const productTemplate = () => html `
     <section class="single-product">
       <div class="section-center single-product-center">
         <img
-          src="./images/main-bcg.webp"
+          src=${wine.imgUrl}
           class="single-product-img img"
-          alt=""
+          alt="${wine.imgUrl}"
         />
         <article class="single-product-info">
           <div>
-            <h2 class="single-product-title">couch</h2>
-            <p class="single-product-company text-slanted">
-              by marcos
-            </p>
-            <p class="single-product-price">$30.00</p>
+            <h2 class="single-product-title">${wine.name}</h2>
+            <p class="single-product-company text-slanted">${wine.type}</p>
+            <p class="single-product-price">Price: ${wine.price} Lv</p>
             <div class="single-product-colors"></div>
-            <p class="single-product-desc">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id,
-              modi? Minima libero doloremque necessitatibus! Praesentium
-              recusandae quod nesciunt animi voluptatem!
-            </p>
-            <button class="addToCartBtn btn" data-id="id">
+            <p class="single-product-desc">Origine: ${wine.origin}</p>
+            <button class="addToCartBtn btn" data-id=${wine._id}>
               add to cart
             </button>
           </div>
@@ -129,7 +124,16 @@ const productTemplate = () => html `
 
 `
 
-export async function productPage(ctx) {
-    ctx.render(productTemplate());
+export async function detailsPage(ctx) {
+
+  try {
+    const wine = await getSingleWine(ctx.params.id)
+    console.log(wine);
+      ctx.render(productTemplate(wine));
+  
+    
+  } catch (error) {
+    console.log(error);
+  }
   }
   
