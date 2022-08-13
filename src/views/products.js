@@ -3,6 +3,9 @@ import { getList, getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 
 const productsTemplate = (
+  onIncrease,
+  onDecrease,
+
   isAddedToCart,
   data,
   toggleCart,
@@ -51,7 +54,7 @@ const productsTemplate = (
           <button @click=${toggleCart} class="toggle-cart">
             <i class="fas fa-shopping-cart"></i>
           </button>
-          <span class="cart-item-count">1</span>
+          <span class="cart-item-count">0</span>
         </div>
       </div>
     </nav>
@@ -104,38 +107,40 @@ const productsTemplate = (
 
         <!-- cart items -->
         <div class="cart-items">
-          ${isAddedToCart
-            ? html`
-                <article class="cart-item" data-id=${data._id}>
-                  <img
-                    src=${data.imgUrl}
-                    class="cart-item-img"
-                    alt=${data.imgUrl}
-                  />
-                  <div>
-                    <h4 class="cart-item-name">${data.name}</h4>
-                    <p class="cart-item-price">${data.price} Lv</p>
-                    <button
-                      @click=${removeFromCart}
-                      class="cart-item-remove-btn"
-                      data-id=${data._id}
-                    >
-                      remove
-                    </button>
-                  </div>
+          ${html`
+            <article class="cart-item" data-id=${data._id}>
+              <img src="" class="cart-item-img" alt=${data.imgUrl} />
+              <div>
+                <h4 class="cart-item-name"></h4>
+                <p class="cart-item-price"></p>
+                <button
+                  @click=${removeFromCart}
+                  class="cart-item-remove-btn"
+                  data-id=${data._id}
+                >
+                  remove
+                </button>
+              </div>
 
-                  <div>
-                    <button class="cart-item-increase-btn" data-id=${data._id}>
-                      <i class="fas fa-chevron-up"></i>
-                    </button>
-                    <p class="cart-item-amount" data-id=${data._id}>2</p>
-                    <button class="cart-item-decrease-btn" data-id=${data._id}>
-                      <i class="fas fa-chevron-down"></i>
-                    </button>
-                  </div>
-                </article>
-              `
-            : nothing}
+              <div>
+                <button
+                  @click=${onIncrease}
+                  class="cart-item-increase-btn"
+                  data-id=${data._id}
+                >
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+                <p class="cart-item-amount" data-id=${data._id}></p>
+                <button
+                  @click=${onDecrease}
+                  class="cart-item-decrease-btn"
+                  data-id=${data._id}
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+              </div>
+            </article>
+          `}
         </div>
 
         <!-- footer -->
@@ -190,7 +195,7 @@ const productsTemplate = (
           </form>
           ${value == undefined
             ? html` <p class="price-value">Choose Price Range</p> `
-            : html` <p class="price-value">Value: ${value} Lv</p>`}
+            : html` <p class="price-value">Value: ${value} lv</p>`}
         </div>
       </div>
       <!-- products -->
@@ -242,6 +247,7 @@ const productsTemplate = (
 // initial page rendering
 export async function productsPage(ctx) {
   let isAddedToCart = false;
+  let counter = 0;
 
   try {
     const data = await getList();
@@ -251,6 +257,8 @@ export async function productsPage(ctx) {
 
     ctx.render(
       productsTemplate(
+        onIncrease,
+        onDecrease,
         isAddedToCart,
         data,
         toggleCart,
@@ -263,36 +271,37 @@ export async function productsPage(ctx) {
         onCheckout
       )
     );
+
     setUserNav();
+
+    if (isAddedToCart == false) {
+      document.querySelector(".cart-item").style.display = "none";
+    }
 
     const priceInput = document.querySelector(".price-filter");
     const priceToDispaly = Math.ceil(maxPrice);
     priceInput.max = priceToDispaly;
     priceInput.min = 0;
 
+    let price = null;
+
     // add wine to cart
     async function addToCart(e) {
-      isAddedToCart = true
+      isAddedToCart = true;
       const wineId = e.currentTarget.dataset.id;
       const singleWine = await getSingleWine(wineId);
-      // const singleWine = data.filter((w) => w._id == wineId)[0];
+
+      price = singleWine.price;
 
       toggleCart();
-
-      ctx.render(
-        productsTemplate(
-          isAddedToCart,
-          singleWine,
-          toggleCart,
-          closeCart,
-          types,
-          chooseAll,
-          chooseType,
-          addToCart,
-          removeFromCart,
-          onCheckout
-        )
-      );
+      document.querySelector(".cart-item").style.display = "";
+      document.querySelector(".cart-item-img").src = singleWine.imgUrl;
+      document.querySelector(".cart-item-name").textContent = singleWine.name;
+      document.querySelector(
+        ".cart-item-price"
+      ).textContent = `${singleWine.price} lv`;
+      document.querySelector('.cart-item-amount').textContent = 0
+      document.querySelector('.cart-total').textContent = `total: 0.00 lv`
     }
 
     // show price of all wines
@@ -304,6 +313,9 @@ export async function productsPage(ctx) {
 
       ctx.render(
         productsTemplate(
+          onIncrease,
+          onDecrease,
+
           isAddedToCart,
           winesByPrice,
           toggleCart,
@@ -325,6 +337,9 @@ export async function productsPage(ctx) {
     function chooseAll() {
       ctx.render(
         productsTemplate(
+          onIncrease,
+          onDecrease,
+
           isAddedToCart,
           data,
           toggleCart,
@@ -356,6 +371,9 @@ export async function productsPage(ctx) {
 
         ctx.render(
           productsTemplate(
+            onIncrease,
+            onDecrease,
+
             isAddedToCart,
             SelectedWinesByPrice,
             toggleCart,
@@ -376,15 +394,53 @@ export async function productsPage(ctx) {
       showChosenByPrice();
     }
 
+    //increase qty
+    function onIncrease() {
+      let qtySpan = document.querySelector(".cart-item-count");
+      let qty = document.querySelector(".cart-item-amount");
+      counter++;
+      qty.textContent = counter;
+      qtySpan.textContent = counter;
+
+      let total = document.querySelector(".cart-total");
+      total.textContent = `total: ${Number(counter * price).toFixed(2)} lv`;
+    }
+
+    //decrease qty
+    function onDecrease() {
+      let qtySpan = document.querySelector(".cart-item-count");
+      let qty = document.querySelector(".cart-item-amount");
+
+      counter--;
+      if (counter < 0) {
+        counter = 0;
+      }
+      if (counter == 0) {
+        document.querySelector(".cart-item").style.display = "none";
+      }
+      let total = document.querySelector(".cart-total");
+      total.textContent = `total: ${Number(counter * price).toFixed(2)} lv`;
+
+      qty.textContent = counter;
+      qtySpan.textContent = counter;
+    }
     // clear cart
     function removeFromCart() {
-      console.log(document.querySelector(".cart-close"));
+      console.log(document.querySelector(".cart-item-amount"));
 
       document.querySelector(".cart-close").addEventListener("click", () => {
         cartOverlay.classList.remove("show");
       });
 
-      ctx.render(productsTemplate());
+      document.querySelector(".cart-item").style.display = "none";
+      let total = document.querySelector(".cart-total");
+      total.textContent = `total: 0.00 lv`;
+
+      let qtySpan = document.querySelector(".cart-item-count");
+      qtySpan.textContent = 0;
+
+      let qty = document.querySelector(".cart-item-amount");
+      qty.textContent = 0;
     }
 
     // checkout btn
