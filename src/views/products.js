@@ -1,5 +1,6 @@
 import { html, repeat, nothing } from "../lib.js";
 import { getList, getSingleWine } from "../api/data.js";
+import { setUserNav } from "./utils.js";
 
 const productsTemplate = (
   data,
@@ -34,6 +35,13 @@ const productsTemplate = (
             <li>
               <a href="/about" class="nav-link"> about </a>
             </li>
+            <li id="loginBtn">
+            <a href="/login" class="nav-link"> login </a>
+          </li>
+          <li id="logoutBtn">
+            <a href="javascript:void(0)" class="nav-link"> logout </a>
+          </li>
+
           </ul>
         </div>
         <!-- logo -->
@@ -231,6 +239,7 @@ const productsTemplate = (
 
 // initial page rendering
 export async function productsPage(ctx) {
+
   try {
     const data = await getList();
     const types = new Set(data.map((t) => t.type));
@@ -250,6 +259,7 @@ export async function productsPage(ctx) {
         onCheckout
       )
     );
+    setUserNav()
 
     const priceInput = document.querySelector(".price-filter");
     const priceToDispaly = Math.ceil(maxPrice);

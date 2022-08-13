@@ -52,3 +52,30 @@ export async function get(url) {
   return await request(url, getOptions());
 }
 
+export async function post(url, data) {
+  return await request(url, getOptions("post", data));
+}
+
+export async function login(email, password) {
+  const result = await post(settings.host + "/users/login", {
+    email,
+    password,
+  });
+
+  sessionStorage.setItem("email", result.email);
+  sessionStorage.setItem("authToken", result.accessToken);
+  sessionStorage.setItem("userId", result._id);
+
+  return result;
+}
+
+
+export async function logout() {
+  const result = await get(settings.host + "/users/logout");
+
+  sessionStorage.removeItem("email");
+  sessionStorage.removeItem("authToken");
+  sessionStorage.removeItem("userId");
+
+  return result;
+}
