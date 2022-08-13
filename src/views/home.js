@@ -143,8 +143,6 @@ export async function homePage(ctx) {
   
   }
   
-
 }
 
-// document.getElementById("logoutBtn").addEventListener("click", OnLogout);
 

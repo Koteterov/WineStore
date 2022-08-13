@@ -3,6 +3,7 @@ import { getList, getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 
 const productsTemplate = (
+  isAddedToCart,
   data,
   toggleCart,
   closeCart,
@@ -36,12 +37,11 @@ const productsTemplate = (
               <a href="/about" class="nav-link"> about </a>
             </li>
             <li id="loginBtn">
-            <a href="/login" class="nav-link"> login </a>
-          </li>
-          <li id="logoutBtn">
-            <a href="javascript:void(0)" class="nav-link"> logout </a>
-          </li>
-
+              <a href="/login" class="nav-link"> login </a>
+            </li>
+            <li id="logoutBtn">
+              <a href="javascript:void(0)" class="nav-link"> logout </a>
+            </li>
           </ul>
         </div>
         <!-- logo -->
@@ -104,7 +104,7 @@ const productsTemplate = (
 
         <!-- cart items -->
         <div class="cart-items">
-          ${data
+          ${isAddedToCart
             ? html`
                 <article class="cart-item" data-id=${data._id}>
                   <img
@@ -147,7 +147,9 @@ const productsTemplate = (
                 </h3>
               `
             : html` <h3 class="cart-total text-slanted">total : 0.00 Lv</h3> `}
-          <button @click=${onCheckout} class="cart-checkout btn">checkout</button>
+          <button @click=${onCheckout} class="cart-checkout btn">
+            checkout
+          </button>
         </footer>
       </aside>
     </div>
@@ -239,6 +241,7 @@ const productsTemplate = (
 
 // initial page rendering
 export async function productsPage(ctx) {
+  let isAddedToCart = false;
 
   try {
     const data = await getList();
@@ -248,6 +251,7 @@ export async function productsPage(ctx) {
 
     ctx.render(
       productsTemplate(
+        isAddedToCart,
         data,
         toggleCart,
         closeCart,
@@ -255,16 +259,41 @@ export async function productsPage(ctx) {
         chooseAll,
         chooseType,
         addToCart,
-        removeFromCart, 
+        removeFromCart,
         onCheckout
       )
     );
-    setUserNav()
+    setUserNav();
 
     const priceInput = document.querySelector(".price-filter");
     const priceToDispaly = Math.ceil(maxPrice);
     priceInput.max = priceToDispaly;
     priceInput.min = 0;
+
+    // add wine to cart
+    async function addToCart(e) {
+      isAddedToCart = true
+      const wineId = e.currentTarget.dataset.id;
+      const singleWine = await getSingleWine(wineId);
+      // const singleWine = data.filter((w) => w._id == wineId)[0];
+
+      toggleCart();
+
+      ctx.render(
+        productsTemplate(
+          isAddedToCart,
+          singleWine,
+          toggleCart,
+          closeCart,
+          types,
+          chooseAll,
+          chooseType,
+          addToCart,
+          removeFromCart,
+          onCheckout
+        )
+      );
+    }
 
     // show price of all wines
     function showPrice() {
@@ -275,6 +304,7 @@ export async function productsPage(ctx) {
 
       ctx.render(
         productsTemplate(
+          isAddedToCart,
           winesByPrice,
           toggleCart,
           closeCart,
@@ -291,25 +321,11 @@ export async function productsPage(ctx) {
       );
     }
 
-    ctx.render(
-      productsTemplate(
-        data,
-        toggleCart,
-        closeCart,
-        types,
-        chooseAll,
-        chooseType,
-        addToCart,
-        removeFromCart,
-        onCheckout,
-        showPrice
-      )
-    );
-
     // choose all wine types
     function chooseAll() {
       ctx.render(
         productsTemplate(
+          isAddedToCart,
           data,
           toggleCart,
           closeCart,
@@ -340,6 +356,7 @@ export async function productsPage(ctx) {
 
         ctx.render(
           productsTemplate(
+            isAddedToCart,
             SelectedWinesByPrice,
             toggleCart,
             closeCart,
@@ -359,27 +376,6 @@ export async function productsPage(ctx) {
       showChosenByPrice();
     }
 
-    // add wine to cart
-    async function addToCart(e) {
-      const wineId = e.currentTarget.dataset.id;
-      const singleWine = await getSingleWine(wineId);
-
-      toggleCart();
-
-      ctx.render(
-        productsTemplate(
-          singleWine,
-          toggleCart,
-          closeCart,
-          types,
-          chooseAll,
-          chooseType,
-          addToCart,
-          removeFromCart,
-          onCheckout
-        )
-      );
-    }
     // clear cart
     function removeFromCart() {
       console.log(document.querySelector(".cart-close"));
@@ -393,9 +389,8 @@ export async function productsPage(ctx) {
 
     // checkout btn
     function onCheckout() {
-      ctx.page.redirect("/")
+      ctx.page.redirect("/");
     }
-
 
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
