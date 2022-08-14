@@ -1,8 +1,11 @@
 import { html, repeat, nothing } from "../lib.js";
 import { getList, getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
+import { logout } from "../api/data.js";
+
 
 const productsTemplate = (
+  OnLogout,
   onIncrease,
   onDecrease,
 
@@ -43,7 +46,7 @@ const productsTemplate = (
               <a href="/login" class="nav-link"> login </a>
             </li>
             <li id="logoutBtn">
-              <a href="javascript:void(0)" class="nav-link"> logout </a>
+              <a @click=${OnLogout} href="javascript:void(0)" class="nav-link"> logout </a>
             </li>
           </ul>
         </div>
@@ -244,6 +247,9 @@ const productsTemplate = (
     </div> -->
   `;
 
+export let chosenWines = []
+
+
 // initial page rendering
 export async function productsPage(ctx) {
   let isAddedToCart = false;
@@ -257,6 +263,8 @@ export async function productsPage(ctx) {
 
     ctx.render(
       productsTemplate(
+        OnLogout,
+
         onIncrease,
         onDecrease,
         isAddedToCart,
@@ -291,6 +299,8 @@ export async function productsPage(ctx) {
       const wineId = e.currentTarget.dataset.id;
       const singleWine = await getSingleWine(wineId);
 
+      chosenWines.push(singleWine)
+
       price = singleWine.price;
 
       toggleCart();
@@ -313,6 +323,8 @@ export async function productsPage(ctx) {
 
       ctx.render(
         productsTemplate(
+          OnLogout,
+
           onIncrease,
           onDecrease,
 
@@ -337,6 +349,8 @@ export async function productsPage(ctx) {
     function chooseAll() {
       ctx.render(
         productsTemplate(
+          OnLogout,
+
           onIncrease,
           onDecrease,
 
@@ -371,6 +385,8 @@ export async function productsPage(ctx) {
 
         ctx.render(
           productsTemplate(
+            OnLogout,
+
             onIncrease,
             onDecrease,
 
@@ -453,10 +469,25 @@ export async function productsPage(ctx) {
     function toggleCart() {
       cartOverlay.classList.add("show");
     }
-
+    // close cart
     function closeCart() {
       cartOverlay.classList.remove("show");
+      const chosenQty = document.querySelector('.cart-item-amount').textContent
+      chosenWines.push(chosenQty)
+
     }
+
+    // logout
+    async function OnLogout() {
+      await logout();
+      setUserNav();
+      ctx.page.redirect("/products");
+
+    
+    }
+    
+
+
   } catch (error) {
     console.log(error);
   }

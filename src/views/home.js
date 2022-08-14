@@ -1,6 +1,7 @@
 import { html, nothing } from "../lib.js";
 import { setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
+import { chosenWines } from "./products.js";
 
 
 const homeTemplate = (OnLogout) => html`
@@ -135,6 +136,8 @@ const homeTemplate = (OnLogout) => html`
 export async function homePage(ctx) {
   ctx.render(homeTemplate(OnLogout));
   setUserNav();
+
+  console.log('chosenWines', chosenWines);
 
   async function OnLogout() {
     await logout();
