@@ -250,6 +250,12 @@ const productsTemplate = (
 
 export let chosenWines = []
 
+let lastIndex = chosenWines.length - 1
+let tempTotal = chosenWines[lastIndex - 1]?.price * chosenWines[lastIndex] || 0
+
+console.log('tempTotal - Products', tempTotal);
+console.log('chosenWines - Products', chosenWines);
+
 
 // initial page rendering
 export async function productsPage(ctx) {
@@ -468,10 +474,11 @@ export async function productsPage(ctx) {
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
     function closeCart() {
-      cartOverlay.classList.remove("show");
+      
       const chosenQty = document.querySelector('.cart-item-amount').textContent
       chosenWines.push(chosenQty)
-
+      
+      cartOverlay.classList.remove("show");
     }
 
     // logout

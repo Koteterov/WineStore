@@ -5,7 +5,7 @@ import { navTemplate } from "./templates/navbar.js";
 import { toggleCart } from "./utils.js";
 
 
-const loginTemplate = (onSubmit, closeCart, toggleCart) => html`
+const orderTemplate = (onSubmit, closeCart, toggleCart) => html`
     <!-- navbar -->
     ${navTemplate(null, toggleCart)}
 
@@ -32,7 +32,7 @@ const loginTemplate = (onSubmit, closeCart, toggleCart) => html`
     <!-- hero -->
     <section class="page-hero">
       <div class="section-center">
-        <h3 class="page-hero-title">Home / Login</h3>
+        <h3 class="page-hero-title">Home / Order</h3>
       </div>
     </section>
 
@@ -40,18 +40,19 @@ const loginTemplate = (onSubmit, closeCart, toggleCart) => html`
     </nav>
         <section id="login">
           <div class="form">
-            <h2>Login</h2>
+            <h2>Order</h2>
             <form @submit=${onSubmit} class="login-form">
-              <input type="text" name="email" id="email" placeholder="email" />
+              <input type="text" name="name" id="email" placeholder="name" />
+              <input type="text" name="price" id="email" placeholder="price" />
               <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="password"
+                type="text"
+                name="quantity"
+                id="quantity"
+                placeholder="quantity"
               />
-              <button type="submit">login</button>
+              <button type="submit">order</button>
               <p class="message">
-                Please login to finalize your order!</a>
+                Please click to finalize your order!</a>
               </p>
             </form>
           </div>
@@ -60,8 +61,8 @@ const loginTemplate = (onSubmit, closeCart, toggleCart) => html`
 
 `;
 
-export async function loginPage(ctx) {
-  ctx.render(loginTemplate(onSubmit, closeCart, toggleCart));
+export async function orderPage(ctx) {
+  ctx.render(orderTemplate(onSubmit, closeCart, toggleCart));
 
   setUserNav()
       // toggle cart

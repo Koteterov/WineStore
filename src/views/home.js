@@ -1,11 +1,12 @@
 import { html, nothing } from "../lib.js";
-import { setUserNav } from "./utils.js";
+import { getTempData, setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
 import { chosenWines } from "./products.js";
 import { toggleCart } from "./utils.js";
+import { cartTemplate } from "./templates/cart.js";
 
 
-const homeTemplate = (OnLogout, toggleCart, closeCart) => html`
+const homeTemplate = (closeCart, data, checkOut, OnLogout, toggleCart) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -82,23 +83,10 @@ const homeTemplate = (OnLogout, toggleCart, closeCart) => html`
     </aside>
   </div>
   <!-- cart -->
-  <div class="cart-overlay">
-    <aside class="cart">
-      <button @click=${closeCart} class="cart-close">
-        <i class="fas fa-times"></i>
-      </button>
-      <header>
-        <h3 class="text-slanted">your bag</h3>
-      </header>
-      <!-- cart items -->
-      <div class="cart-items"></div>
-      <!-- footer -->
-      <footer>
-        <h3 class="cart-total text-slanted">total : $12.99</h3>
-        <button class="cart-checkout btn">checkout</button>
-      </footer>
-    </aside>
-  </div>
+
+  ${cartTemplate(closeCart, data, checkOut)}
+
+
   <!-- featured products -->
   <section class="section featured">
     <div class="title">
@@ -135,7 +123,11 @@ const homeTemplate = (OnLogout, toggleCart, closeCart) => html`
 `;
 
 export async function homePage(ctx) {
-  ctx.render(homeTemplate(OnLogout, toggleCart, closeCart));
+
+  // get temp order total
+  const data = getTempData(chosenWines) || []
+
+  ctx.render(homeTemplate(closeCart, data, checkOut, OnLogout, toggleCart));
   setUserNav();
 
     // toggle cart
@@ -146,7 +138,12 @@ export async function homePage(ctx) {
     }
 
 
-  console.log('chosenWines', chosenWines);
+  console.log('data - Home', data);
+  console.log('chosenWines - Home', chosenWines);
+
+  function checkOut() {
+    
+  }
 
   async function OnLogout() {
     await logout();

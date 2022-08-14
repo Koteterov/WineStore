@@ -1,26 +1,23 @@
 export function setUserNav() {
-    const userId = sessionStorage.getItem("userId");
-  
-    if (userId != null) {
-  
-      document.getElementById("loginBtn").style.display = "none";
-      document.getElementById("logoutBtn").style.display = "inline";
-  
-    } else {
-  
-      document.getElementById("loginBtn").style.display = "inline";
-      document.getElementById("logoutBtn").style.display = "none";
-    }
+  const userId = sessionStorage.getItem("userId");
+
+  if (userId != null) {
+    document.getElementById("loginBtn").style.display = "none";
+    document.getElementById("logoutBtn").style.display = "inline";
+  } else {
+    document.getElementById("loginBtn").style.display = "inline";
+    document.getElementById("logoutBtn").style.display = "none";
   }
+}
 
+export function toggleCart() {
+  const cartOverlay = document.querySelector(".cart-overlay");
 
-  export function toggleCart() {
-    const cartOverlay = document.querySelector(".cart-overlay");
+  cartOverlay.classList.add("show");
+}
 
-    cartOverlay.classList.add("show");
-  }
+export function getTempData(data) {
+  let lastIndex = data.length - 1;
 
-  
-
-
-  
+  return [data[lastIndex - 1], data[lastIndex]];
+}

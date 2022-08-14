@@ -4,6 +4,7 @@ import { aboutPage } from "./views/about.js";
 import { detailsPage } from "./views/details.js";
 import { homePage } from "./views/home.js";
 import { loginPage } from "./views/login.js";
+import { orderPage } from "./views/order.js";
 import { productsPage } from "./views/products.js";
 
 
@@ -22,6 +23,7 @@ page("/products", productsPage)
 page("/about", aboutPage)
 page("/details/:id", detailsPage)
 page("/login", loginPage)
+page("/order", orderPage)
 
 
 page.start();

@@ -1,12 +1,15 @@
 import { html, nothing } from "../lib.js";
-import { setUserNav } from "./utils.js";
+import { getTempData, setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { logout } from "../api/data.js";
 import { toggleCart } from "./utils.js";
+import { cartTemplate } from "./templates/cart.js";
+import { chosenWines } from "./products.js";
 
 
 
-const aboutTemplate = (OnLogout, toggleCart, closeCart) => html`
+
+const aboutTemplate = (OnLogout, toggleCart, closeCart, data, checkOut) => html`
   <!-- navbar -->
 
   ${navTemplate(OnLogout, toggleCart)}
@@ -48,23 +51,10 @@ const aboutTemplate = (OnLogout, toggleCart, closeCart) => html`
     </aside>
   </div>
   <!-- cart -->
-  <div class="cart-overlay">
-    <aside class="cart">
-      <button @click=${closeCart} class="cart-close">
-        <i class="fas fa-times"></i>
-      </button>
-      <header>
-        <h3 class="text-slanted">your bag</h3>
-      </header>
-      <!-- cart items -->
-      <div class="cart-items"></div>
-      <!-- footer -->
-      <footer>
-        <h3 class="cart-total text-slanted">total : $12.99</h3>
-        <button class="cart-checkout btn">checkout</button>
-      </footer>
-    </aside>
-  </div>
+
+  ${cartTemplate(closeCart, data, checkOut)}
+
+
   <!-- about -->
   <section class="section section-center about-page">
     <div class="title">
@@ -85,7 +75,13 @@ const aboutTemplate = (OnLogout, toggleCart, closeCart) => html`
 `;
 
 export async function aboutPage(ctx) {
-  ctx.render(aboutTemplate(OnLogout, toggleCart, closeCart));
+
+ const data =  getTempData(chosenWines)
+  // let lastIndex = chosenWines.length - 1
+  // const data = chosenWines[lastIndex - 1]?.price * chosenWines[lastIndex] || 0
+
+
+  ctx.render(aboutTemplate(OnLogout, toggleCart, closeCart, data, checkOut));
 
   setUserNav()
 
@@ -97,6 +93,11 @@ export async function aboutPage(ctx) {
       cartOverlay.classList.remove("show");
     }
 
+    function checkOut() {
+    
+    }
+
+    
   // logout
   async function OnLogout() {
     await logout();
