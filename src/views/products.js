@@ -2,6 +2,7 @@ import { html, repeat, nothing } from "../lib.js";
 import { getList, getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
+import { toggleCart } from "./utils.js";
 
 
 const productsTemplate = (
@@ -197,7 +198,7 @@ const productsTemplate = (
             />
           </form>
           ${value == undefined
-            ? html` <p class="price-value">Choose Price Range</p> `
+            ? html` <p class="price-value">Choose Price & Wine Type</p> `
             : html` <p class="price-value">Value: ${value} lv</p>`}
         </div>
       </div>
@@ -293,7 +294,7 @@ export async function productsPage(ctx) {
 
     let price = null;
 
-    // add wine to cart
+     // add wine to cart
     async function addToCart(e) {
       isAddedToCart = true;
       const wineId = e.currentTarget.dataset.id;
@@ -466,10 +467,6 @@ export async function productsPage(ctx) {
 
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
-    function toggleCart() {
-      cartOverlay.classList.add("show");
-    }
-    // close cart
     function closeCart() {
       cartOverlay.classList.remove("show");
       const chosenQty = document.querySelector('.cart-item-amount').textContent

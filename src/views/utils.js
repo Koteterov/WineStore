@@ -12,3 +12,15 @@ export function setUserNav() {
       document.getElementById("logoutBtn").style.display = "none";
     }
   }
+
+
+  export function toggleCart() {
+    const cartOverlay = document.querySelector(".cart-overlay");
+
+    cartOverlay.classList.add("show");
+  }
+
+  
+
+
+  

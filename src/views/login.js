@@ -2,7 +2,7 @@ import { html } from "../lib.js";
 import { login } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 
-const loginTemplate = (onSubmit) => html`
+const loginTemplate = (onSubmit, closeCart, toggleCart) => html`
     <!-- navbar -->
     <nav class="navbar page">
       <div class="nav-center">
@@ -27,13 +27,33 @@ const loginTemplate = (onSubmit) => html`
         <span id="logo-black" class="logo-text nav-logo">'Wine is Fine'</span>
         <!-- cart icon -->
         <div class="toggle-container">
-          <a href="/products" class="toggle-cart">
+          <button @click=${toggleCart} class="toggle-cart">
             <i class="fas fa-shopping-cart"></i>
-          </a>
+          </button>
           <span class="cart-item-count">1</span>
         </div>
       </div>
     </nav>
+
+      <!-- cart -->
+  <div class="cart-overlay">
+    <aside class="cart">
+      <button @click=${closeCart} class="cart-close">
+        <i class="fas fa-times"></i>
+      </button>
+      <header>
+        <h3 class="text-slanted">your bag</h3>
+      </header>
+      <!-- cart items -->
+      <div class="cart-items"></div>
+      <!-- footer -->
+      <footer>
+        <h3 class="cart-total text-slanted">total : $12.99</h3>
+        <button class="cart-checkout btn">checkout</button>
+      </footer>
+    </aside>
+  </div>
+
     <!-- hero -->
     <section class="page-hero">
       <div class="section-center">
@@ -66,7 +86,19 @@ const loginTemplate = (onSubmit) => html`
 `;
 
 export async function loginPage(ctx) {
-  ctx.render(loginTemplate(onSubmit));
+  ctx.render(loginTemplate(onSubmit, closeCart, toggleCart));
+
+      // toggle cart
+      const cartOverlay = document.querySelector(".cart-overlay");
+      function closeCart() {
+        cartOverlay.classList.remove("show");
+      }
+      function toggleCart() {
+        // const cartOverlay = document.querySelector(".cart-overlay");
+    
+        cartOverlay.classList.add("show");
+      }
+  
 
   async function onSubmit(e) {
     e.preventDefault();

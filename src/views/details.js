@@ -1,45 +1,16 @@
 import { html, nothing } from "../lib.js";
 import { getSingleWine } from "../api/data.js";
+import { setUserNav } from "./utils.js";
+import { navTemplate } from "./templates/navbar.js";
+import { logout } from "../api/data.js";
+import { toggleCart } from "./utils.js";
 
-const productTemplate = (wine) => html `
+
+const productTemplate = (OnLogout, toggleCart, closeCart, wine) => html `
 
     <!-- navbar -->
-    <nav class="navbar page">
-      <div class="nav-center">
-        <!-- links -->
-        <div>
-          <button class="toggle-nav">
-            <i class="fas fa-bars"></i>
-          </button>
-          <ul class="nav-links">
-            <li>
-              <a href="/" class="nav-link">
-                home
-              </a>
-            </li>
-            <li>
-              <a href="/products" class="nav-link">
-                products
-              </a>
-            </li>
-            <li>
-              <a href="/about" class="nav-link">
-                about
-              </a>
-            </li>
-          </ul>
-        </div>
-        <!-- logo -->
-        <span id="logo-black" class="logo-text nav-logo">'Wine is Fine'</span>
-        <!-- cart icon -->
-        <div class="toggle-container">
-          <button class="toggle-cart">
-            <i class="fas fa-shopping-cart"></i>
-          </button>
-          <span class="cart-item-count">1</span>
-        </div>
-      </div>
-    </nav>
+    ${navTemplate(OnLogout, toggleCart)}
+
     <!-- hero -->
     <section class="page-hero">
       <div class="section-center">
@@ -79,7 +50,7 @@ const productTemplate = (wine) => html `
     <!-- cart -->
     <div class="cart-overlay">
       <aside class="cart">
-        <button class="cart-close">
+        <button  @click=${closeCart} class="cart-close">
           <i class="fas fa-times"></i>
         </button>
         <header>
@@ -126,10 +97,28 @@ const productTemplate = (wine) => html `
 
 export async function detailsPage(ctx) {
 
+  
+  
   try {
     const wine = await getSingleWine(ctx.params.id)
     
-      ctx.render(productTemplate(wine));
+    ctx.render(productTemplate(OnLogout, toggleCart, closeCart, wine));
+    setUserNav()
+
+  // toggle cart
+  const cartOverlay = document.querySelector(".cart-overlay");
+  closeCart()
+  function closeCart() {
+    cartOverlay.classList.remove("show");
+  }
+
+// logout
+async function OnLogout() {
+  await logout();
+  setUserNav();
+  ctx.page.redirect("/products");
+}
+
   
     
   } catch (error) {

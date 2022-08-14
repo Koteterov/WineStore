@@ -2,9 +2,10 @@ import { html, nothing } from "../lib.js";
 import { setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
 import { chosenWines } from "./products.js";
+import { toggleCart } from "./utils.js";
 
 
-const homeTemplate = (OnLogout) => html`
+const homeTemplate = (OnLogout, toggleCart, closeCart) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -35,7 +36,7 @@ const homeTemplate = (OnLogout) => html`
       <span class="logo-text nav-logo">'Wine is Fine'</span>
       <!-- cart icon -->
       <div class="toggle-container">
-        <button class="toggle-cart">
+        <button @click=${toggleCart} class="toggle-cart">
           <i class="fas fa-shopping-cart"></i>
         </button>
         <span class="cart-item-count">1</span>
@@ -83,7 +84,7 @@ const homeTemplate = (OnLogout) => html`
   <!-- cart -->
   <div class="cart-overlay">
     <aside class="cart">
-      <button class="cart-close">
+      <button @click=${closeCart} class="cart-close">
         <i class="fas fa-times"></i>
       </button>
       <header>
@@ -134,8 +135,16 @@ const homeTemplate = (OnLogout) => html`
 `;
 
 export async function homePage(ctx) {
-  ctx.render(homeTemplate(OnLogout));
+  ctx.render(homeTemplate(OnLogout, toggleCart, closeCart));
   setUserNav();
+
+    // toggle cart
+    const cartOverlay = document.querySelector(".cart-overlay");
+    closeCart()
+    function closeCart() {
+      cartOverlay.classList.remove("show");
+    }
+
 
   console.log('chosenWines', chosenWines);
 
