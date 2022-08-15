@@ -20,7 +20,7 @@ export const cartTemplate = (closeCart, data, checkOut) => html`
               <img src="${x.imgUrl}" class="cart-item-img" alt="">
               <div>
                 <h4 class="cart-item-name">${x.name}</h4>
-                <p class="cart-item-price">${x.price}</p>
+                <p class="cart-item-price">${x.price} lv / pc</p>
                 <button class="cart-item-remove-btn" data-id="">
                   remove
                 </button>
@@ -49,7 +49,8 @@ export const cartTemplate = (closeCart, data, checkOut) => html`
           <!-- footer -->
           <footer>
             <h3 class="cart-total text-slanted">
-              total : ${Number(2).toFixed(2)} lv
+              ${data[0] ? html `total : ${Number(data[0].grandTotal).toFixed(2)} lv` : nothing}
+              
             </h3>
             <a href="/order" @click=${checkOut} class="cart-checkout btn"
               >checkout</a

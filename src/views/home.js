@@ -125,10 +125,12 @@ const homeTemplate = (closeCart, data, checkOut, OnLogout, toggleCart) => html`
 export async function homePage(ctx) {
 
   // get temp order total
-  const data = getTempData(chosenWines) || []
+  const data = getTempData(chosenWines)
 
   ctx.render(homeTemplate(closeCart, data, checkOut, OnLogout, toggleCart));
   setUserNav();
+
+  console.log('home', data);
 
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
@@ -138,8 +140,6 @@ export async function homePage(ctx) {
     }
 
 
-  console.log('data - Home', data);
-  console.log('chosenWines - Home', chosenWines);
 
   function checkOut() {
     

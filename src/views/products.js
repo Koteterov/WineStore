@@ -4,7 +4,6 @@ import { setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
 import { toggleCart } from "./utils.js";
 
-
 const productsTemplate = (
   OnLogout,
   onIncrease,
@@ -47,7 +46,9 @@ const productsTemplate = (
               <a href="/login" class="nav-link"> login </a>
             </li>
             <li id="logoutBtn">
-              <a @click=${OnLogout} href="javascript:void(0)" class="nav-link"> logout </a>
+              <a @click=${OnLogout} href="javascript:void(0)" class="nav-link">
+                logout
+              </a>
             </li>
           </ul>
         </div>
@@ -248,18 +249,16 @@ const productsTemplate = (
     </div> -->
   `;
 
-export let chosenWines = []
+let tempWines = [];
 
+export let chosenWines = [];
 
-
+let tempGrandTotal = 0;
 
 // initial page rendering
 export async function productsPage(ctx) {
   let isAddedToCart = false;
   let counter = 0;
-
-console.log('chosenWines - Products', chosenWines);
-
 
   try {
     const data = await getList();
@@ -299,25 +298,35 @@ console.log('chosenWines - Products', chosenWines);
 
     let price = null;
 
-     // add wine to cart
+    // add wine to cart
     async function addToCart(e) {
       isAddedToCart = true;
       const wineId = e.currentTarget.dataset.id;
       const singleWine = await getSingleWine(wineId);
 
-      chosenWines.push({
+      tempWines.push({
         name: singleWine.name,
         price: singleWine.price,
         imgUrl: singleWine.imgUrl,
         id: singleWine._id,
-        qty: 0
-      })
+        qty: 0,
+        total: 0,
+        grandTotal: 0,
+      });
+
+      // make choice unique
+      let key = "name";
+      chosenWines = [
+        ...new Map(tempWines.map((item) => [item[key], item])).values(),
+      ];
 
       price = singleWine.price;
 
       toggleCart();
-      document.querySelector(".cart-item-increase-btn").dataset.id = singleWine._id;
-      document.querySelector(".cart-item-decrease-btn").dataset.id = singleWine._id;
+      document.querySelector(".cart-item-increase-btn").dataset.id =
+        singleWine._id;
+      document.querySelector(".cart-item-decrease-btn").dataset.id =
+        singleWine._id;
 
       document.querySelector(".cart-item").style.display = "";
       document.querySelector(".cart-item-img").src = singleWine.imgUrl;
@@ -325,8 +334,8 @@ console.log('chosenWines - Products', chosenWines);
       document.querySelector(
         ".cart-item-price"
       ).textContent = `${singleWine.price} lv`;
-      document.querySelector('.cart-item-amount').textContent = 0
-      document.querySelector('.cart-total').textContent = `total: 0.00 lv`
+      document.querySelector(".cart-item-amount").textContent = 0;
+      document.querySelector(".cart-total").textContent = `total: 0.00 lv`;
     }
 
     // show price of all wines
@@ -447,7 +456,7 @@ console.log('chosenWines - Products', chosenWines);
         counter = 0;
       }
       if (counter == 0) {
-        document.querySelector(".cart-item").style.display = "none";
+        // document.querySelector(".cart-item").style.display = "none";
       }
       let total = document.querySelector(".cart-total");
       total.textContent = `total: ${Number(counter * price).toFixed(2)} lv`;
@@ -457,7 +466,6 @@ console.log('chosenWines - Products', chosenWines);
     }
     // clear cart
     function removeFromCart() {
-
       document.querySelector(".cart-close").addEventListener("click", () => {
         cartOverlay.classList.remove("show");
       });
@@ -481,22 +489,30 @@ console.log('chosenWines - Products', chosenWines);
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");
     function closeCart() {
-      
-      const chosenQty = document.querySelector('.cart-item-amount').textContent
+      const chosenQty = document.querySelector(".cart-item-amount").textContent;
 
-      //push temp info
-      const wineId = document.querySelector('.cart-item-decrease-btn').dataset.id
-      // chosenWines.map(x => {
-      //   if (x.id == wineId) {
-      //     x.qty = chosenQty
-      //   }
-      // })
-      chosenWines.forEach(x => {
+      //set temp info
+      const wineId = document.querySelector(".cart-item-decrease-btn").dataset
+        .id;
+
+      tempWines.forEach((x) => {
         if (x.id == wineId) {
-              x.qty = chosenQty
-            }
-      })
-      
+          x.qty = chosenQty;
+          x.total = x.price * x.qty;
+        }
+      });
+
+      tempGrandTotal = chosenWines
+        .map((w) => w.total)
+        .reduce((a, b) => a + b, 0);
+
+      chosenWines.forEach((w) => {
+        w.grandTotal = tempGrandTotal;
+      });
+
+      console.log("chosenWines", chosenWines);
+      console.log("tempGrandTotal", tempGrandTotal);
+
       cartOverlay.classList.remove("show");
     }
 
@@ -505,12 +521,7 @@ console.log('chosenWines - Products', chosenWines);
       await logout();
       setUserNav();
       ctx.page.redirect("/products");
-
-    
     }
-    
-
-
   } catch (error) {
     console.log(error);
   }
