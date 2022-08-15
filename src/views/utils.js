@@ -17,7 +17,6 @@ export function toggleCart() {
 }
 
 export function getTempData(data) {
-  let lastIndex = data.length - 1;
 
-  return [data[lastIndex - 1], data[lastIndex]];
+  return data;
 }

@@ -250,17 +250,16 @@ const productsTemplate = (
 
 export let chosenWines = []
 
-let lastIndex = chosenWines.length - 1
-let tempTotal = chosenWines[lastIndex - 1]?.price * chosenWines[lastIndex] || 0
 
-console.log('tempTotal - Products', tempTotal);
-console.log('chosenWines - Products', chosenWines);
 
 
 // initial page rendering
 export async function productsPage(ctx) {
   let isAddedToCart = false;
   let counter = 0;
+
+console.log('chosenWines - Products', chosenWines);
+
 
   try {
     const data = await getList();
@@ -306,11 +305,20 @@ export async function productsPage(ctx) {
       const wineId = e.currentTarget.dataset.id;
       const singleWine = await getSingleWine(wineId);
 
-      chosenWines.push(singleWine)
+      chosenWines.push({
+        name: singleWine.name,
+        price: singleWine.price,
+        imgUrl: singleWine.imgUrl,
+        id: singleWine._id,
+        qty: 0
+      })
 
       price = singleWine.price;
 
       toggleCart();
+      document.querySelector(".cart-item-increase-btn").dataset.id = singleWine._id;
+      document.querySelector(".cart-item-decrease-btn").dataset.id = singleWine._id;
+
       document.querySelector(".cart-item").style.display = "";
       document.querySelector(".cart-item-img").src = singleWine.imgUrl;
       document.querySelector(".cart-item-name").textContent = singleWine.name;
@@ -449,7 +457,6 @@ export async function productsPage(ctx) {
     }
     // clear cart
     function removeFromCart() {
-      console.log(document.querySelector(".cart-item-amount"));
 
       document.querySelector(".cart-close").addEventListener("click", () => {
         cartOverlay.classList.remove("show");
@@ -476,7 +483,19 @@ export async function productsPage(ctx) {
     function closeCart() {
       
       const chosenQty = document.querySelector('.cart-item-amount').textContent
-      chosenWines.push(chosenQty)
+
+      //push temp info
+      const wineId = document.querySelector('.cart-item-decrease-btn').dataset.id
+      // chosenWines.map(x => {
+      //   if (x.id == wineId) {
+      //     x.qty = chosenQty
+      //   }
+      // })
+      chosenWines.forEach(x => {
+        if (x.id == wineId) {
+              x.qty = chosenQty
+            }
+      })
       
       cartOverlay.classList.remove("show");
     }
