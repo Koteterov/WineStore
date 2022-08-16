@@ -6,9 +6,6 @@ import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
-
-
-
 const aboutTemplate = (OnLogout, toggleCart, closeCart, data, checkOut) => html`
   <!-- navbar -->
 
@@ -54,7 +51,6 @@ const aboutTemplate = (OnLogout, toggleCart, closeCart, data, checkOut) => html`
 
   ${cartTemplate(closeCart, data, checkOut)}
 
-
   <!-- about -->
   <section class="section section-center about-page">
     <div class="title">
@@ -75,29 +71,23 @@ const aboutTemplate = (OnLogout, toggleCart, closeCart, data, checkOut) => html`
 `;
 
 export async function aboutPage(ctx) {
-
- const data =  getTempData(chosenWines)
+  const data = getTempData(chosenWines);
   // let lastIndex = chosenWines.length - 1
   // const data = chosenWines[lastIndex - 1]?.price * chosenWines[lastIndex] || 0
 
-
   ctx.render(aboutTemplate(OnLogout, toggleCart, closeCart, data, checkOut));
 
-  setUserNav()
-
+  setUserNav();
 
   // toggle cart
   const cartOverlay = document.querySelector(".cart-overlay");
-    closeCart()
-    function closeCart() {
-      cartOverlay.classList.remove("show");
-    }
+  closeCart();
+  function closeCart() {
+    cartOverlay.classList.remove("show");
+  }
 
-    function checkOut() {
-    
-    }
+  function checkOut() {}
 
-    
   // logout
   async function OnLogout() {
     await logout();
