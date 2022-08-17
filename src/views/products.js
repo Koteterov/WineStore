@@ -121,7 +121,7 @@ const generalTemplate = (
     )}
   `;
 
-let tempWines = [];
+// let tempWines = [];
 export let chosenWines = getStoredOrder("tempOrder");
 let tempGrandTotal = 0;
 
@@ -136,8 +136,6 @@ export async function productsPage(ctx) {
     const maxPrice = Math.max(...prices);
 
     const dataForCart = chosenWines;
-
-    console.log("chosenWines", chosenWines);
 
     ctx.render(
       generalTemplate(
@@ -183,21 +181,33 @@ export async function productsPage(ctx) {
       const wineId = e.currentTarget.dataset.id;
       const singleWine = await getSingleWine(wineId);
 
-      tempWines.push({
-        name: singleWine.name,
-        price: singleWine.price,
-        imgUrl: singleWine.imgUrl,
-        id: singleWine._id,
-        qty: 0,
-        total: 0,
-        grandTotal: 0,
-      });
+      let selectedWine = chosenWines.find((w) => w.id == wineId);
 
       // make choice unique
-      let key = "id";
-      chosenWines = [
-        ...new Map(tempWines.map((item) => [item[key], item])).values(),
-      ];
+      if (selectedWine == undefined) {
+        chosenWines.push({
+          name: singleWine.name,
+          price: singleWine.price,
+          imgUrl: singleWine.imgUrl,
+          id: singleWine._id,
+          qty: 1,
+          total: singleWine.price,
+          grandTotal: singleWine.price,
+        });
+      }
+
+      // // OR => to make choice unique
+      // const key = "id";
+      // chosenWines = [
+      //   ...new Map(tempWines.map((item) => [item[key], item])).values(),
+      // ];
+
+      tempGrandTotal = chosenWines
+        .map((x) => Number(x.total))
+        .reduce((a, b) => a + b, 0);
+
+      chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
+      toggleCart("/products");
 
       price = singleWine.price;
 
@@ -327,24 +337,36 @@ export async function productsPage(ctx) {
       increasedQty.total = increasedQty.qty * price;
 
       tempGrandTotal = chosenWines
-        .map((x) => x.total)
+        .map((x) => Number(x.total))
         .reduce((a, b) => a + b, 0);
 
       chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
     }
 
     //decrease qty
-    function onDecrease() {
-      let qtySpan = document.querySelector(".cart-item-count");
-      let qty = document.querySelector(".cart-item-amount");
+    function onDecrease(e) {
+      toggleCart("/products");
 
-      counter--;
-      if (counter < 0) {
-        counter = 0;
+      const wineId = e.currentTarget.dataset.id;
+      const decreasedQty = chosenWines.find((x) => x.id == wineId);
+      const price = chosenWines.find((x) => x.id == wineId).price;
+
+      decreasedQty.qty--;
+
+      if (decreasedQty.qty < 0) {
+        decreasedQty.qty = 0;
       }
       if (counter == 0) {
         // document.querySelector(".cart-item").style.display = "none";
       }
+
+      decreasedQty.total = decreasedQty.qty * price;
+
+      tempGrandTotal = chosenWines
+        .map((x) => Number(x.total))
+        .reduce((a, b) => a + b, 0);
+
+      chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
     }
 
     // // clear cart

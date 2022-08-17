@@ -34,7 +34,6 @@ export const cartTemplate = (closeCart, data, checkOut, onIncrease, onDecrease) 
                 </button>
               </div>
             </article>
-    
   `
               )
             : html`<h3 class="cart-total text-slanted">Your bag is empty</h3>`
