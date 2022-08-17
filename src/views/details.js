@@ -10,13 +10,14 @@ import { chosenWines } from "./products.js";
 const productTemplate = (
   OnLogout,
   toggleCart,
+  countWines,
   closeCart,
   wine,
   data,
   checkOut
 ) => html`
   <!-- navbar -->
-  ${navTemplate(OnLogout, toggleCart)}
+  ${navTemplate(OnLogout, toggleCart, countWines)}
 
   <!-- hero -->
   <section class="page-hero">
@@ -91,7 +92,7 @@ export async function detailsPage(ctx) {
     const wine = await getSingleWine(ctx.params.id);
 
     ctx.render(
-      productTemplate(OnLogout, toggleCart, closeCart, wine, data, checkOut)
+      productTemplate(OnLogout, toggleCart, chosenWines, closeCart, wine, data, checkOut)
     );
     setUserNav();
 

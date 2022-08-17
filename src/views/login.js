@@ -9,9 +9,9 @@ import { chosenWines } from "./products.js";
 
 
 
-const loginTemplate = (closeCart, data, checkOut, onSubmit, toggleCart) => html`
+const loginTemplate = (closeCart, data, countWines, checkOut, onSubmit, toggleCart) => html`
     <!-- navbar -->
-    ${navTemplate(null, toggleCart)}
+    ${navTemplate(null, toggleCart, countWines)}
 
 
       <!-- cart -->
@@ -51,7 +51,7 @@ const loginTemplate = (closeCart, data, checkOut, onSubmit, toggleCart) => html`
 export async function loginPage(ctx) {
   const data =  chosenWines
 
-  ctx.render(loginTemplate(closeCart, data, checkOut, onSubmit, toggleCart));
+  ctx.render(loginTemplate(closeCart, data, chosenWines, checkOut, onSubmit, toggleCart));
 
   setUserNav()
       // toggle cart

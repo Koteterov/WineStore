@@ -6,10 +6,10 @@ import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
-const aboutTemplate = (OnLogout, toggleCart, closeCart, data, checkOut) => html`
+const aboutTemplate = (OnLogout, toggleCart, countWines, closeCart, data, checkOut) => html`
   <!-- navbar -->
 
-  ${navTemplate(OnLogout, toggleCart)}
+  ${navTemplate(OnLogout, toggleCart, countWines)}
 
   <!-- hero -->
   <section class="page-hero">
@@ -75,7 +75,7 @@ export async function aboutPage(ctx) {
   // let lastIndex = chosenWines.length - 1
   // const data = chosenWines[lastIndex - 1]?.price * chosenWines[lastIndex] || 0
 
-  ctx.render(aboutTemplate(OnLogout, toggleCart, closeCart, data, checkOut));
+  ctx.render(aboutTemplate(OnLogout, toggleCart, chosenWines, closeCart, data, checkOut));
 
   setUserNav();
 

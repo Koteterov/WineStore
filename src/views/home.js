@@ -6,7 +6,7 @@ import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 
 
-const homeTemplate = (closeCart, data, checkOut, OnLogout, toggleCart) => html`
+const homeTemplate = (closeCart, data, checkOut, onIncrease, onDecrease,  OnLogout, toggleCart, chosenWines) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -40,7 +40,7 @@ const homeTemplate = (closeCart, data, checkOut, OnLogout, toggleCart) => html`
         <button @click=${toggleCart} class="toggle-cart">
           <i class="fas fa-shopping-cart"></i>
         </button>
-        <span class="cart-item-count">1</span>
+        <span class="cart-item-count">${chosenWines.length}</span>
       </div>
     </div>
   </nav>
@@ -84,7 +84,7 @@ const homeTemplate = (closeCart, data, checkOut, OnLogout, toggleCart) => html`
   </div>
   <!-- cart -->
 
-  ${cartTemplate(closeCart, data, checkOut)}
+  ${cartTemplate(closeCart, data, checkOut, onIncrease, onDecrease)}
 
 
   <!-- featured products -->
@@ -127,7 +127,7 @@ export async function homePage(ctx) {
   // get temp order total
   const data = getTempData(chosenWines)
 
-  ctx.render(homeTemplate(closeCart, data, checkOut, OnLogout, toggleCart));
+  ctx.render(homeTemplate(closeCart, data, checkOut, onIncrease, onDecrease,  OnLogout, toggleCart, chosenWines));
   setUserNav();
 
   console.log('home', data);
@@ -139,7 +139,12 @@ export async function homePage(ctx) {
       cartOverlay.classList.remove("show");
     }
 
-
+  function onIncrease() {
+    
+  }
+  function onDecrease() {
+    
+  }
 
   function checkOut() {
     

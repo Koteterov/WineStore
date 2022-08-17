@@ -1,6 +1,6 @@
 import { html, nothing } from "../../../src/lib.js";
 
-export const cartTemplate = (closeCart, data, checkOut) => html`
+export const cartTemplate = (closeCart, data, checkOut, onIncrease, onDecrease) => html`
   <div class="cart-overlay">
     <aside class="cart">
       <button @click=${closeCart} class="cart-close">
@@ -10,9 +10,8 @@ export const cartTemplate = (closeCart, data, checkOut) => html`
         <h3 class="text-slanted">your bag</h3>
       </header>
       <!-- cart items -->
-      <div class="cart-items">
-        ${
-          data.length > 0
+      <div class="cart-items"></div>
+        ${data.length > 0
             ? data.map(
                 (x) => html`       
             <article class="cart-item" data-id= ${x.id}>
@@ -26,16 +25,15 @@ export const cartTemplate = (closeCart, data, checkOut) => html`
               </div>
 
               <div>
-                <button class="cart-item-increase-btn" data-id=${x.id}>
+                <button @click=${onIncrease} class="cart-item-increase-btn" data-id=${x.id}>
                   <i class="fas fa-chevron-up"></i>
                 </button>
-                <p class="cart-item-amount" data-id="">${x.qty}</p>
-                <button class="cart-item-decrease-btn" data-id=${x.id}>
+                <p class="cart-item-amount" data-id=${x.id}>${x.qty}</p>
+                <button @click =${onDecrease} class="cart-item-decrease-btn" data-id=${x.id}>
                   <i class="fas fa-chevron-down"></i>
                 </button>
               </div>
             </article>
-        </div>
     
   `
               )

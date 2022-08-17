@@ -3,11 +3,13 @@ import { login } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { toggleCart } from "./utils.js";
+import { chosenWines } from "./products.js";
 
 
-const orderTemplate = (onSubmit, closeCart, toggleCart) => html`
+
+const orderTemplate = (onSubmit, closeCart, toggleCart, countWines) => html`
     <!-- navbar -->
-    ${navTemplate(null, toggleCart)}
+    ${navTemplate(null, toggleCart, countWines)}
 
 
       <!-- cart -->
@@ -62,7 +64,7 @@ const orderTemplate = (onSubmit, closeCart, toggleCart) => html`
 `;
 
 export async function orderPage(ctx) {
-  ctx.render(orderTemplate(onSubmit, closeCart, toggleCart));
+  ctx.render(orderTemplate(onSubmit, closeCart, toggleCart, chosenWines));
 
   setUserNav()
       // toggle cart

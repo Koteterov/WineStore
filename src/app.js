@@ -11,9 +11,6 @@ import { productsPage } from "./views/products.js";
 
 const bodyEl = document.querySelector('body')
 
-// document.getElementById("logoutBtn").addEventListener("click", OnLogout);
-
-
 
 page(decorateContext);
 
@@ -27,7 +24,6 @@ page("/order", orderPage)
 
 
 page.start();
-// setUserNav();
 
 
 
