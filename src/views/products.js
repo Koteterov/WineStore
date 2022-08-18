@@ -128,7 +128,6 @@ const generalTemplate = (
 
 // let tempWines = [];
 export let chosenWines = getStoredOrder("tempOrder");
-let tempGrandTotal = 0;
 
 // initial page rendering
 export async function productsPage(ctx) {
@@ -203,7 +202,7 @@ export async function productsPage(ctx) {
       }
 
 
-      tempGrandTotal = chosenWines
+      let tempGrandTotal = chosenWines
         .map((x) => Number(x.total))
         .reduce((a, b) => a + b, 0);
 

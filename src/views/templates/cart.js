@@ -22,46 +22,16 @@ export const cartTemplate = (closeCart, data, checkOut, path) => html`
                   <h4 class="cart-item-name">${x.name}</h4>
                   <p class="cart-item-price">${x.price} lv / pc</p>
                   <button
-                    @click=${(e) => {
-                      const wineId = e.currentTarget.dataset.id;
-                      const wineToRemove = data.find((x) => x.id == wineId);
-                      const index = data.indexOf(wineToRemove);
-                      data.splice(index, 1);
-
-                      page.redirect(path);
-                    }}
+                    @click=${onRemove}
                     class="cart-item-remove-btn"
                     data-id=${x.id}
                   >
                     remove
                   </button>
                 </div>
-
                 <div>
-                  <!-- increase qty -->
                   <button
-                    @click=${(e) => {
-                      const wineId = e.currentTarget.dataset.id;
-                      const increasedQty = chosenWines.find(
-                        (x) => x.id == wineId
-                      );
-                      const price = chosenWines.find(
-                        (x) => x.id == wineId
-                      ).price;
-
-                      increasedQty.qty++;
-                      increasedQty.total = increasedQty.qty * price;
-
-                      let tempGrandTotal = chosenWines
-                        .map((x) => Number(x.total))
-                        .reduce((a, b) => a + b, 0);
-
-                      chosenWines.forEach(
-                        (x) => (x.grandTotal = tempGrandTotal)
-                      );
-
-                      page.redirect(path);
-                    }}
+                    @click=${onIncrease}
                     class="cart-item-increase-btn"
                     data-id=${x.id}
                   >
@@ -69,44 +39,8 @@ export const cartTemplate = (closeCart, data, checkOut, path) => html`
                   </button>
                   <p class="cart-item-amount" data-id=${x.id}>${x.qty}</p>
 
-                  <!-- decrease qty -->
                   <button
-                    @click=${(e) => {
-                      const wineId = e.currentTarget.dataset.id;
-
-                      const decreasedQty = chosenWines.find(
-                        (x) => x.id == wineId
-                      );
-
-                      chosenWines.find((x) => {});
-
-                      const price = chosenWines.find(
-                        (x) => x.id == wineId
-                      ).price;
-
-                      const index = chosenWines.indexOf(decreasedQty);
-
-                      decreasedQty.qty--;
-
-                      if (decreasedQty.qty < 0) {
-                        decreasedQty.qty = 0;
-                      }
-                      if (decreasedQty.qty == 0) {
-                        chosenWines.splice(index, 1);
-                      }
-
-                      decreasedQty.total = decreasedQty.qty * price;
-
-                      let tempGrandTotal = chosenWines
-                        .map((x) => Number(x.total))
-                        .reduce((a, b) => a + b, 0);
-
-                      chosenWines.forEach(
-                        (x) => (x.grandTotal = tempGrandTotal)
-                      );
-
-                      page.redirect(path);
-                    }}
+                    @click=${onDecrease}
                     class="cart-item-decrease-btn"
                     data-id=${x.id}
                   >
@@ -134,54 +68,66 @@ export const cartTemplate = (closeCart, data, checkOut, path) => html`
   </div>
 `;
 
+// remove wine
+function onRemove(e) {
+  const path = `/${e.target.baseURI.split("/")[3]}`;
+  page.redirect(path);
+
+  const wineId = e.currentTarget.dataset.id;
+  const wineToRemove = chosenWines.find((x) => x.id == wineId);
+  const index = chosenWines.indexOf(wineToRemove);
+  chosenWines.splice(index, 1);
+}
+
 // //increase qty
-// function onIncrease(e) {
-//   // page.redirect('/products')
+function onIncrease(e) {
+  const path = `/${e.target.baseURI.split("/")[3]}`;
+  page.redirect(path);
 
-//   const wineId = e.currentTarget.dataset.id;
-//   const increasedQty = chosenWines.find((x) => x.id == wineId);
-//   const price = chosenWines.find((x) => x.id == wineId).price;
+  const wineId = e.currentTarget.dataset.id;
+  const increasedQty = chosenWines.find((x) => x.id == wineId);
+  const price = chosenWines.find((x) => x.id == wineId).price;
 
-//   increasedQty.qty++;
-//   increasedQty.total = increasedQty.qty * price
+  increasedQty.qty++;
+  increasedQty.total = increasedQty.qty * price;
 
-//  let tempGrandTotal = chosenWines
-//     .map((x) => Number(x.total))
-//     .reduce((a, b) => a + b, 0);
+  let tempGrandTotal = chosenWines
+    .map((x) => Number(x.total))
+    .reduce((a, b) => a + b, 0);
 
-//   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
-// }
-
+  chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
+}
 
 //=========================================================
 // //decrease qty
-// function onDecrease(e) {
-//   // page.redirect("/products");
+function onDecrease(e) {
+  const path = `/${e.target.baseURI.split("/")[3]}`;
+  page.redirect(path);
 
-//   const wineId = e.currentTarget.dataset.id;
+  const wineId = e.currentTarget.dataset.id;
 
-//   const decreasedQty = chosenWines.find((x) => x.id == wineId);
+  const decreasedQty = chosenWines.find((x) => x.id == wineId);
 
-//   chosenWines.find((x) => {});
+  chosenWines.find((x) => {});
 
-//   const price = chosenWines.find((x) => x.id == wineId).price;
+  const price = chosenWines.find((x) => x.id == wineId).price;
 
-//   const index = chosenWines.indexOf(decreasedQty);
+  const index = chosenWines.indexOf(decreasedQty);
 
-//   decreasedQty.qty--;
+  decreasedQty.qty--;
 
-//   if (decreasedQty.qty < 0) {
-//     decreasedQty.qty = 0;
-//   }
-//   if (decreasedQty.qty == 0) {
-//     chosenWines.splice(index, 1);
-//   }
+  if (decreasedQty.qty < 0) {
+    decreasedQty.qty = 0;
+  }
+  if (decreasedQty.qty == 0) {
+    chosenWines.splice(index, 1);
+  }
 
-//   decreasedQty.total = decreasedQty.qty * price;
+  decreasedQty.total = decreasedQty.qty * price;
 
-//   let tempGrandTotal = chosenWines
-//     .map((x) => Number(x.total))
-//     .reduce((a, b) => a + b, 0);
+  let tempGrandTotal = chosenWines
+    .map((x) => Number(x.total))
+    .reduce((a, b) => a + b, 0);
 
-//   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
-// }
+  chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
+}
