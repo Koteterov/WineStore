@@ -165,7 +165,6 @@ export async function homePage(ctx) {
 
   // toggle cart
   const cartOverlay = document.querySelector(".cart-overlay");
-  closeCart();
   function closeCart() {
     cartOverlay.classList.remove("show");
   }

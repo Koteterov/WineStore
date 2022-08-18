@@ -2,34 +2,20 @@ import { html } from "../lib.js";
 import { login } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
+import { cartTemplate } from "./templates/cart.js";
 import { toggleCart } from "./utils.js";
 import { chosenWines } from "./products.js";
 
 
 
-const orderTemplate = (onSubmit, closeCart, toggleCart, countWines) => html`
+const orderTemplate = (closeCart, data, toggleCart, onSubmit) => html`
     <!-- navbar -->
-    ${navTemplate(null, toggleCart, countWines)}
+
+    ${navTemplate(null, toggleCart, data)}
 
 
       <!-- cart -->
-  <div class="cart-overlay">
-    <aside class="cart">
-      <button @click=${closeCart} class="cart-close">
-        <i class="fas fa-times"></i>
-      </button>
-      <header>
-        <h3 class="text-slanted">your bag</h3>
-      </header>
-      <!-- cart items -->
-      <div class="cart-items"></div>
-      <!-- footer -->
-      <footer>
-        <h3 class="cart-total text-slanted">total : $12.99</h3>
-        <button class="cart-checkout btn">checkout</button>
-      </footer>
-    </aside>
-  </div>
+      ${cartTemplate(closeCart, data)}
 
     <!-- hero -->
     <section class="page-hero">
@@ -64,7 +50,9 @@ const orderTemplate = (onSubmit, closeCart, toggleCart, countWines) => html`
 `;
 
 export async function orderPage(ctx) {
-  ctx.render(orderTemplate(onSubmit, closeCart, toggleCart, chosenWines));
+  const data = chosenWines;
+
+  ctx.render(orderTemplate(closeCart, data, toggleCart, onSubmit));
 
   setUserNav()
       // toggle cart

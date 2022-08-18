@@ -14,8 +14,6 @@ const generalTemplate = (
   chosenWines,
   dataForCart,
   data,
-  checkOut,
-  path,
 
   OnLogout,
   toggleCart,
@@ -109,8 +107,6 @@ const generalTemplate = (
     ${cartTemplate(
       closeCart, 
       dataForCart, 
-      checkOut, 
-      path
       )}
 
     <!-- products -->
@@ -141,7 +137,6 @@ export async function productsPage(ctx) {
 
     const dataForCart = chosenWines;
 
-    const path = ctx.path
 
     ctx.render(
       generalTemplate(
@@ -149,8 +144,6 @@ export async function productsPage(ctx) {
         chosenWines,
         dataForCart,
         data,
-        checkOut,
-        path,
 
         OnLogout,
         toggleCart,
@@ -162,7 +155,6 @@ export async function productsPage(ctx) {
         // closeCart,
         // dataForCart,
         // data,
-        // checkOut,
         // OnLogout,
         // toggleCart,
         // types,
@@ -228,7 +220,6 @@ export async function productsPage(ctx) {
         productsTemplate(
           closeCart,
           data,
-          checkOut,
           OnLogout,
           toggleCart,
           types,
@@ -236,7 +227,6 @@ export async function productsPage(ctx) {
           chooseType,
           addToCart
 
-          // checkOut,
           // OnLogout,
           // winesByPrice,
           // toggleCart,
@@ -258,7 +248,6 @@ export async function productsPage(ctx) {
         productsTemplate(
           closeCart,
           data,
-          checkOut,
           OnLogout,
           toggleCart,
           types,
@@ -266,7 +255,6 @@ export async function productsPage(ctx) {
           chooseType,
           addToCart
 
-          // checkOut,
           // data,
           // OnLogout,
           // toggleCart,
@@ -298,7 +286,6 @@ export async function productsPage(ctx) {
           productsTemplate(
             closeCart,
             data,
-            checkOut,
             OnLogout,
             toggleCart,
             types,
@@ -306,7 +293,6 @@ export async function productsPage(ctx) {
             chooseType,
             addToCart
 
-            // checkOut,
             // OnLogout,
             // SelectedWinesByPrice,
             // toggleCart,
@@ -326,8 +312,6 @@ export async function productsPage(ctx) {
     }
 
 
-    // checkout btn
-    function checkOut() {}
 
     // toggle cart
     const cartOverlay = document.querySelector(".cart-overlay");

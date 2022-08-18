@@ -6,26 +6,13 @@ import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
+const loginTemplate = (closeCart, data, toggleCart, onSubmit) => html`
 
-const loginTemplate = (
-  closeCart,
-  data,
-  checkOut,
-  toggleCart,
-  path,
-  onSubmit
-) => html`
     <!-- navbar -->
     ${navTemplate(null, toggleCart, data)}
 
-
       <!-- cart -->
-      ${cartTemplate(
-        closeCart,
-        data,
-        checkOut,
-        path
-      )}
+      ${cartTemplate(closeCart, data)}
 
     <!-- hero -->
     <section class="page-hero">
@@ -61,19 +48,7 @@ const loginTemplate = (
 export async function loginPage(ctx) {
   const data = chosenWines;
 
-  const path = ctx.path
-
-  ctx.render(
-    loginTemplate(
-      closeCart,
-      data,
-      checkOut,
-      toggleCart,
-      path,
-      onSubmit
-              )
-  );
-
+  ctx.render(loginTemplate(closeCart, data, toggleCart, onSubmit));
 
   setUserNav();
   // toggle cart
@@ -101,13 +76,5 @@ export async function loginPage(ctx) {
     } catch (error) {
       alert(error.message);
     }
-
-
-    
   }
-
-  function checkOut() {}
 }
-
-
-

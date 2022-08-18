@@ -2,7 +2,7 @@ import { html, nothing } from "../../../src/lib.js";
 import { page } from "../../../src/lib.js";
 import { chosenWines } from "../products.js";
 
-export const cartTemplate = (closeCart, data, checkOut, path) => html`
+export const cartTemplate = (closeCart, data) => html`
   <div class="cart-overlay">
     <aside class="cart">
       <button @click=${closeCart} class="cart-close">
@@ -59,7 +59,7 @@ export const cartTemplate = (closeCart, data, checkOut, path) => html`
               ? html`total : ${Number(data[0].grandTotal).toFixed(2)} lv`
               : nothing}
           </h3>
-          <a href="/order" @click=${checkOut} class="cart-checkout btn"
+          <a href="/order" @click=${onCheckout} class="cart-checkout btn"
             >checkout</a
           >
         </footer>
@@ -67,6 +67,7 @@ export const cartTemplate = (closeCart, data, checkOut, path) => html`
     </aside>
   </div>
 `;
+
 
 // remove wine
 function onRemove(e) {
@@ -98,8 +99,7 @@ function onIncrease(e) {
   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
 }
 
-//=========================================================
-// //decrease qty
+//decrease qty
 function onDecrease(e) {
   const path = `/${e.target.baseURI.split("/")[3]}`;
   page.redirect(path);
@@ -130,4 +130,10 @@ function onDecrease(e) {
     .reduce((a, b) => a + b, 0);
 
   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
+}
+
+// checkout
+
+function onCheckout(e) {
+  page.redirect('/order')
 }
