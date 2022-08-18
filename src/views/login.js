@@ -1,4 +1,4 @@
-import { html } from "../lib.js";
+import { html, page } from "../lib.js";
 import { login } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
@@ -7,15 +7,25 @@ import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
 
-
-
-const loginTemplate = (closeCart, data, countWines, checkOut, onSubmit, toggleCart) => html`
+const loginTemplate = (
+  closeCart,
+  data,
+  checkOut,
+  toggleCart,
+  path,
+  onSubmit
+) => html`
     <!-- navbar -->
-    ${navTemplate(null, toggleCart, countWines)}
+    ${navTemplate(null, toggleCart, data)}
 
 
       <!-- cart -->
-      ${cartTemplate(closeCart, data, checkOut)}
+      ${cartTemplate(
+        closeCart,
+        data,
+        checkOut,
+        path
+      )}
 
     <!-- hero -->
     <section class="page-hero">
@@ -49,17 +59,28 @@ const loginTemplate = (closeCart, data, countWines, checkOut, onSubmit, toggleCa
 `;
 
 export async function loginPage(ctx) {
-  const data =  chosenWines
+  const data = chosenWines;
 
-  ctx.render(loginTemplate(closeCart, data, chosenWines, checkOut, onSubmit, toggleCart));
+  const path = ctx.path
 
-  setUserNav()
-      // toggle cart
-      const cartOverlay = document.querySelector(".cart-overlay");
-      function closeCart() {
-        cartOverlay.classList.remove("show");
-      }
-  
+  ctx.render(
+    loginTemplate(
+      closeCart,
+      data,
+      checkOut,
+      toggleCart,
+      path,
+      onSubmit
+              )
+  );
+
+
+  setUserNav();
+  // toggle cart
+  const cartOverlay = document.querySelector(".cart-overlay");
+  function closeCart() {
+    cartOverlay.classList.remove("show");
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -76,15 +97,17 @@ export async function loginPage(ctx) {
     try {
       await login(email, password);
 
-
       ctx.page.redirect("/products");
     } catch (error) {
       alert(error.message);
     }
-  }
 
-  function checkOut() {
+
     
   }
 
+  function checkOut() {}
 }
+
+
+

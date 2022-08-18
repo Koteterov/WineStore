@@ -5,8 +5,17 @@ import { chosenWines } from "./products.js";
 import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 
-
-const homeTemplate = (closeCart, data, checkOut, onIncrease, onDecrease,  OnLogout, toggleCart, chosenWines) => html`
+const homeTemplate = (
+  closeCart,
+  data,
+  checkOut,
+  onIncrease,
+  onDecrease,
+  OnLogout,
+  toggleCart,
+  chosenWines,
+  path
+) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -29,7 +38,9 @@ const homeTemplate = (closeCart, data, checkOut, onIncrease, onDecrease,  OnLogo
             <a href="/login" class="nav-link"> login </a>
           </li>
           <li id="logoutBtn">
-            <a @click=${OnLogout} href="javascript:void(0)" class="nav-link"> logout </a>
+            <a @click=${OnLogout} href="javascript:void(0)" class="nav-link">
+              logout
+            </a>
           </li>
         </ul>
       </div>
@@ -84,8 +95,15 @@ const homeTemplate = (closeCart, data, checkOut, onIncrease, onDecrease,  OnLogo
   </div>
   <!-- cart -->
 
-  ${cartTemplate(closeCart, data, checkOut, onIncrease, onDecrease)}
-
+  ${cartTemplate(
+    closeCart,
+    data,
+    checkOut,
+    onIncrease,
+    onDecrease,
+    toggleCart,
+    path
+  )}
 
   <!-- featured products -->
   <section class="section featured">
@@ -123,40 +141,45 @@ const homeTemplate = (closeCart, data, checkOut, onIncrease, onDecrease,  OnLogo
 `;
 
 export async function homePage(ctx) {
-
   // get temp order total
-  const data = getTempData(chosenWines)
+  const data = getTempData(chosenWines);
 
-  ctx.render(homeTemplate(closeCart, data, checkOut, onIncrease, onDecrease,  OnLogout, toggleCart, chosenWines));
+  const path = ctx.path;
+
+  ctx.render(
+    homeTemplate(
+      closeCart,
+      data,
+      checkOut,
+      onIncrease,
+      onDecrease,
+      OnLogout,
+      toggleCart,
+      chosenWines,
+      path
+    )
+  );
   setUserNav();
 
-  console.log('home', data);
+  console.log("home", data);
 
-    // toggle cart
-    const cartOverlay = document.querySelector(".cart-overlay");
-    closeCart()
-    function closeCart() {
-      cartOverlay.classList.remove("show");
-    }
-
-  function onIncrease() {
-    
-  }
-  function onDecrease() {
-    
+  // toggle cart
+  const cartOverlay = document.querySelector(".cart-overlay");
+  closeCart();
+  function closeCart() {
+    cartOverlay.classList.remove("show");
   }
 
-  function checkOut() {
-    
-  }
+  function onIncrease() {}
+  function onDecrease() {}
+
+  function checkOut() {}
 
   async function OnLogout() {
     await logout();
     setUserNav();
     ctx.page.redirect("/products");
-  
   }
-  
 }
 
-
+// onRemove()

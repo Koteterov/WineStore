@@ -1,4 +1,5 @@
 import { html, repeat, nothing } from "../lib.js";
+import { page } from "../lib.js";
 import { getList, getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
@@ -9,13 +10,12 @@ import { setStoredOrder } from "./utils.js";
 import { getStoredOrder } from "./utils.js";
 
 const generalTemplate = (
-  chosenWines,
   closeCart,
+  chosenWines,
   dataForCart,
   data,
   checkOut,
-  onIncrease,
-  onDecrease,
+  path,
 
   OnLogout,
   toggleCart,
@@ -106,7 +106,12 @@ const generalTemplate = (
     </div>
 
     <!-- cart -->
-    ${cartTemplate(closeCart, dataForCart, checkOut, onIncrease, onDecrease)}
+    ${cartTemplate(
+      closeCart, 
+      dataForCart, 
+      checkOut, 
+      path
+      )}
 
     <!-- products -->
     ${productsTemplate(
@@ -137,15 +142,16 @@ export async function productsPage(ctx) {
 
     const dataForCart = chosenWines;
 
+    const path = ctx.path
+
     ctx.render(
       generalTemplate(
-        chosenWines,
         closeCart,
+        chosenWines,
         dataForCart,
         data,
         checkOut,
-        onIncrease,
-        onDecrease,
+        path,
 
         OnLogout,
         toggleCart,
@@ -196,11 +202,6 @@ export async function productsPage(ctx) {
         });
       }
 
-      // // OR => to make choice unique
-      // const key = "id";
-      // chosenWines = [
-      //   ...new Map(tempWines.map((item) => [item[key], item])).values(),
-      // ];
 
       tempGrandTotal = chosenWines
         .map((x) => Number(x.total))
@@ -325,66 +326,6 @@ export async function productsPage(ctx) {
       showChosenByPrice();
     }
 
-    // //increase qty
-    function onIncrease(e) {
-      toggleCart("/products");
-
-      const wineId = e.currentTarget.dataset.id;
-      const increasedQty = chosenWines.find((x) => x.id == wineId);
-      const price = chosenWines.find((x) => x.id == wineId).price;
-
-      increasedQty.qty++;
-      increasedQty.total = increasedQty.qty * price;
-
-      tempGrandTotal = chosenWines
-        .map((x) => Number(x.total))
-        .reduce((a, b) => a + b, 0);
-
-      chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
-    }
-
-    //decrease qty
-    function onDecrease(e) {
-      toggleCart("/products");
-
-      const wineId = e.currentTarget.dataset.id;
-      const decreasedQty = chosenWines.find((x) => x.id == wineId);
-      const price = chosenWines.find((x) => x.id == wineId).price;
-
-      decreasedQty.qty--;
-
-      if (decreasedQty.qty < 0) {
-        decreasedQty.qty = 0;
-      }
-      if (counter == 0) {
-        // document.querySelector(".cart-item").style.display = "none";
-      }
-
-      decreasedQty.total = decreasedQty.qty * price;
-
-      tempGrandTotal = chosenWines
-        .map((x) => Number(x.total))
-        .reduce((a, b) => a + b, 0);
-
-      chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
-    }
-
-    // // clear cart
-    // function removeFromCart() {
-    //   document.querySelector(".cart-close").addEventListener("click", () => {
-    //     cartOverlay.classList.remove("show");
-    //   });
-
-    //   document.querySelector(".cart-item").style.display = "none";
-    //   let total = document.querySelector(".cart-total");
-    //   total.textContent = `total: 0.00 lv`;
-
-    //   let qtySpan = document.querySelector(".cart-item-count");
-    //   qtySpan.textContent = 0;
-
-    //   let qty = document.querySelector(".cart-item-amount");
-    //   qty.textContent = 0;
-    // }
 
     // checkout btn
     function checkOut() {}
@@ -396,33 +337,6 @@ export async function productsPage(ctx) {
       cartOverlay.classList.remove("show");
     }
 
-    // function onIncrease(e) {
-    //   counter++
-
-    //   let wineId = e.currentTarget.dataset.id
-
-    //   chosenWines.forEach(x => {
-    //     if (x.id == wineId) {
-    //       x.qty = counter
-    //       x.total = x.price * x.qty;
-
-    //     }
-    //   })
-
-    //   // ctx.page.redirect("/products")
-    // // let rr =  document.querySelector(`p[data-id="${wineId}"]`).textContent = counter
-
-    // // console.log('rr ID', rr);
-
-    //   console.log('counter',counter);
-    //   console.log('wineId',wineId);
-    //   console.log("dataForCart", dataForCart);
-
-    // }
-    // function onDecrease() {
-
-    // }
-
     // logout
     async function OnLogout() {
       await logout();
@@ -433,6 +347,27 @@ export async function productsPage(ctx) {
     console.log(error);
   }
 }
+
+
+
+
+
+
+
+//remove qty
+// function onRemove() {
+//   toggleCart("/products");
+
+//   // const wineId = e.currentTarget.dataset.id;
+//   // const wineToRemove = chosenWines.find((x) => x.id == wineId);
+//   // const index = chosenWines.indexOf(wineToRemove)
+
+//   // chosenWines.splice(index, 1)
+
+// }
+
+
+
 
 //===================
 // cart
