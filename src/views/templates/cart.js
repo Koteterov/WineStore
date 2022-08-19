@@ -72,12 +72,16 @@ export const cartTemplate = (data) => html`
 // remove wine
 function onRemove(e) {
   const path = `/${e.target.baseURI.split("/")[3]}`;
-  page.redirect(path);
 
   const wineId = e.currentTarget.dataset.id;
   const wineToRemove = chosenWines.find((x) => x.id == wineId);
   const index = chosenWines.indexOf(wineToRemove);
   chosenWines.splice(index, 1);
+
+  chosenWines.forEach(
+    (x) => (x.grandTotal = x.grandTotal - wineToRemove.total)
+  );
+  page.redirect(path);
 }
 
 // //increase qty
@@ -91,7 +95,6 @@ function onIncrease(e) {
     path = `/${url[3]}/${url[4]}`;
   }
   page.redirect(path);
-
 
   const wineId = e.currentTarget.dataset.id;
   const increasedQty = chosenWines.find((x) => x.id == wineId);
@@ -155,7 +158,6 @@ function closeCart() {
 }
 
 // checkout
-
 function onCheckout(e) {
   page.redirect("/order");
 }

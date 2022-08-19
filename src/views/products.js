@@ -3,23 +3,12 @@ import { page } from "../lib.js";
 import { getList, getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
+import { navTemplate } from "./templates/navbar.js";
 import { productsTemplate } from "./templates/products.js";
 import { getStoredOrder } from "./utils.js";
-import { navTemplate } from "./templates/navbar.js";
 import { toggleCart } from "./utils.js";
 
-const generalTemplate = (
-  dataForCart,
-  data,
-
-  types,
-  chooseAll,
-  chooseType,
-  addToCart,
-  showPrice,
-  value,
-  showNoWines
-) =>
+const generalTemplate = (dataForCart) =>
   html`
     <!-- navbar -->
     ${navTemplate()}
@@ -65,16 +54,7 @@ const generalTemplate = (
     ${cartTemplate(dataForCart)}
 
     <!-- products -->
-    ${productsTemplate(
-      data,
-      types,
-      chooseAll,
-      chooseType,
-      addToCart,
-      showPrice,
-      value,
-      showNoWines
-    )}
+    ${productsTemplate()}
   `;
 
 // let tempWines = [];
@@ -82,161 +62,90 @@ export let chosenWines = getStoredOrder("tempOrder");
 
 // initial page rendering
 export async function productsPage(ctx) {
-  let counter = 0;
+  const data = await getList();
+  const types = new Set(data.map((t) => t.type));
+  const prices = data.map((p) => p.price);
+  const maxPrice = Math.max(...prices);
 
-  try {
-    const data = await getList();
-    const types = new Set(data.map((t) => t.type));
-    const prices = data.map((p) => p.price);
-    const maxPrice = Math.max(...prices);
+  const dataForCart = chosenWines;
 
-    const dataForCart = chosenWines;
+  ctx.render(generalTemplate(dataForCart));
 
-    ctx.render(
-      generalTemplate(
-        dataForCart,
-        data,
+  setUserNav();
 
-        types,
-        chooseAll,
-        chooseType,
-        addToCart
+  // const priceInput = document.querySelector(".price-filter");
+  // const priceToDispaly = Math.ceil(maxPrice);
+  // priceInput.max = priceToDispaly;
+  // priceInput.min = 0;
 
-        // dataForCart,
-        // data,
-        // types,
-        // chooseAll,
-        // chooseType,
-        // addToCart,
-      )
-    );
+  // let price = null;
 
-    setUserNav();
+  // // add wine to cart
+  // async function addToCart(e) {
+  //   const wineId = e.currentTarget.dataset.id;
+  //   const singleWine = await getSingleWine(wineId);
 
-    const priceInput = document.querySelector(".price-filter");
-    const priceToDispaly = Math.ceil(maxPrice);
-    priceInput.max = priceToDispaly;
-    priceInput.min = 0;
+  //   let selectedWine = chosenWines.find((w) => w.id == wineId);
 
-    let price = null;
+  //   // make choice unique
+  //   if (selectedWine == undefined) {
+  //     chosenWines.push({
+  //       name: singleWine.name,
+  //       price: singleWine.price,
+  //       imgUrl: singleWine.imgUrl,
+  //       id: singleWine._id,
+  //       qty: 1,
+  //       total: singleWine.price,
+  //       grandTotal: singleWine.price,
+  //     });
+  //   }
 
-    // add wine to cart
-    async function addToCart(e) {
-      const wineId = e.currentTarget.dataset.id;
-      const singleWine = await getSingleWine(wineId);
+  //   let tempGrandTotal = chosenWines
+  //     .map((x) => Number(x.total))
+  //     .reduce((a, b) => a + b, 0);
 
-      let selectedWine = chosenWines.find((w) => w.id == wineId);
+  //   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
 
-      // make choice unique
-      if (selectedWine == undefined) {
-        chosenWines.push({
-          name: singleWine.name,
-          price: singleWine.price,
-          imgUrl: singleWine.imgUrl,
-          id: singleWine._id,
-          qty: 1,
-          total: singleWine.price,
-          grandTotal: singleWine.price,
-        });
-      }
+  //   price = singleWine.price;
 
-      let tempGrandTotal = chosenWines
-        .map((x) => Number(x.total))
-        .reduce((a, b) => a + b, 0);
+  //   //refresh cart
+  //   ctx.page.redirect("/products");
+  //   toggleCart();
+  // }
 
-      chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
+  // // show price of all wines
+  // function showPrice() {
+  //   const value = parseInt(priceInput.value);
 
-      price = singleWine.price;
+  //   const winesByPrice = data.filter((w) => w.price < value);
+  //   const showNoWines = winesByPrice == 0;
 
-      //refresh cart
-      ctx.page.redirect("/products");
-      toggleCart();
-    }
+  // }
 
-    // show price of all wines
-    function showPrice() {
-      const value = parseInt(priceInput.value);
+  // // choose all wine types
+  // function chooseAll() {
+  //   console.log('data', data);
+  //   console.log('types', types);
 
-      const winesByPrice = data.filter((w) => w.price < value);
-      const showNoWines = winesByPrice == 0;
+  // }
 
-      ctx.render(
-        productsTemplate(
-          data,
-          types,
-          chooseAll,
-          chooseType,
-          addToCart
+  // // choose type of wine
+  // function chooseType(e) {
+  //   const chosenType = e.target.id;
 
-          // winesByPrice,
-          // types,
-          // chooseAll,
-          // chooseType,
-          // addToCart,
-          // showPrice,
-          // value,
-          // showNoWines
-        )
-      );
-    }
+  //   const selectedWines = data.filter((w) => w.type == chosenType);
 
-    // choose all wine types
-    function chooseAll() {
-      ctx.render(
-        productsTemplate(
-          data,
-          types,
-          chooseAll,
-          chooseType,
-          addToCart
+  //   // show price of chosen wines
+  //   function showChosenByPrice() {
+  //     const value = parseInt(priceInput.value);
+  //     const SelectedWinesByPrice = selectedWines.filter(
+  //       (w) => w.price < value
+  //     );
+  //     const showNoWines = SelectedWinesByPrice == 0;
 
-          // data,
-          // types,
-          // chooseAll,
-          // chooseType,
-          // addToCart,
-          // showPrice
-        )
-      );
-    }
+  //   }
 
-    // choose type of wine
-    function chooseType(e) {
-      const chosenType = e.target.id;
+  //   showChosenByPrice();
+  // }
 
-      const selectedWines = data.filter((w) => w.type == chosenType);
-
-      // show price of chosen wines
-      function showChosenByPrice() {
-        const value = parseInt(priceInput.value);
-        const SelectedWinesByPrice = selectedWines.filter(
-          (w) => w.price < value
-        );
-        const showNoWines = SelectedWinesByPrice == 0;
-
-        ctx.render(
-          productsTemplate(
-            data,
-            types,
-            chooseAll,
-            chooseType,
-            addToCart
-
-            // SelectedWinesByPrice,
-            // types,
-            // chooseAll,
-            // chooseType,
-            // addToCart,
-            // showChosenByPrice,
-            // value,
-            // showNoWines
-          )
-        );
-      }
-
-      showChosenByPrice();
-    }
-  } catch (error) {
-    console.log(error);
-  }
 }
