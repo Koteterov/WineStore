@@ -5,17 +5,7 @@ import { chosenWines } from "./products.js";
 import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 
-const homeTemplate = (
-  closeCart,
-  data,
-  checkOut,
-  onIncrease,
-  onDecrease,
-  OnLogout,
-  toggleCart,
-  chosenWines,
-  path
-) => html`
+const homeTemplate = (chosenWines, OnLogout, toggleCart) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -95,15 +85,7 @@ const homeTemplate = (
   </div>
   <!-- cart -->
 
-  ${cartTemplate(
-    closeCart,
-    data,
-    checkOut,
-    onIncrease,
-    onDecrease,
-    toggleCart,
-    path
-  )}
+  ${cartTemplate(chosenWines)}
 
   <!-- featured products -->
   <section class="section featured">
@@ -142,37 +124,9 @@ const homeTemplate = (
 
 export async function homePage(ctx) {
   // get temp order total
-  const data = getTempData(chosenWines);
 
-  const path = ctx.path;
-
-  ctx.render(
-    homeTemplate(
-      closeCart,
-      data,
-      checkOut,
-      onIncrease,
-      onDecrease,
-      OnLogout,
-      toggleCart,
-      chosenWines,
-      path
-    )
-  );
+  ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart));
   setUserNav();
-
-  console.log("home", data);
-
-  // toggle cart
-  const cartOverlay = document.querySelector(".cart-overlay");
-  function closeCart() {
-    cartOverlay.classList.remove("show");
-  }
-
-  function onIncrease() {}
-  function onDecrease() {}
-
-  function checkOut() {}
 
   async function OnLogout() {
     await logout();

@@ -6,11 +6,9 @@ import { logout } from "../api/data.js";
 import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { productsTemplate } from "./templates/products.js";
-import { setStoredOrder } from "./utils.js";
 import { getStoredOrder } from "./utils.js";
 
 const generalTemplate = (
-  closeCart,
   chosenWines,
   dataForCart,
   data,
@@ -105,7 +103,6 @@ const generalTemplate = (
 
     <!-- cart -->
     ${cartTemplate(
-      closeCart, 
       dataForCart, 
       )}
 
@@ -140,7 +137,6 @@ export async function productsPage(ctx) {
 
     ctx.render(
       generalTemplate(
-        closeCart,
         chosenWines,
         dataForCart,
         data,
@@ -152,7 +148,6 @@ export async function productsPage(ctx) {
         chooseType,
         addToCart
 
-        // closeCart,
         // dataForCart,
         // data,
         // OnLogout,
@@ -218,7 +213,6 @@ export async function productsPage(ctx) {
 
       ctx.render(
         productsTemplate(
-          closeCart,
           data,
           OnLogout,
           toggleCart,
@@ -230,7 +224,6 @@ export async function productsPage(ctx) {
           // OnLogout,
           // winesByPrice,
           // toggleCart,
-          // closeCart,
           // types,
           // chooseAll,
           // chooseType,
@@ -246,7 +239,6 @@ export async function productsPage(ctx) {
     function chooseAll() {
       ctx.render(
         productsTemplate(
-          closeCart,
           data,
           OnLogout,
           toggleCart,
@@ -258,7 +250,6 @@ export async function productsPage(ctx) {
           // data,
           // OnLogout,
           // toggleCart,
-          // closeCart,
           // types,
           // chooseAll,
           // chooseType,
@@ -284,7 +275,6 @@ export async function productsPage(ctx) {
 
         ctx.render(
           productsTemplate(
-            closeCart,
             data,
             OnLogout,
             toggleCart,
@@ -296,7 +286,6 @@ export async function productsPage(ctx) {
             // OnLogout,
             // SelectedWinesByPrice,
             // toggleCart,
-            // closeCart,
             // types,
             // chooseAll,
             // chooseType,
@@ -312,13 +301,6 @@ export async function productsPage(ctx) {
     }
 
 
-
-    // toggle cart
-    const cartOverlay = document.querySelector(".cart-overlay");
-    function closeCart() {
-      setStoredOrder("tempOrder", chosenWines);
-      cartOverlay.classList.remove("show");
-    }
 
     // logout
     async function OnLogout() {

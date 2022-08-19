@@ -7,17 +7,12 @@ import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
-const productTemplate = (
-  OnLogout,
-  toggleCart,
-  countWines,
-  closeCart,
-  wine,
-  data,
-  checkOut
+const productTemplate = (chosenWines, OnLogout, toggleCart, wine
 ) => html`
   <!-- navbar -->
-  ${navTemplate(OnLogout, toggleCart, countWines)}
+  ${navTemplate(OnLogout, toggleCart, chosenWines)}
+    <!-- OnLogout, toggleCart, countWines -->
+
 
   <!-- hero -->
   <section class="page-hero">
@@ -56,7 +51,7 @@ const productTemplate = (
     </aside>
   </div>
   <!-- cart -->
-  ${cartTemplate(closeCart, data, checkOut)}
+  ${cartTemplate(chosenWines)}
 
   <!-- product info -->
   <section class="single-product">
@@ -86,22 +81,15 @@ const productTemplate = (
 `;
 
 export async function detailsPage(ctx) {
-  const data = chosenWines;
 
   try {
     const wine = await getSingleWine(ctx.params.id);
 
     ctx.render(
-      productTemplate(OnLogout, toggleCart, chosenWines, closeCart, wine, data, checkOut)
+      productTemplate(chosenWines, OnLogout, toggleCart, wine)
     );
     setUserNav();
 
-    // toggle cart
-    const cartOverlay = document.querySelector(".cart-overlay");
-    closeCart();
-    function closeCart() {
-      cartOverlay.classList.remove("show");
-    }
 
     // logout
     async function OnLogout() {
@@ -112,5 +100,4 @@ export async function detailsPage(ctx) {
   } catch (error) {
     console.log(error);
   }
-  function checkOut() {}
 }

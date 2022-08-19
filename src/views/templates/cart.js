@@ -1,8 +1,9 @@
 import { html, nothing } from "../../../src/lib.js";
 import { page } from "../../../src/lib.js";
 import { chosenWines } from "../products.js";
+import { setStoredOrder } from "../utils.js";
 
-export const cartTemplate = (closeCart, data) => html`
+export const cartTemplate = (data) => html`
   <div class="cart-overlay">
     <aside class="cart">
       <button @click=${closeCart} class="cart-close">
@@ -68,7 +69,6 @@ export const cartTemplate = (closeCart, data) => html`
   </div>
 `;
 
-
 // remove wine
 function onRemove(e) {
   const path = `/${e.target.baseURI.split("/")[3]}`;
@@ -82,8 +82,16 @@ function onRemove(e) {
 
 // //increase qty
 function onIncrease(e) {
-  const path = `/${e.target.baseURI.split("/")[3]}`;
+  const url = e.target.baseURI.split("/");
+
+  let path;
+  if (url[4] == undefined) {
+    path = `/${url[3]}`;
+  } else {
+    path = `/${url[3]}/${url[4]}`;
+  }
   page.redirect(path);
+
 
   const wineId = e.currentTarget.dataset.id;
   const increasedQty = chosenWines.find((x) => x.id == wineId);
@@ -101,7 +109,14 @@ function onIncrease(e) {
 
 //decrease qty
 function onDecrease(e) {
-  const path = `/${e.target.baseURI.split("/")[3]}`;
+  const url = e.target.baseURI.split("/");
+
+  let path;
+  if (url[4] == undefined) {
+    path = `/${url[3]}`;
+  } else {
+    path = `/${url[3]}/${url[4]}`;
+  }
   page.redirect(path);
 
   const wineId = e.currentTarget.dataset.id;
@@ -132,8 +147,15 @@ function onDecrease(e) {
   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
 }
 
+// toggle cart
+function closeCart() {
+  const cartOverlay = document.querySelector(".cart-overlay");
+  setStoredOrder("tempOrder", chosenWines);
+  cartOverlay.classList.remove("show");
+}
+
 // checkout
 
 function onCheckout(e) {
-  page.redirect('/order')
+  page.redirect("/order");
 }

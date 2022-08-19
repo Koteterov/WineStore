@@ -6,13 +6,13 @@ import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
-const loginTemplate = (closeCart, data, toggleCart, onSubmit) => html`
+const loginTemplate = (data, toggleCart, onSubmit) => html`
 
     <!-- navbar -->
     ${navTemplate(null, toggleCart, data)}
 
       <!-- cart -->
-      ${cartTemplate(closeCart, data)}
+      ${cartTemplate(data)}
 
     <!-- hero -->
     <section class="page-hero">
@@ -48,14 +48,9 @@ const loginTemplate = (closeCart, data, toggleCart, onSubmit) => html`
 export async function loginPage(ctx) {
   const data = chosenWines;
 
-  ctx.render(loginTemplate(closeCart, data, toggleCart, onSubmit));
+  ctx.render(loginTemplate(data, toggleCart, onSubmit));
 
   setUserNav();
-  // toggle cart
-  const cartOverlay = document.querySelector(".cart-overlay");
-  function closeCart() {
-    cartOverlay.classList.remove("show");
-  }
 
   async function onSubmit(e) {
     e.preventDefault();
