@@ -2,19 +2,16 @@ import { html, repeat, nothing } from "../lib.js";
 import { page } from "../lib.js";
 import { getList, getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
-import { logout } from "../api/data.js";
-import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { productsTemplate } from "./templates/products.js";
 import { getStoredOrder } from "./utils.js";
+import { navTemplate } from "./templates/navbar.js";
+import { toggleCart } from "./utils.js";
 
 const generalTemplate = (
-  chosenWines,
   dataForCart,
   data,
 
-  OnLogout,
-  toggleCart,
   types,
   chooseAll,
   chooseType,
@@ -25,44 +22,7 @@ const generalTemplate = (
 ) =>
   html`
     <!-- navbar -->
-    <nav class="navbar page">
-      <div class="nav-center">
-        <!-- links -->
-        <div>
-          <button class="toggle-nav">
-            <i class="fas fa-bars"></i>
-          </button>
-          <ul class="nav-links">
-            <li>
-              <a href="/" class="nav-link"> home </a>
-            </li>
-            <li>
-              <a href="/products" class="nav-link"> products </a>
-            </li>
-            <li>
-              <a href="/about" class="nav-link"> about </a>
-            </li>
-            <li id="loginBtn">
-              <a href="/login" class="nav-link"> login </a>
-            </li>
-            <li id="logoutBtn">
-              <a @click=${OnLogout} href="javascript:void(0)" class="nav-link">
-                logout
-              </a>
-            </li>
-          </ul>
-        </div>
-        <!-- logo -->
-        <span id="logo-black" class="logo-text nav-logo">'Wine is Fine'</span>
-        <!-- cart icon -->
-        <div class="toggle-container">
-          <button @click=${toggleCart} class="toggle-cart">
-            <i class="fas fa-shopping-cart"></i>
-          </button>
-          <span class="cart-item-count">${chosenWines.length}</span>
-        </div>
-      </div>
-    </nav>
+    ${navTemplate()}
 
     <!-- hero -->
     <section class="page-hero">
@@ -102,9 +62,7 @@ const generalTemplate = (
     </div>
 
     <!-- cart -->
-    ${cartTemplate(
-      dataForCart, 
-      )}
+    ${cartTemplate(dataForCart)}
 
     <!-- products -->
     ${productsTemplate(
@@ -134,15 +92,11 @@ export async function productsPage(ctx) {
 
     const dataForCart = chosenWines;
 
-
     ctx.render(
       generalTemplate(
-        chosenWines,
         dataForCart,
         data,
 
-        OnLogout,
-        toggleCart,
         types,
         chooseAll,
         chooseType,
@@ -150,8 +104,6 @@ export async function productsPage(ctx) {
 
         // dataForCart,
         // data,
-        // OnLogout,
-        // toggleCart,
         // types,
         // chooseAll,
         // chooseType,
@@ -188,19 +140,16 @@ export async function productsPage(ctx) {
         });
       }
 
-
       let tempGrandTotal = chosenWines
         .map((x) => Number(x.total))
         .reduce((a, b) => a + b, 0);
 
       chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
-      toggleCart("/products");
 
       price = singleWine.price;
 
       //refresh cart
       ctx.page.redirect("/products");
-
       toggleCart();
     }
 
@@ -214,16 +163,12 @@ export async function productsPage(ctx) {
       ctx.render(
         productsTemplate(
           data,
-          OnLogout,
-          toggleCart,
           types,
           chooseAll,
           chooseType,
           addToCart
 
-          // OnLogout,
           // winesByPrice,
-          // toggleCart,
           // types,
           // chooseAll,
           // chooseType,
@@ -240,16 +185,12 @@ export async function productsPage(ctx) {
       ctx.render(
         productsTemplate(
           data,
-          OnLogout,
-          toggleCart,
           types,
           chooseAll,
           chooseType,
           addToCart
 
           // data,
-          // OnLogout,
-          // toggleCart,
           // types,
           // chooseAll,
           // chooseType,
@@ -276,16 +217,12 @@ export async function productsPage(ctx) {
         ctx.render(
           productsTemplate(
             data,
-            OnLogout,
-            toggleCart,
             types,
             chooseAll,
             chooseType,
             addToCart
 
-            // OnLogout,
             // SelectedWinesByPrice,
-            // toggleCart,
             // types,
             // chooseAll,
             // chooseType,
@@ -299,86 +236,7 @@ export async function productsPage(ctx) {
 
       showChosenByPrice();
     }
-
-
-
-    // logout
-    async function OnLogout() {
-      await logout();
-      setUserNav();
-      ctx.page.redirect("/products");
-    }
   } catch (error) {
     console.log(error);
   }
-}
-
-
-
-
-
-
-
-//remove qty
-// function onRemove() {
-//   toggleCart("/products");
-
-//   // const wineId = e.currentTarget.dataset.id;
-//   // const wineToRemove = chosenWines.find((x) => x.id == wineId);
-//   // const index = chosenWines.indexOf(wineToRemove)
-
-//   // chosenWines.splice(index, 1)
-
-// }
-
-
-
-
-//===================
-// cart
-
-{
-  /* <div class="cart-overlay">
-<aside class="cart">
-  <button @click=${closeCart} class="cart-close">
-    <i class="fas fa-times"></i>
-  </button>
-  <header>
-    <h3 class="text-slanted">your bag</h3>
-  </header>
-  <!-- cart items -->
-  <div class="cart-items"></div>
-
-  ${chosenWines.map(x => html `
-  <article class="cart-item" data-id= ${x.id}>
-        <img src="${x.imgUrl}" class="cart-item-img" alt="${x.imgUrl}">
-        <div>
-          <h4 class="cart-item-name">${x.name}</h4>
-          <p class="cart-item-price">${x.price} lv / pc</p>
-          <button class="cart-item-remove-btn" data-id=${x.id}>
-            remove
-          </button>
-        </div>
-
-        <div>
-          <button @click=${onIncrease} class="cart-item-increase-btn" data-id=${x.id}>
-            <i class="fas fa-chevron-up"></i>
-          </button>
-          <p  class="cart-item-amount cart-order" data-id=${x.id}>${x.qty}</p>
-          <button @click =${onDecrease} class="cart-item-decrease-btn" data-id=${x.id}>
-            <i class="fas fa-chevron-down"></i>
-          </button>
-        </div>
-      </article>
-  `)}
-
-  <!-- footer -->
-  <footer>
-    <h3 class="cart-total text-slanted">
-      total : ${Number(chosenWines[0]?.grandTotal).toFixed(2) || 0.00}
-    </h3>
-    <button class="cart-checkout btn">checkout</button>
-  </footer>
-</aside>
-</div> */
 }

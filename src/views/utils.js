@@ -1,4 +1,5 @@
 import { page } from "../lib.js";
+import { logout } from "../api/data.js";
 
 
 export function setUserNav() {
@@ -39,4 +40,10 @@ export const getStoredOrder = (item) => {
 
 export const setStoredOrder = (name, item) => {
   localStorage.setItem(name, JSON.stringify(item))
+}
+
+export async function OnLogout() {
+  await logout();
+  setUserNav();
+  page.redirect("/products");
 }

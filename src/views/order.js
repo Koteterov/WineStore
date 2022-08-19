@@ -3,19 +3,17 @@ import { login } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
-import { toggleCart } from "./utils.js";
 import { chosenWines } from "./products.js";
 
 
 
-const orderTemplate = (closeCart, data, toggleCart, onSubmit) => html`
+const orderTemplate = (data, onSubmit) => html`
     <!-- navbar -->
 
-    ${navTemplate(null, toggleCart, data)}
-
+    ${navTemplate()}
 
       <!-- cart -->
-      ${cartTemplate(closeCart, data)}
+      ${cartTemplate(data)}
 
     <!-- hero -->
     <section class="page-hero">
@@ -52,14 +50,9 @@ const orderTemplate = (closeCart, data, toggleCart, onSubmit) => html`
 export async function orderPage(ctx) {
   const data = chosenWines;
 
-  ctx.render(orderTemplate(closeCart, data, toggleCart, onSubmit));
+  ctx.render(orderTemplate(data, onSubmit));
 
   setUserNav()
-      // toggle cart
-      const cartOverlay = document.querySelector(".cart-overlay");
-      function closeCart() {
-        cartOverlay.classList.remove("show");
-      }
   
 
   async function onSubmit(e) {

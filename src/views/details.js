@@ -2,17 +2,12 @@ import { html, nothing } from "../lib.js";
 import { getSingleWine } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
-import { logout } from "../api/data.js";
-import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
-const productTemplate = (chosenWines, OnLogout, toggleCart, wine
-) => html`
+const productTemplate = (chosenWines, wine) => html`
   <!-- navbar -->
-  ${navTemplate(OnLogout, toggleCart, chosenWines)}
-    <!-- OnLogout, toggleCart, countWines -->
-
+  ${navTemplate()}
 
   <!-- hero -->
   <section class="page-hero">
@@ -81,22 +76,12 @@ const productTemplate = (chosenWines, OnLogout, toggleCart, wine
 `;
 
 export async function detailsPage(ctx) {
-
   try {
     const wine = await getSingleWine(ctx.params.id);
 
-    ctx.render(
-      productTemplate(chosenWines, OnLogout, toggleCart, wine)
-    );
+    ctx.render(productTemplate(chosenWines, wine));
     setUserNav();
 
-
-    // logout
-    async function OnLogout() {
-      await logout();
-      setUserNav();
-      ctx.page.redirect("/products");
-    }
   } catch (error) {
     console.log(error);
   }

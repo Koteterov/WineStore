@@ -1,15 +1,13 @@
 import { html, nothing } from "../lib.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
-import { logout } from "../api/data.js";
-import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
-const aboutTemplate = (OnLogout, toggleCart, chosenWines ) => html`
+const aboutTemplate = (chosenWines ) => html`
   <!-- navbar -->
 
-  ${navTemplate(OnLogout, toggleCart, chosenWines)}
+  ${navTemplate()}
 
   <!-- hero -->
   <section class="page-hero">
@@ -72,16 +70,8 @@ const aboutTemplate = (OnLogout, toggleCart, chosenWines ) => html`
 
 export async function aboutPage(ctx) {
 
-  ctx.render(aboutTemplate(OnLogout, toggleCart, chosenWines));
+  ctx.render(aboutTemplate(chosenWines));
 
   setUserNav();
 
-
-
-  // logout
-  async function OnLogout() {
-    await logout();
-    setUserNav();
-    ctx.page.redirect("/products");
-  }
 }

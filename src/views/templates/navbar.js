@@ -1,6 +1,9 @@
 import { html, nothing } from "../../../src/lib.js";
+import { chosenWines } from "../products.js";
+import { toggleCart, OnLogout } from "../utils.js";
 
-export const navTemplate = (OnLogout, toggleCart, countWines) => html `
+
+export const navTemplate = () => html `
     <!-- navbar -->
     <nav class="navbar page">
       <div class="nav-center">
@@ -34,7 +37,7 @@ export const navTemplate = (OnLogout, toggleCart, countWines) => html `
           <button @click=${toggleCart} class="toggle-cart">
             <i class="fas fa-shopping-cart"></i>
           </button>
-          <span class="cart-item-count">${countWines.length}</span>
+          <span class="cart-item-count">${chosenWines.length}</span>
         </div>
       </div>
     </nav>

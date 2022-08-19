@@ -1,9 +1,10 @@
 import { html, nothing } from "../lib.js";
-import { getTempData, setUserNav } from "./utils.js";
+import { setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
 import { chosenWines } from "./products.js";
 import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
+import { OnLogout } from "./utils.js";
 
 const homeTemplate = (chosenWines, OnLogout, toggleCart) => html`
   <!-- navbar -->
@@ -123,16 +124,10 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart) => html`
 `;
 
 export async function homePage(ctx) {
-  // get temp order total
 
   ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart));
   setUserNav();
 
-  async function OnLogout() {
-    await logout();
-    setUserNav();
-    ctx.page.redirect("/products");
-  }
+
 }
 
-// onRemove()

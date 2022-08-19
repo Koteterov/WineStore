@@ -2,14 +2,13 @@ import { html, page } from "../lib.js";
 import { login } from "../api/data.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
-import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 
-const loginTemplate = (data, toggleCart, onSubmit) => html`
+const loginTemplate = (data, onSubmit) => html`
 
     <!-- navbar -->
-    ${navTemplate(null, toggleCart, data)}
+    ${navTemplate()}
 
       <!-- cart -->
       ${cartTemplate(data)}
@@ -48,7 +47,7 @@ const loginTemplate = (data, toggleCart, onSubmit) => html`
 export async function loginPage(ctx) {
   const data = chosenWines;
 
-  ctx.render(loginTemplate(data, toggleCart, onSubmit));
+  ctx.render(loginTemplate(data, onSubmit));
 
   setUserNav();
 
