@@ -1,5 +1,5 @@
-import { html, repeat, page } from "../../../src/lib.js";
-import { getList, getSingleWine } from "../../api/data.js";
+import { html, repeat, page, nothing } from "../../../src/lib.js";
+import { getList, getSingleWine, getWineType } from "../../api/data.js";
 import { chosenWines } from "../products.js";
 import { toggleCart } from "../utils.js";
 
@@ -39,122 +39,89 @@ export const productsTemplate = () =>
               max="100"
             />
           </form>
-          ${
-            html` <p class="price-value">Choose Price & Wine Type</p> `
-            // value == undefined
-            // ? html` <p class="price-value">Choose Price & Wine Type</p> `
-            // : html` <p class="price-value">Value: ${value} lv</p>`
-          }
+          ${value == undefined
+            ? html` <p class="price-value">Choose Price & Wine Type</p> `
+            : html` <p class="price-value">Value: ${value} lv</p>`}
         </div>
       </div>
       <!-- products -->
       <div class="products-container">
-        ${
-          // repeat(
-          //   data,
-          //   (i) => i._id,
-          //   (data) => html`
-          //     <article class="product">
-          //       <div class="product-container">
-          //         <img
-          //           src="${data.imgUrl}"
-          //           class="product-img img"
-          //           alt="${data.imgUrl}"
-          //         />
+        ${isPriceChosen == false
+          ? repeat(
+              selectedWines,
+              (i) => i._id,
+              (selectedWines) => html`
+                <article class="product">
+                  <div class="product-container">
+                    <img
+                      src="${selectedWines.imgUrl}"
+                      class="product-img img"
+                      alt="${selectedWines.imgUrl}"
+                    />
 
-          //         <div class="product-icons">
-          //           <a href="/details/${data._id}" class="product-icon">
-          //             <i class="fas fa-search"></i>
-          //           </a>
-          //           <button
-          //             @click=${addToCart}
-          //             class="product-cart-btn product-icon"
-          //             data-id="${data._id}"
-          //           >
-          //             <i class="fas fa-shopping-cart"></i>
-          //           </button>
-          //         </div>
-          //       </div>
-          //       <footer>
-          //         <p class="product-name">${data.name}</p>
-          //         <h4 class="product-price">${data.price} Lv</h4>
-          //       </footer>
-          //     </article>
-          //   `
-          // )
-
-          showAllWines
-            ? repeat(
-                data,
-                (i) => i._id,
-                (data) => html`
-                  <article class="product">
-                    <div class="product-container">
-                      <img
-                        src="${data.imgUrl}"
-                        class="product-img img"
-                        alt="${data.imgUrl}"
-                      />
-
-                      <div class="product-icons">
-                        <a href="/details/${data._id}" class="product-icon">
-                          <i class="fas fa-search"></i>
-                        </a>
-                        <button
-                          @click=${addToCart}
-                          class="product-cart-btn product-icon"
-                          data-id="${data._id}"
-                        >
-                          <i class="fas fa-shopping-cart"></i>
-                        </button>
-                      </div>
+                    <div class="product-icons">
+                      <a
+                        href="/details/${selectedWines._id}"
+                        class="product-icon"
+                      >
+                        <i class="fas fa-search"></i>
+                      </a>
+                      <button
+                        @click=${addToCart}
+                        class="product-cart-btn product-icon"
+                        data-id="${selectedWines._id}"
+                      >
+                        <i class="fas fa-shopping-cart"></i>
+                      </button>
                     </div>
-                    <footer>
-                      <p class="product-name">${data.name}</p>
-                      <h4 class="product-price">${data.price} Lv</h4>
-                    </footer>
-                  </article>
-                `
-              )
-            : // html`<h3 class="filter-error">
-              //     sorry, no wines matched this range
-              //   </h3>`
-              repeat(
-                selectedWines,
-                (i) => i._id,
-                (selectedWines) => html`
-                  <article class="product">
-                    <div class="product-container">
-                      <img
-                        src="${selectedWines.imgUrl}"
-                        class="product-img img"
-                        alt="${selectedWines.imgUrl}"
-                      />
+                  </div>
+                  <footer>
+                    <p class="product-name">${selectedWines.name}</p>
+                    <h4 class="product-price">${selectedWines.price} Lv</h4>
+                  </footer>
+                </article>
+              `
+            )
+          : repeat(
+              selectedByPrice,
+              (i) => i._id,
+              (selectedByPrice) => html`
+                <article class="product">
+                  <div class="product-container">
+                    <img
+                      src="${selectedByPrice.imgUrl}"
+                      class="product-img img"
+                      alt="${selectedByPrice.imgUrl}"
+                    />
 
-                      <div class="product-icons">
-                        <a
-                          href="/details/${selectedWines._id}"
-                          class="product-icon"
-                        >
-                          <i class="fas fa-search"></i>
-                        </a>
-                        <button
-                          @click=${addToCart}
-                          class="product-cart-btn product-icon"
-                          data-id="${selectedWines._id}"
-                        >
-                          <i class="fas fa-shopping-cart"></i>
-                        </button>
-                      </div>
+                    <div class="product-icons">
+                      <a
+                        href="/details/${selectedByPrice._id}"
+                        class="product-icon"
+                      >
+                        <i class="fas fa-search"></i>
+                      </a>
+                      <button
+                        @click=${addToCart}
+                        class="product-cart-btn product-icon"
+                        data-id="${selectedByPrice._id}"
+                      >
+                        <i class="fas fa-shopping-cart"></i>
+                      </button>
                     </div>
-                    <footer>
-                      <p class="product-name">${selectedWines.name}</p>
-                      <h4 class="product-price">${selectedWines.price} Lv</h4>
-                    </footer>
-                  </article>
-                `
-              )
-        }
+                  </div>
+                  <footer>
+                    <p class="product-name">${selectedByPrice.name}</p>
+                    <h4 class="product-price">${selectedByPrice.price} Lv</h4>
+                  </footer>
+                </article>
+              `
+            )}
+        ${showNoMatches
+          ? html`<h3 class="filter-error">
+              sorry, no wines matched this range
+            </h3>`
+          : nothing}
       </div>
     </section>
     <!-- page loading -->
@@ -166,17 +133,15 @@ export const productsTemplate = () =>
 const data = await getList();
 const types = new Set(data.map((t) => t.type));
 const prices = data.map((p) => p.price);
+
 const maxPrice = Math.max(...prices);
+const priceToDispaly = Math.ceil(maxPrice);
 
-// const priceInput = document.querySelector(".price-filter");
-// const priceToDispaly = Math.ceil(maxPrice);
-// priceInput.max = priceToDispaly;
-// priceInput.min = 0;
-
-let price = null;
-
-let selectedWines = [];
-let showAllWines = true;
+let value;
+let selectedWines = data;
+let selectedByPrice = [];
+let isPriceChosen = false;
+let showNoMatches = false;
 
 // add wine to cart
 async function addToCart(e) {
@@ -188,7 +153,7 @@ async function addToCart(e) {
   chosenWines.forEach((w) => w.id == wineId);
 
   // make choice unique
-  if (!selectedWine) {
+  if (selectedWine == undefined) {
     chosenWines.push({
       name: singleWine.name,
       price: singleWine.price,
@@ -206,46 +171,73 @@ async function addToCart(e) {
 
   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
 
-  price = singleWine.price;
-
   //refresh cart
   page.redirect("/products");
   toggleCart();
 }
 
-// show price of all wines
-// const value = parseInt(priceInput.value);
+// show price of wines by scroll
+async function showPrice() {
+  isPriceChosen = true;
+  showNoMatches = false;
 
-// const winesByPrice = data.filter((w) => w.price < value);
-// const showNoWines = winesByPrice == 0;
+  let selectedType = new Set(selectedWines.map((w) => w.type));
+  const priceInput = document.querySelector(".price-filter");
+  value = parseInt(priceInput.value);
 
-function showPrice() {}
+  priceInput.max = priceToDispaly;
+  priceInput.min = 0;
+
+  if (selectedType.size == 1) {
+    selectedByPrice = selectedWines.filter((w) => w.price < value);
+  }
+
+  if (selectedType.size > 1) {
+    selectedByPrice = selectedWines.filter((w) => w.price < value);
+  }
+
+  if (selectedByPrice.length == 0) {
+    showNoMatches = true;
+  }
+
+  page.redirect("/products");
+}
 
 // choose all wine types
 function chooseAll() {
-  showAllWines = true;
+  isPriceChosen = false;
+  showNoMatches = false;
+
+  const priceInput = document.querySelector(".price-filter");
+  value = parseInt(priceInput.value);
+
+  priceInput.max = priceToDispaly;
+  priceInput.min = 0;
+
+  selectedWines = data;
+  value = undefined;
+
   page.redirect("/products");
 }
 
 // choose type of wine
-function chooseType(e) {
-  showAllWines = false;
+async function chooseType(e) {
+  isPriceChosen = false;
+  showNoMatches = false;
+
   const priceInput = document.querySelector(".price-filter");
-  const priceToDispaly = Math.ceil(maxPrice);
+  value = parseInt(priceInput.value);
+
   priceInput.max = priceToDispaly;
   priceInput.min = 0;
 
   const chosenType = e.target.id;
 
-  selectedWines = data.filter((w) => w.type == chosenType);
+  const wineType = await getWineType(chosenType);
+  selectedWines = wineType;
+
+  value = undefined;
 
   page.redirect("/products");
-
-  // show price of chosen wines
-  function showChosenByPrice() {
-    const value = parseInt(priceInput.value);
-    const SelectedWinesByPrice = selectedWines.filter((w) => w.price < value);
-  }
-
-  showChosenByPrice();
 }
+

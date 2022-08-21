@@ -10,6 +10,7 @@ export const logout = api.logout;
 const endpoints = {
   catalog: "/data/wines",
   details: (id) => `/data/wines/${id}`,
+  types: (type) => `/data/wines?where=type%3D%22${type}%22`
 
 };
 
@@ -23,6 +24,9 @@ export async function getSingleWine(id) {
   return await api.get(host + endpoints.details(id));
 }
 
+export async function getWineType(type) {
+  return await api.get(host + endpoints.types(type))
+}
 // export async function search(query) {
 //   return await api.get(host + endpoints.search(query));
 // }
