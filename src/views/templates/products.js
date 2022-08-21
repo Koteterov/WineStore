@@ -35,18 +35,18 @@ export const productsTemplate = () =>
               type="range"
               class="price-filter"
               min="0"
-              value="50"
-              max="100"
+              value=${value}
+              max="40"
             />
           </form>
           ${value == undefined
-            ? html` <p class="price-value">Choose Price & Wine Type</p> `
+            ? html` <p class="price-value">Choose Type & Increase Price</p> `
             : html` <p class="price-value">Value: ${value} lv</p>`}
         </div>
       </div>
       <!-- products -->
       <div class="products-container">
-        ${isPriceChosen == false
+        ${selectedWines.length > 0
           ? repeat(
               selectedWines,
               (i) => i._id,
@@ -82,46 +82,10 @@ export const productsTemplate = () =>
                 </article>
               `
             )
-          : repeat(
-              selectedByPrice,
-              (i) => i._id,
-              (selectedByPrice) => html`
-                <article class="product">
-                  <div class="product-container">
-                    <img
-                      src="${selectedByPrice.imgUrl}"
-                      class="product-img img"
-                      alt="${selectedByPrice.imgUrl}"
-                    />
-
-                    <div class="product-icons">
-                      <a
-                        href="/details/${selectedByPrice._id}"
-                        class="product-icon"
-                      >
-                        <i class="fas fa-search"></i>
-                      </a>
-                      <button
-                        @click=${addToCart}
-                        class="product-cart-btn product-icon"
-                        data-id="${selectedByPrice._id}"
-                      >
-                        <i class="fas fa-shopping-cart"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <footer>
-                    <p class="product-name">${selectedByPrice.name}</p>
-                    <h4 class="product-price">${selectedByPrice.price} Lv</h4>
-                  </footer>
-                </article>
-              `
-            )}
-        ${showNoMatches
-          ? html`<h3 class="filter-error">
-              sorry, no wines matched this range
-            </h3>`
-          : nothing}
+          : html`<h3 class="filter-error">
+              sorry, no wines matched this range. Please increase
+              price & choose type
+            </h3> `}
       </div>
     </section>
     <!-- page loading -->
@@ -137,7 +101,7 @@ const prices = data.map((p) => p.price);
 const maxPrice = Math.max(...prices);
 const priceToDispaly = Math.ceil(maxPrice);
 
-let value;
+let value = Math.ceil(maxPrice);
 let selectedWines = data;
 let selectedByPrice = [];
 let isPriceChosen = false;
@@ -181,32 +145,48 @@ async function showPrice() {
   isPriceChosen = true;
   showNoMatches = false;
 
-  let selectedType = new Set(selectedWines.map((w) => w.type));
+  let selectedType = [...new Set(selectedWines.map((w) => w.type))];
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
+
+  console.log(selectedType);
 
   priceInput.max = priceToDispaly;
   priceInput.min = 0;
 
-  if (selectedType.size == 1) {
-    selectedByPrice = selectedWines.filter((w) => w.price < value);
+  const chosenType = selectedType[0];
+
+  const wineType = await getWineType(chosenType);
+
+  if (selectedType.length == 1) {
+    selectedWines = wineType.filter((w) => w.price < value);
   }
 
-  if (selectedType.size > 1) {
-    selectedByPrice = selectedWines.filter((w) => w.price < value);
+  if (selectedType.length > 1) {
+    selectedWines = data.filter((w) => w.price < value);
   }
 
-  if (selectedByPrice.length == 0) {
-    showNoMatches = true;
+  // if (selectedByPrice.length == 0) {
+  //   showNoMatches = true;
+  // }
+
+  // selectedWines = selectedWines.filter((w) => w.price < value);
+
+  if (selectedWines.length == 0) {
+    // value = undefined
   }
 
+  console.log("selectedWines", selectedWines);
   page.redirect("/products");
 }
 
+//=======================
 // choose all wine types
 function chooseAll() {
   isPriceChosen = false;
   showNoMatches = false;
+
+  console.log("selectedByPrice BEFORE", selectedByPrice);
 
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
@@ -215,14 +195,34 @@ function chooseAll() {
   priceInput.min = 0;
 
   selectedWines = data;
-  value = undefined;
+  //========??
+  // selectedByPrice = selectedWines.filter((w) => w.price < value);
+
+  // value = undefined;
+
+  selectedWines = data.filter((w) => w.price < value);
+
+  console.log("selectedWines AFTER", selectedWines);
+
+  if (selectedWines.length == 0) {
+    // value = undefined
+  }
 
   page.redirect("/products");
 }
 
+//=============================
 // choose type of wine
 async function chooseType(e) {
   isPriceChosen = false;
+
+  // if (selectedByPrice.length == 0) {
+
+  //   isPriceChosen = false;
+  // } else {
+  //   isPriceChosen = true;
+
+  // }
   showNoMatches = false;
 
   const priceInput = document.querySelector(".price-filter");
@@ -234,10 +234,23 @@ async function chooseType(e) {
   const chosenType = e.target.id;
 
   const wineType = await getWineType(chosenType);
-  selectedWines = wineType;
+  // selectedWines = wineType;
 
-  value = undefined;
+  selectedByPrice = wineType.filter((w) => w.price < value);
+
+  selectedWines = wineType.filter((w) => w.price < value);
+
+  console.log("selectedWines PUSHHH", selectedWines);
+
+  if (selectedWines.length == 0) {
+    // value = undefined
+  }
+
+  console.log("value", value);
+  console.log("selectedWines", selectedWines);
+  console.log("wineType", wineType);
+
+  // value = undefined;
 
   page.redirect("/products");
 }
-

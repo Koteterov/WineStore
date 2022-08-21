@@ -826,7 +826,7 @@ Products Page
 .filter-error {
   position: absolute;
   top: 5rem;
-  left: 0;
+  left: 51px;
   width: 100%;
   text-align: center;
   margin-top: 4rem;
