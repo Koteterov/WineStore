@@ -1337,7 +1337,7 @@
         wines: {
             "1": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-                "name": "Wine Ribeaupierre Syrah",
+                "name": "Ribeaupierre Syrah",
                 "netQty": "0.75 l",
                 "origin": "France",
                 "imgUrl": "/images/Ribeaupierre-Syrah.png",
@@ -1348,7 +1348,7 @@
             },
             "2": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-                "name": "Wine La Sasteria",
+                "name": "La Sasteria",
                 "netQty": "0.75 l",
                 "origin": "Spain",
                 "imgUrl": "/images/Sasteria.png",
@@ -1359,7 +1359,7 @@
             },
             "3": {
                 "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
-                "name": "Wine Montepulcano d'Abruzzo",
+                "name": "Montepulcano d'Abruzzo",
                 "netQty": "0.75 l",
                 "origin": "Italy",
                 "imgUrl": "/images/Montepulcano.png",
@@ -1370,7 +1370,7 @@
             },
             "4": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-                "name": "Wine Kalkstein Claus Jacob",
+                "name": "Kalkstein Claus Jacob",
                 "netQty": "0.75 l",
                 "origin": "Germany",
                 "imgUrl": "/images/Kalkstein-Riesling.png",
@@ -1381,7 +1381,7 @@
             },
             "5": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-                "name": "Wine Green Cape",
+                "name": "Green Cape",
                 "netQty": "0.75 l",
                 "origin": "South Africa",
                 "imgUrl": "/images/GreenCape-SovBlanc.png",
@@ -1392,7 +1392,7 @@
             },
             "6": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-                "name": "Wine Ribeaupierre Sov Blanc",
+                "name": "Ribeaupierre Sov Blanc",
                 "netQty": "0.75 l",
                 "origin": "France",
                 "imgUrl": "/images/Ribeaupierre-SovBlanc.png",
@@ -1403,7 +1403,7 @@
             },
             "7": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-                "name": "Wine La Sasteria",
+                "name": "La Sasteria",
                 "netQty": "0.75 l",
                 "origin": "Spain",
                 "imgUrl": "/images/Sasteria-Rose.png",
@@ -1414,7 +1414,7 @@
             },
             "8": {
                 "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
-                "name": "Wine Les Haytieres",
+                "name": "Les Haytieres",
                 "netQty": "0.75 l",
                 "origin": "France",
                 "imgUrl": "/images/LesHaytieres-Rose.png",
@@ -1425,7 +1425,7 @@
             },
             "9": {
                 "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-                "name": "Wine Ribeaupierre",
+                "name": "Ribeaupierre",
                 "netQty": "0.75 l",
                 "origin": "France",
                 "imgUrl": "/images/Ribeaupierre-Rose.png",
@@ -1436,7 +1436,7 @@
             },
             "10": {
                 "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
-                "name": "Sparkling Wine Valmarone Prosecco",
+                "name": "Valmarone Prosecco",
                 "netQty": "0.75 l",
                 "origin": "Italy",
                 "imgUrl": "/images/Valmarone-sparkl.png",
@@ -1447,7 +1447,7 @@
             },
             "11": {
                 "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
-                "name": "Sparkling Wine Henri De Verlaine",
+                "name": "Henri De Verlaine",
                 "netQty": "0.75 l",
                 "origin": "France",
                 "imgUrl": "/images/Verlaine-sparkl.png",
@@ -1458,7 +1458,7 @@
             },
             "12": {
                 "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
-                "name": "Sparkling Wine Cava Visiega Brut",
+                "name": "Cava Visiega Brut",
                 "netQty": "0.75 l",
                 "origin": "Spain",
                 "imgUrl": "/images/Visiega-sparkl.png",

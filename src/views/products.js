@@ -57,7 +57,7 @@ const generalTemplate = (dataForCart) =>
     ${productsTemplate()}
   `;
 
-// let tempWines = [];
+
 export let chosenWines = getStoredOrder("tempOrder");
 
 // initial page rendering
@@ -73,79 +73,5 @@ export async function productsPage(ctx) {
 
   setUserNav();
 
-  // const priceInput = document.querySelector(".price-filter");
-  // const priceToDispaly = Math.ceil(maxPrice);
-  // priceInput.max = priceToDispaly;
-  // priceInput.min = 0;
-
-  // let price = null;
-
-  // // add wine to cart
-  // async function addToCart(e) {
-  //   const wineId = e.currentTarget.dataset.id;
-  //   const singleWine = await getSingleWine(wineId);
-
-  //   let selectedWine = chosenWines.find((w) => w.id == wineId);
-
-  //   // make choice unique
-  //   if (selectedWine == undefined) {
-  //     chosenWines.push({
-  //       name: singleWine.name,
-  //       price: singleWine.price,
-  //       imgUrl: singleWine.imgUrl,
-  //       id: singleWine._id,
-  //       qty: 1,
-  //       total: singleWine.price,
-  //       grandTotal: singleWine.price,
-  //     });
-  //   }
-
-  //   let tempGrandTotal = chosenWines
-  //     .map((x) => Number(x.total))
-  //     .reduce((a, b) => a + b, 0);
-
-  //   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
-
-  //   price = singleWine.price;
-
-  //   //refresh cart
-  //   ctx.page.redirect("/products");
-  //   toggleCart();
-  // }
-
-  // // show price of all wines
-  // function showPrice() {
-  //   const value = parseInt(priceInput.value);
-
-  //   const winesByPrice = data.filter((w) => w.price < value);
-  //   const showNoWines = winesByPrice == 0;
-
-  // }
-
-  // // choose all wine types
-  // function chooseAll() {
-  //   console.log('data', data);
-  //   console.log('types', types);
-
-  // }
-
-  // // choose type of wine
-  // function chooseType(e) {
-  //   const chosenType = e.target.id;
-
-  //   const selectedWines = data.filter((w) => w.type == chosenType);
-
-  //   // show price of chosen wines
-  //   function showChosenByPrice() {
-  //     const value = parseInt(priceInput.value);
-  //     const SelectedWinesByPrice = selectedWines.filter(
-  //       (w) => w.price < value
-  //     );
-  //     const showNoWines = SelectedWinesByPrice == 0;
-
-  //   }
-
-  //   showChosenByPrice();
-  // }
 
 }

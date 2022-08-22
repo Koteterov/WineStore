@@ -77,6 +77,7 @@ export const productsTemplate = () =>
                   </div>
                   <footer>
                     <p class="product-name">${selectedWines.name}</p>
+                    <p class="product-name">type: ${selectedWines.type}</p>
                     <h4 class="product-price">${selectedWines.price} Lv</h4>
                   </footer>
                 </article>
