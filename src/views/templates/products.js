@@ -102,10 +102,9 @@ const maxPrice = Math.max(...prices);
 const priceToDispaly = Math.ceil(maxPrice);
 
 let value = Math.ceil(maxPrice);
+
+// initial loading of data
 let selectedWines = data;
-let selectedByPrice = [];
-let isPriceChosen = false;
-let showNoMatches = false;
 
 // add wine to cart
 async function addToCart(e) {
@@ -139,17 +138,13 @@ async function addToCart(e) {
   page.redirect("/products");
   toggleCart();
 }
-
 // show price of wines by scroll
 async function showPrice() {
-  isPriceChosen = true;
-  showNoMatches = false;
-
-  let selectedType = [...new Set(selectedWines.map((w) => w.type))];
+   let selectedType = [...new Set(selectedWines.map((w) => w.type))];
+  
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
 
-  console.log(selectedType);
 
   priceInput.max = priceToDispaly;
   priceInput.min = 0;
@@ -166,27 +161,17 @@ async function showPrice() {
     selectedWines = data.filter((w) => w.price < value);
   }
 
-  // if (selectedByPrice.length == 0) {
-  //   showNoMatches = true;
-  // }
-
-  // selectedWines = selectedWines.filter((w) => w.price < value);
-
   if (selectedWines.length == 0) {
-    // value = undefined
+    selectedWines = data.filter((w) => w.price < value);
+
   }
 
-  console.log("selectedWines", selectedWines);
   page.redirect("/products");
 }
 
 //=======================
 // choose all wine types
 function chooseAll() {
-  isPriceChosen = false;
-  showNoMatches = false;
-
-  console.log("selectedByPrice BEFORE", selectedByPrice);
 
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
@@ -194,19 +179,8 @@ function chooseAll() {
   priceInput.max = priceToDispaly;
   priceInput.min = 0;
 
-  selectedWines = data;
-  //========??
-  // selectedByPrice = selectedWines.filter((w) => w.price < value);
-
-  // value = undefined;
-
   selectedWines = data.filter((w) => w.price < value);
 
-  console.log("selectedWines AFTER", selectedWines);
-
-  if (selectedWines.length == 0) {
-    // value = undefined
-  }
 
   page.redirect("/products");
 }
@@ -214,16 +188,6 @@ function chooseAll() {
 //=============================
 // choose type of wine
 async function chooseType(e) {
-  isPriceChosen = false;
-
-  // if (selectedByPrice.length == 0) {
-
-  //   isPriceChosen = false;
-  // } else {
-  //   isPriceChosen = true;
-
-  // }
-  showNoMatches = false;
 
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
@@ -234,23 +198,10 @@ async function chooseType(e) {
   const chosenType = e.target.id;
 
   const wineType = await getWineType(chosenType);
-  // selectedWines = wineType;
-
-  selectedByPrice = wineType.filter((w) => w.price < value);
 
   selectedWines = wineType.filter((w) => w.price < value);
 
-  console.log("selectedWines PUSHHH", selectedWines);
 
-  if (selectedWines.length == 0) {
-    // value = undefined
-  }
-
-  console.log("value", value);
-  console.log("selectedWines", selectedWines);
-  console.log("wineType", wineType);
-
-  // value = undefined;
 
   page.redirect("/products");
 }
