@@ -100,27 +100,39 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek) => html`
           loading...
         </h2> -->
 
-        <!-- single product -->
-        ${repeat(winesOfWeek, i => i._id, winesOfWeek => html `      
-        <article class="product">
-          <div class="product-container">
-            <img src=${winesOfWeek.imgUrl} class="product-img img" alt=${winesOfWeek.name} />
-           
-            <div class="product-icons">
-              <a href="/details/${winesOfWeek._id}" class="product-icon">
-                <i class="fas fa-search"></i>
-              </a>
-              <button @click=${addToCart} class="product-cart-btn product-icon" data-id=${winesOfWeek._id}>
-                <i class="fas fa-shopping-cart"></i>
-              </button>
+      <!-- single product -->
+      ${repeat(
+        winesOfWeek,
+        (i) => i._id,
+        (winesOfWeek) => html`
+          <article class="product">
+            <div class="product-container">
+              <img
+                src=${winesOfWeek.imgUrl}
+                class="product-img img"
+                alt=${winesOfWeek.name}
+              />
+
+              <div class="product-icons">
+                <a href="/details/${winesOfWeek._id}" class="product-icon">
+                  <i class="fas fa-search"></i>
+                </a>
+                <button
+                  @click=${addToCart}
+                  class="product-cart-btn product-icon"
+                  data-id=${winesOfWeek._id}
+                >
+                  <i class="fas fa-shopping-cart"></i>
+                </button>
+              </div>
             </div>
-          </div>
-          <footer>
-            <p class="product-name">${winesOfWeek.name}</p>
-            <h4 class="product-price">${winesOfWeek.price} lv</h4>
-          </footer>
-        </article>
-`)}
+            <footer>
+              <p class="product-name">${winesOfWeek.name}</p>
+              <h4 class="product-price">${winesOfWeek.price} lv</h4>
+            </footer>
+          </article>
+        `
+      )}
       <!-- end of single product -->
     </div>
     <a href="/products" class="btn"> all products </a>
@@ -128,17 +140,14 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek) => html`
 `;
 
 export async function homePage(ctx) {
-
   const data = await getList();
-  const winesOfWeek = data.filter((w,i) => {
+  const winesOfWeek = data.filter((w, i) => {
     if (i == 1 || i == 5 || i == 9) {
-      return w
-      
+      return w;
     }
-  })
+  });
+
+  console.log('winesOfWeek', winesOfWeek);
   ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek));
   setUserNav();
-
-
 }
-

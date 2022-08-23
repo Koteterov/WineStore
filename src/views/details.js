@@ -4,6 +4,8 @@ import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
+import { addToCart } from "./templates/products.js";
+
 
 const productTemplate = (chosenWines, wine) => html`
   <!-- navbar -->
@@ -63,7 +65,7 @@ const productTemplate = (chosenWines, wine) => html`
           <p class="single-product-price">Price: ${wine.price} Lv</p>
           <div class="single-product-colors"></div>
           <p class="single-product-desc">Origine: ${wine.origin}</p>
-          <button class="addToCartBtn btn" data-id=${wine._id}>
+          <button @click=${addToCart} class="addToCartBtn btn" data-id=${wine._id}>
             add to cart
           </button>
         </div>

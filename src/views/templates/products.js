@@ -124,7 +124,12 @@ let selectedWines = data;
 
 // add wine to cart
 export async function addToCart(e) {
-  const wineId = e.target.parentElement.dataset.id;
+  let wineId = e.target.parentElement.dataset.id;
+  //- to get the id from details page
+    if (wineId == undefined) {
+    wineId = e.target.dataset.id
+  }
+
   const singleWine = await getSingleWine(wineId);
 
   let selectedWine = chosenWines.find((w) => w.id == wineId);
@@ -158,6 +163,8 @@ export async function addToCart(e) {
     page.redirect("/products");
   } else if (url == "") {
     page.redirect("/");
+  } else {
+    page.redirect("/products");
   }
 
   toggleCart();
