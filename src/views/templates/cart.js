@@ -21,6 +21,7 @@ export const cartTemplate = (data) => html`
                 <img src="${x.imgUrl}" class="cart-item-img" alt="" />
                 <div>
                   <h4 class="cart-item-name">${x.name}</h4>
+                  <p class="cart-item-price">type: ${x.type}</p>
                   <p class="cart-item-price">${x.price} lv / pc</p>
                   <button
                     @click=${onRemove}

@@ -10,7 +10,7 @@ export const productsTemplate = () =>
       <div class="filters">
         <div class="filters-container">
           <!-- search -->
-          <form class="input-form">
+          <form @keyup=${onSearch} class="input-form">
             <input type="text" class="search-input" placeholder="search..." />
           </form>
           <!-- categories -->
@@ -29,19 +29,34 @@ export const productsTemplate = () =>
           </article>
           <!-- price -->
           <h4>Price</h4>
-          <form class="price-form">
-            <input
-              @input=${showPrice}
-              type="range"
-              class="price-filter"
-              min="0"
-              value=${value}
-              max="40"
-            />
-          </form>
-          ${value == undefined
-            ? html` <p class="price-value">Choose Type & Increase Price</p> `
-            : html` <p class="price-value">Value: ${value} lv</p>`}
+
+          ${disablePrice == "true"
+            ? html`
+                <form class="price-form">
+                  <input
+                    @input="40"
+                    type="range"
+                    class="price-filter"
+                    min="0"
+                    value="40"
+                    max=${value}
+                    disabled
+                  />
+                </form>
+              `
+            : html`
+                <form class="price-form">
+                  <input
+                    @input=${showPrice}
+                    type="range"
+                    class="price-filter"
+                    min="0"
+                    value=${value}
+                    max="40"
+                  />
+                </form>
+              `}
+          ${html`<p class="price-value">Value: ${value} lv</p>`}
         </div>
       </div>
       <!-- products -->
@@ -84,8 +99,7 @@ export const productsTemplate = () =>
               `
             )
           : html`<h3 class="filter-error">
-              sorry, no wines matched this range. Please increase
-              price & choose type
+              sorry, no wines matched this search
             </h3> `}
       </div>
     </section>
@@ -103,6 +117,7 @@ const maxPrice = Math.max(...prices);
 const priceToDispaly = Math.ceil(maxPrice);
 
 let value = Math.ceil(maxPrice);
+let disablePrice;
 
 // initial loading of data
 let selectedWines = data;
@@ -120,6 +135,7 @@ async function addToCart(e) {
   if (selectedWine == undefined) {
     chosenWines.push({
       name: singleWine.name,
+      type: singleWine.type,
       price: singleWine.price,
       imgUrl: singleWine.imgUrl,
       id: singleWine._id,
@@ -141,11 +157,10 @@ async function addToCart(e) {
 }
 // show price of wines by scroll
 async function showPrice() {
-   let selectedType = [...new Set(selectedWines.map((w) => w.type))];
-  
+  let selectedType = [...new Set(selectedWines.map((w) => w.type))];
+
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
-
 
   priceInput.max = priceToDispaly;
   priceInput.min = 0;
@@ -164,7 +179,6 @@ async function showPrice() {
 
   if (selectedWines.length == 0) {
     selectedWines = data.filter((w) => w.price < value);
-
   }
 
   page.redirect("/products");
@@ -173,7 +187,6 @@ async function showPrice() {
 //=======================
 // choose all wine types
 function chooseAll() {
-
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
 
@@ -182,14 +195,14 @@ function chooseAll() {
 
   selectedWines = data.filter((w) => w.price < value);
 
+  document.querySelector(".search-input").value = "";
+  disablePrice = "";
 
   page.redirect("/products");
 }
 
-//=============================
 // choose type of wine
 async function chooseType(e) {
-
   const priceInput = document.querySelector(".price-filter");
   value = parseInt(priceInput.value);
 
@@ -202,7 +215,30 @@ async function chooseType(e) {
 
   selectedWines = wineType.filter((w) => w.price < value);
 
+  document.querySelector(".search-input").value = "";
+  disablePrice = "";
 
+  page.redirect("/products");
+}
+
+// search functionality
+function onSearch(e) {
+  const searchValue = e.target.value;
+  disablePrice = "true";
+
+  selectedWines = data.filter((w) => {
+    if (
+      w.name.toLowerCase().startsWith(searchValue.toLowerCase()) &&
+      searchValue != ""
+    ) {
+      return w;
+    }
+  });
+  if (searchValue == "") {
+    selectedWines = data;
+    disablePrice = "";
+  }
+  value = Math.ceil(maxPrice);
 
   page.redirect("/products");
 }
