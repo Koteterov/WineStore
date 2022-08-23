@@ -25,6 +25,12 @@ export const navTemplate = () => html `
             <li id="loginBtn">
               <a href="/login" class="nav-link"> login </a>
             </li>
+            <li id="registerBtn">
+              <a href="/register" class="nav-link"> register </a>
+            </li>
+            <li id="yourOrderBtn">
+              <a href="/your-order" class="nav-link"> your order </a>
+            </li>
             <li id="logoutBtn">
               <a @click=${OnLogout} href="javascript:void(0)" class="nav-link"> logout </a>
             </li>

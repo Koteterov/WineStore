@@ -20,8 +20,7 @@ const loginTemplate = (data, onSubmit) => html`
       </div>
     </section>
 
-      </div>
-    </nav>
+    
         <section id="login">
           <div class="form">
             <h2>Login</h2>

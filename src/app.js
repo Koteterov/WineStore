@@ -6,6 +6,7 @@ import { homePage } from "./views/home.js";
 import { loginPage } from "./views/login.js";
 import { orderPage } from "./views/order.js";
 import { productsPage } from "./views/products.js";
+import { registerPage } from "./views/register.js";
 
 
 
@@ -20,6 +21,7 @@ page("/products", productsPage)
 page("/about", aboutPage)
 page("/details/:id", detailsPage)
 page("/login", loginPage)
+page("/register", registerPage)
 page("/order", orderPage)
 
 

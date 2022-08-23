@@ -200,16 +200,25 @@ async function showPrice() {
 
 //=======================
 // choose all wine types
-function chooseAll() {
-  const priceInput = document.querySelector(".price-filter");
-  value = parseInt(priceInput.value);
+export function chooseAll() {
 
-  priceInput.max = priceToDispaly;
-  priceInput.min = 0;
+  if (document.querySelector(".price-filter") != null) {
+    
+    const priceInput = document.querySelector(".price-filter");
+    value = parseInt(priceInput.value);
+
+    priceInput.max = priceToDispaly;
+    priceInput.min = 0;
+  
+  }
 
   selectedWines = data.filter((w) => w.price < value);
 
-  document.querySelector(".search-input").value = "";
+  if (document.querySelector(".search-input") != null) {
+    document.querySelector(".search-input").value = "";
+    
+  }
+
   disablePrice = "";
 
   page.redirect("/products");

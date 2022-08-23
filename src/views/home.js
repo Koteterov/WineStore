@@ -7,8 +7,9 @@ import { cartTemplate } from "./templates/cart.js";
 import { OnLogout } from "./utils.js";
 import { getList } from "../api/data.js";
 import { addToCart } from "./templates/products.js";
+import { chooseAll } from "./templates/products.js";
 
-const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek) => html`
+const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek, showAll) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -30,6 +31,13 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek) => html`
           <li id="loginBtn">
             <a href="/login" class="nav-link"> login </a>
           </li>
+          <li id="registerBtn">
+              <a href="/register" class="nav-link"> register </a>
+            </li>
+            <li id="yourOrderBtn">
+              <a href="/your-order" class="nav-link"> your order </a>
+            </li>
+
           <li id="logoutBtn">
             <a @click=${OnLogout} href="javascript:void(0)" class="nav-link">
               logout
@@ -53,7 +61,7 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek) => html`
     <div class="hero-container">
       <h1 class="text-slanted">chose, taste, come back</h1>
       <h3>Make your choice - we are here to help</h3>
-      <a href="/products" class="hero-btn"> show now </a>
+      <a @click=${showAll} href="javascript:void(0)" class="hero-btn"> show now </a>
     </div>
   </section>
   <!-- sidebar -->
@@ -135,7 +143,7 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek) => html`
       )}
       <!-- end of single product -->
     </div>
-    <a href="/products" class="btn"> all products </a>
+    <a @click=${showAll} href="javascript:void(0)" class="btn"> all products </a>
   </section>
 `;
 
@@ -147,7 +155,14 @@ export async function homePage(ctx) {
     }
   });
 
-  console.log('winesOfWeek', winesOfWeek);
-  ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek));
+  ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll));
+
   setUserNav();
+
+  function showAll() {
+    ctx.page.redirect('/products')
+
+    chooseAll()
+  }
+
 }

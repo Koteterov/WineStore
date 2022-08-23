@@ -69,6 +69,19 @@ export async function login(email, password) {
   return result;
 }
 
+export async function register(email, password) {
+  const result = await post(settings.host + "/users/register", {
+    email,
+    password,
+  });
+
+  sessionStorage.setItem("email", result.email);
+  sessionStorage.setItem("authToken", result.accessToken);
+  sessionStorage.setItem("userId", result._id);
+
+  return result;
+}
+
 
 export async function logout() {
   const result = await get(settings.host + "/users/logout");
