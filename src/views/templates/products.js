@@ -123,7 +123,7 @@ let disablePrice;
 let selectedWines = data;
 
 // add wine to cart
-async function addToCart(e) {
+export async function addToCart(e) {
   const wineId = e.target.parentElement.dataset.id;
   const singleWine = await getSingleWine(wineId);
 
@@ -151,8 +151,15 @@ async function addToCart(e) {
 
   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
 
+  const url = e.target.baseURI.split("/")[3];
+
   //refresh cart
-  page.redirect("/products");
+  if (url == "products") {
+    page.redirect("/products");
+  } else if (url == "") {
+    page.redirect("/");
+  }
+
   toggleCart();
 }
 // show price of wines by scroll

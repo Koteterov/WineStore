@@ -1,12 +1,14 @@
-import { html, nothing } from "../lib.js";
+import { html, repeat, nothing } from "../lib.js";
 import { setUserNav } from "./utils.js";
 import { logout } from "../api/data.js";
 import { chosenWines } from "./products.js";
 import { toggleCart } from "./utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { OnLogout } from "./utils.js";
+import { getList } from "../api/data.js";
+import { addToCart } from "./templates/products.js";
 
-const homeTemplate = (chosenWines, OnLogout, toggleCart) => html`
+const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -98,25 +100,27 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart) => html`
           loading...
         </h2> -->
 
-      <!-- single product -->
-      <!-- <article class="product">
+        <!-- single product -->
+        ${repeat(winesOfWeek, i => i._id, winesOfWeek => html `      
+        <article class="product">
           <div class="product-container">
-            <img src="./images/main-bcg.jpeg" class="product-img img" alt="" />
+            <img src=${winesOfWeek.imgUrl} class="product-img img" alt=${winesOfWeek.name} />
            
             <div class="product-icons">
-              <a href="product.html?id=1" class="product-icon">
+              <a href="/details/${winesOfWeek._id}" class="product-icon">
                 <i class="fas fa-search"></i>
               </a>
-              <button class="product-cart-btn product-icon" data-id="1">
+              <button @click=${addToCart} class="product-cart-btn product-icon" data-id=${winesOfWeek._id}>
                 <i class="fas fa-shopping-cart"></i>
               </button>
             </div>
           </div>
           <footer>
-            <p class="product-name">name</p>
-            <h4 class="product-price">$9.99</h4>
+            <p class="product-name">${winesOfWeek.name}</p>
+            <h4 class="product-price">${winesOfWeek.price} lv</h4>
           </footer>
-        </article> -->
+        </article>
+`)}
       <!-- end of single product -->
     </div>
     <a href="/products" class="btn"> all products </a>
@@ -125,7 +129,14 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart) => html`
 
 export async function homePage(ctx) {
 
-  ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart));
+  const data = await getList();
+  const winesOfWeek = data.filter((w,i) => {
+    if (i == 1 || i == 5 || i == 9) {
+      return w
+      
+    }
+  })
+  ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek));
   setUserNav();
 
 
