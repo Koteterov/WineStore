@@ -34,7 +34,9 @@ const loginTemplate = (data, onSubmit) => html`
               />
               <button type="submit">login</button>
               <p class="message">
-                Please login to finalize your order!</a>
+                Please login to finalize your order!
+                <p class="message">You have no account? <a href="/register">Register</a></p>
+
               </p>
             </form>
           </div>

@@ -1,7 +1,6 @@
 import { page } from "../lib.js";
 import { logout } from "../api/data.js";
 
-
 export function setUserNav() {
   const userId = sessionStorage.getItem("userId");
 
@@ -22,32 +21,38 @@ export function toggleCart(path) {
   const cartOverlay = document.querySelector(".cart-overlay");
   cartOverlay.classList.add("show");
 
-  page.redirect(path)
-
-
+  page.redirect(path);
 }
 
 export function getTempData(data) {
-
   return data;
 }
 
 export const getStoredOrder = (item) => {
-  let storageItem = localStorage.getItem(item)
+  let storageItem = localStorage.getItem(item);
   if (storageItem) {
-    storageItem = JSON.parse(localStorage.getItem(item))
+    storageItem = JSON.parse(localStorage.getItem(item));
   } else {
-    storageItem = []
+    storageItem = [];
   }
-  return storageItem
-}
+  return storageItem;
+};
 
 export const setStoredOrder = (name, item) => {
-  localStorage.setItem(name, JSON.stringify(item))
-}
+  localStorage.setItem(name, JSON.stringify(item));
+};
 
 export async function OnLogout() {
   await logout();
   setUserNav();
   page.redirect("/products");
+}
+
+export function notify(message) {
+  const divEl = document.getElementById("errorBox");
+  const spanEl = divEl.querySelector("span");
+  spanEl.textContent = message;
+  divEl.style.display = "block";
+
+  setTimeout(() => (divEl.style.display = "none"), 3000);
 }

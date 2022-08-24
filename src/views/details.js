@@ -62,7 +62,7 @@ const productTemplate = (chosenWines, wine) => html`
         <div>
           <h2 class="single-product-title">${wine.name}</h2>
           <p class="single-product-company text-slanted">${wine.type}</p>
-          <p class="single-product-price">Price: ${wine.price} Lv</p>
+          <p class="single-product-price">Price: ${wine.price} BGN</p>
           <div class="single-product-colors"></div>
           <p class="single-product-desc">Origine: ${wine.origin}</p>
           <button @click=${addToCart} class="addToCartBtn btn" data-id=${wine._id}>

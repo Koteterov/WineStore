@@ -2,51 +2,50 @@ import { html, nothing } from "../../../src/lib.js";
 import { chosenWines } from "../products.js";
 import { toggleCart, OnLogout } from "../utils.js";
 
-
-export const navTemplate = () => html `
-    <!-- navbar -->
-    <nav class="navbar page">
-      <div class="nav-center">
-        <!-- links -->
-        <div>
-          <button class="toggle-nav">
-            <i class="fas fa-bars"></i>
-          </button>
-          <ul class="nav-links">
-            <li>
-              <a href="/" class="nav-link"> home </a>
-            </li>
-            <li>
-              <a href="/products" class="nav-link"> products </a>
-            </li>
-            <li>
-              <a href="/about" class="nav-link"> about </a>
-            </li>
-            <li id="loginBtn">
-              <a href="/login" class="nav-link"> login </a>
-            </li>
-            <li id="registerBtn">
-              <a href="/register" class="nav-link"> register </a>
-            </li>
-            <li id="yourOrderBtn">
-              <a href="/your-order" class="nav-link"> your order </a>
-            </li>
-            <li id="logoutBtn">
-              <a @click=${OnLogout} href="javascript:void(0)" class="nav-link"> logout </a>
-            </li>
-          </ul>
-        </div>
-        <!-- logo -->
-        <span id="logo-black" class="logo-text nav-logo">'Wine is Fine'</span>
-        <!-- cart icon -->
-        <div class="toggle-container">
-          <button @click=${toggleCart} class="toggle-cart">
-            <i class="fas fa-shopping-cart"></i>
-          </button>
-          <span class="cart-item-count">${chosenWines.length}</span>
-        </div>
+export const navTemplate = () => html`
+  <!-- navbar -->
+  <nav class="navbar page">
+    <div class="nav-center">
+      <!-- links -->
+      <div>
+        <button class="toggle-nav">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links">
+          <li>
+            <a href="/" class="nav-link"> home </a>
+          </li>
+          <li>
+            <a href="/products" class="nav-link"> products </a>
+          </li>
+          <li>
+            <a href="/about" class="nav-link"> about </a>
+          </li>
+          <li id="loginBtn">
+            <a href="/login" class="nav-link"> login </a>
+          </li>
+          <li id="registerBtn">
+            <a href="/register" class="nav-link"> register </a>
+          </li>
+          <li id="yourOrderBtn">
+            <a href="/your-order" class="nav-link"> your orders </a>
+          </li>
+          <li id="logoutBtn">
+            <a @click=${OnLogout} href="javascript:void(0)" class="nav-link">
+              logout
+            </a>
+          </li>
+        </ul>
       </div>
-    </nav>
-
-
-`
+      <!-- logo -->
+      <span id="logo-black" class="logo-text nav-logo">'Wine is Fine'</span>
+      <!-- cart icon -->
+      <div class="toggle-container">
+        <button @click=${toggleCart} class="toggle-cart">
+          <i class="fas fa-shopping-cart"></i>
+        </button>
+        <span class="cart-item-count">${chosenWines.length}</span>
+      </div>
+    </div>
+  </nav>
+`;

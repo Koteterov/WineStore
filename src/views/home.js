@@ -9,7 +9,13 @@ import { getList } from "../api/data.js";
 import { addToCart } from "./templates/products.js";
 import { chooseAll } from "./templates/products.js";
 
-const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek, showAll) => html`
+const homeTemplate = (
+  chosenWines,
+  OnLogout,
+  toggleCart,
+  winesOfWeek,
+  showAll
+) => html`
   <!-- navbar -->
   <nav class="navbar">
     <div class="nav-center">
@@ -32,11 +38,11 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek, showAll) =
             <a href="/login" class="nav-link"> login </a>
           </li>
           <li id="registerBtn">
-              <a href="/register" class="nav-link"> register </a>
-            </li>
-            <li id="yourOrderBtn">
-              <a href="/your-order" class="nav-link"> your order </a>
-            </li>
+            <a href="/register" class="nav-link"> register </a>
+          </li>
+          <li id="yourOrderBtn">
+            <a href="/your-order" class="nav-link"> your orders </a>
+          </li>
 
           <li id="logoutBtn">
             <a @click=${OnLogout} href="javascript:void(0)" class="nav-link">
@@ -61,7 +67,9 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek, showAll) =
     <div class="hero-container">
       <h1 class="text-slanted">chose, taste, come back</h1>
       <h3>Make your choice - we are here to help</h3>
-      <a @click=${showAll} href="javascript:void(0)" class="hero-btn"> show now </a>
+      <a @click=${showAll} href="javascript:void(0)" class="hero-btn">
+        show now
+      </a>
     </div>
   </section>
   <!-- sidebar -->
@@ -136,14 +144,16 @@ const homeTemplate = (chosenWines, OnLogout, toggleCart, winesOfWeek, showAll) =
             </div>
             <footer>
               <p class="product-name">${winesOfWeek.name}</p>
-              <h4 class="product-price">${winesOfWeek.price} lv</h4>
+              <h4 class="product-price">${winesOfWeek.price} BGN</h4>
             </footer>
           </article>
         `
       )}
       <!-- end of single product -->
     </div>
-    <a @click=${showAll} href="javascript:void(0)" class="btn"> all products </a>
+    <a @click=${showAll} href="javascript:void(0)" class="btn">
+      all products
+    </a>
   </section>
 `;
 
@@ -155,14 +165,15 @@ export async function homePage(ctx) {
     }
   });
 
-  ctx.render(homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll));
+  ctx.render(
+    homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
+  );
 
   setUserNav();
 
   function showAll() {
-    ctx.page.redirect('/products')
+    ctx.page.redirect("/products");
 
-    chooseAll()
+    chooseAll();
   }
-
 }

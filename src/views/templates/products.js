@@ -39,7 +39,7 @@ export const productsTemplate = () =>
                     class="price-filter"
                     min="0"
                     value="40"
-                    max=${value}
+                    max=${priceFilterValue}
                     disabled
                   />
                 </form>
@@ -51,12 +51,12 @@ export const productsTemplate = () =>
                     type="range"
                     class="price-filter"
                     min="0"
-                    value=${value}
+                    value=${priceFilterValue}
                     max="40"
                   />
                 </form>
               `}
-          ${html`<p class="price-value">Value: ${value} lv</p>`}
+          ${html`<p class="price-value">Value: ${priceFilterValue} BGN</p>`}
         </div>
       </div>
       <!-- products -->
@@ -93,7 +93,7 @@ export const productsTemplate = () =>
                   <footer>
                     <p class="product-name">${selectedWines.name}</p>
                     <p class="product-name">type: ${selectedWines.type}</p>
-                    <h4 class="product-price">${selectedWines.price} Lv</h4>
+                    <h4 class="product-price">${selectedWines.price} BGN</h4>
                   </footer>
                 </article>
               `
@@ -114,9 +114,9 @@ const types = new Set(data.map((t) => t.type));
 const prices = data.map((p) => p.price);
 
 const maxPrice = Math.max(...prices);
-const priceToDispaly = Math.ceil(maxPrice);
+const maxPriceToDispaly = Math.ceil(maxPrice);
 
-let value = Math.ceil(maxPrice);
+let priceFilterValue = Math.ceil(maxPrice);
 let disablePrice;
 
 // initial loading of data
@@ -126,8 +126,8 @@ let selectedWines = data;
 export async function addToCart(e) {
   let wineId = e.target.parentElement.dataset.id;
   //- to get the id from details page
-    if (wineId == undefined) {
-    wineId = e.target.dataset.id
+  if (wineId == undefined) {
+    wineId = e.target.dataset.id;
   }
 
   const singleWine = await getSingleWine(wineId);
@@ -174,9 +174,9 @@ async function showPrice() {
   let selectedType = [...new Set(selectedWines.map((w) => w.type))];
 
   const priceInput = document.querySelector(".price-filter");
-  value = parseInt(priceInput.value);
+  priceFilterValue = parseInt(priceInput.value);
 
-  priceInput.max = priceToDispaly;
+  priceInput.max = maxPriceToDispaly;
   priceInput.min = 0;
 
   const chosenType = selectedType[0];
@@ -184,39 +184,37 @@ async function showPrice() {
   const wineType = await getWineType(chosenType);
 
   if (selectedType.length == 1) {
-    selectedWines = wineType.filter((w) => w.price < value);
+    selectedWines = wineType.filter((w) => w.price < priceFilterValue);
   }
 
   if (selectedType.length > 1) {
-    selectedWines = data.filter((w) => w.price < value);
+    selectedWines = data.filter((w) => w.price < priceFilterValue);
   }
 
   if (selectedWines.length == 0) {
-    selectedWines = data.filter((w) => w.price < value);
+    selectedWines = data.filter((w) => w.price < priceFilterValue);
   }
 
   page.redirect("/products");
 }
 
-//=======================
 // choose all wine types
 export function chooseAll() {
-
   if (document.querySelector(".price-filter") != null) {
-    
     const priceInput = document.querySelector(".price-filter");
-    value = parseInt(priceInput.value);
-
-    priceInput.max = priceToDispaly;
+    priceFilterValue = parseInt(priceInput.value);
+    priceInput.max = maxPriceToDispaly;
     priceInput.min = 0;
-  
+
+    // - to show max price in scroll when redirecting from home page
+  } else {
+    priceFilterValue = maxPriceToDispaly;
   }
 
-  selectedWines = data.filter((w) => w.price < value);
+  selectedWines = data.filter((w) => w.price < priceFilterValue);
 
   if (document.querySelector(".search-input") != null) {
     document.querySelector(".search-input").value = "";
-    
   }
 
   disablePrice = "";
@@ -227,16 +225,16 @@ export function chooseAll() {
 // choose type of wine
 async function chooseType(e) {
   const priceInput = document.querySelector(".price-filter");
-  value = parseInt(priceInput.value);
+  priceFilterValue = parseInt(priceInput.value);
 
-  priceInput.max = priceToDispaly;
+  priceInput.max = maxPriceToDispaly;
   priceInput.min = 0;
 
   const chosenType = e.target.id;
 
   const wineType = await getWineType(chosenType);
 
-  selectedWines = wineType.filter((w) => w.price < value);
+  selectedWines = wineType.filter((w) => w.price < priceFilterValue);
 
   document.querySelector(".search-input").value = "";
   disablePrice = "";
@@ -261,7 +259,7 @@ function onSearch(e) {
     selectedWines = data;
     disablePrice = "";
   }
-  value = Math.ceil(maxPrice);
+  priceFilterValue = maxPriceToDispaly;
 
   page.redirect("/products");
 }

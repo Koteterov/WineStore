@@ -2,6 +2,7 @@ import { html, nothing } from "../../../src/lib.js";
 import { page } from "../../../src/lib.js";
 import { chosenWines } from "../products.js";
 import { setStoredOrder } from "../utils.js";
+import { notify } from "../utils.js";
 
 export const cartTemplate = (data) => html`
   <div class="cart-overlay">
@@ -22,7 +23,7 @@ export const cartTemplate = (data) => html`
                 <div>
                   <h4 class="cart-item-name">${x.name}</h4>
                   <p class="cart-item-price">type: ${x.type}</p>
-                  <p class="cart-item-price">${x.price} lv / pc</p>
+                  <p class="cart-item-price">${x.price} BGN / pc</p>
                   <button
                     @click=${onRemove}
                     class="cart-item-remove-btn"
@@ -58,7 +59,7 @@ export const cartTemplate = (data) => html`
         <footer>
           <h3 class="cart-total text-slanted">
             ${data[0]
-              ? html`total : ${Number(data[0].grandTotal).toFixed(2)} lv`
+              ? html`total : ${Number(data[0].grandTotal).toFixed(2)} BGN`
               : nothing}
           </h3>
           <a href="/order" @click=${onCheckout} class="cart-checkout btn"
@@ -160,5 +161,20 @@ function closeCart() {
 
 // checkout
 function onCheckout(e) {
-  page.redirect("/order");
+  const cartOverlay = document.querySelector(".cart-overlay");
+  setStoredOrder("tempOrder", chosenWines);
+  const user = sessionStorage.getItem("userId");
+
+  if (user) {
+    cartOverlay.classList.remove("show");
+    page.redirect("/order");
+  
+  } else {
+
+    notify("Please login to finalize your order!")
+    page.redirect("/login");
+
+  }
+
+
 }
