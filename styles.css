@@ -915,6 +915,7 @@ Login
   padding: 8% 0 0;
   margin: auto;
 }
+
 .form {
   background: #ffffff;
   max-width: 460px;
@@ -943,6 +944,7 @@ Login
   box-sizing: border-box;
   font-size: 14px;
 }
+
 .form textarea {
   border: 1px solid rgb(206, 206, 206);
   width: 99%;
@@ -952,6 +954,7 @@ Login
   margin-bottom: 10px;
   background-color: rgb(242, 242, 242);
 }
+
 .form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
@@ -966,6 +969,7 @@ Login
   transition: all 0.3 ease;
   cursor: pointer;
 }
+
 .form button:hover,
 .form button:active,
 .form button:focus {
@@ -975,12 +979,14 @@ Login
 .form .register-form {
   display: none;
 }
+
 .container {
   position: relative;
   z-index: 1;
   max-width: 300px;
   margin: 0 auto;
 }
+
 .container:before,
 .container:after {
   content: "";
@@ -993,12 +999,17 @@ Login
   color: #b3b3b3;
   font-size: 17px;
 }
+
 .form .message a {
   color: #5c9596;
   text-decoration: none;
 }
 
-/* Notifications */
+/*
+=============
+Notifications
+============= 
+*/
 
 #notifications {
   float: right;
@@ -1021,7 +1032,7 @@ Login
 
 .notification>span {
   display: inline-block;
-  padding:  0.5em 2em 0.5em 2em;
+  padding: 0.5em 2em 0.5em 2em;
   border-radius: 10px;
 }
 
@@ -1029,12 +1040,35 @@ Login
   background: #F50;
 }
 
-.order {
-  padding-left: 175px;
-}
+
+/* 
+==============
+order display 
+==============
+*/
 .orders {
-    color: var(--clr-grey-5);
-    height: 33px;
-    margin: 7px;
-    margin-top: 35px;
+  background-color: var(--clr-grey-10);
+  color: hsl(240, 2.6%, 7.6%);
+  border: none;
+  height: 45px;
+  width: 200px;
+  margin-right: 15px;
+  margin-top: 35px;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+}
+
+.orders:hover {
+  background-color: var(--clr-primary-5);
+}
+
+.order-message {
+  text-transform: uppercase;
+  font-size: 1.75rem;
+}
+
+#no-order {
+  margin-top: 0rem;
 }

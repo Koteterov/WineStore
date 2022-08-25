@@ -1,11 +1,20 @@
-import { html, repeat } from "../lib.js";
+import { html, repeat, page } from "../lib.js";
 import { setUserNav } from "./utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 import { myOrders } from "../api/data.js";
 
-const yourOrderTemplate = (data, order, total, chooseOrder) => html`
+const yourOrderTemplate = (
+  orderId,
+  orderTime,
+  data,
+  chosenOrders,
+  totalAllOrders,
+  chooseAllOrders,
+  chooseSingleOrder,
+  showTotalAllOrders
+) => html`
   <!-- navbar -->
 
   ${navTemplate()}
@@ -20,57 +29,88 @@ const yourOrderTemplate = (data, order, total, chooseOrder) => html`
     </div>
   </section>
 
-  <!-- orders -->
-  <section class="order">
-            ${repeat(
-              order,
-              (i) => i._id,
-              (order) => html`
-                <button @click=${chooseOrder} id=${order._id} class="orders">
-                  ${111111111111}
-            </button>
-              `
-            )}
-  </section>
-
-
   <!-- total -->
-  <section class="section section-center about-page">
-    <div class="title">
-      <h2>total price of your orders:<span>${"/ "}${total + " BGN"}</span></h2>
+  ${showTotalAllOrders
+    ? html`
+        <section class="section section-center about-page">
+          <div class="title">
+            <h2 class="order-message">this is a list of all ordered wines</h2>
+            <h2 class="order-message">
+              total sum of your orders:<span
+                >${"/ "}${totalAllOrders + " BGN"}</span
+              >
+            </h2>
+          </div>
+        </section>
+      `
+    : html`
+        <section class="section section-center about-page">
+          <div class="title">
+            <h2 class="order-message">
+              total for the selected order:<span
+                >${"/ "}${Number(chosenOrders[0].grandTotal).toFixed(2) +
+                " BGN"}</span
+              >
+            </h2>
+          </div>
+        </section>
+      `}
+
+  <!-- products -->
+  <section class="products">
+    <!-- filters -->
+    <div class="filters">
+      <div class="filters-container">
+        <!-- categories -->
+        <h4>Your Orders</h4>
+        <article class="companies">
+          <button @click=${chooseAllOrders} class="orders">All Orders</button>
+          ${orderId.map(
+            (x, i) => html`
+              <button @click=${chooseSingleOrder} id=${x} class="orders">
+                Order of ${orderTime[i]}
+              </button>
+            `
+          )}
+        </article>
+      </div>
+    </div>
+    <!-- products -->
+    <div class="products-container">
+      ${chosenOrders.length > 0
+        ? repeat(
+            chosenOrders,
+            (i) => i.id,
+            (order) => html`
+              <article class="product">
+                <div class="product-container">
+                  <img
+                    src="${order.imgUrl}"
+                    class="product-img img"
+                    alt="${order.imgUrl}"
+                  />
+
+                  <div class="product-icons">
+                    <a href="/details/${order.id}" class="product-icon">
+                      <i class="fas fa-search"></i>
+                    </a>
+                  </div>
+                </div>
+                <footer>
+                  <p class="product-name">${order.name}</p>
+                  <p class="product-name">type: ${order.type}</p>
+                  <p class="product-name">price / pc: ${order.price} BGN</p>
+                  <p class="product-name">ordered quantity: ${order.qty}</p>
+                  <h4 class="product-price">totally: ${Number(order.total).toFixed(2)} BGN</h4>
+                </footer>
+              </article>
+            `
+          )
+        : html`<h3 id="no-order" class="filter-error">
+            you have no order yet
+          </h3> `}
     </div>
   </section>
-
-  <div class="products-container">
-    ${repeat(
-      order,
-      (i) => i._id,
-      (order) => html`
-        <article class="product">
-          <div class="product-container">
-            <img
-              src="${order.imgUrl}"
-              class="product-img img"
-              alt="${order.imgUrl}"
-            />
-
-            <div class="product-icons">
-              <a href="/details/${order.id}" class="product-icon">
-                <i class="fas fa-search"></i>
-              </a>
-            </div>
-          </div>
-          <footer>
-            <p class="product-name">${order.name}</p>
-            <p class="product-name">type: ${order.type}</p>
-            <p class="product-name">price / pc: ${order.price} BGN</p>
-            <p class="product-name">ordered quantity: ${order.qty}</p>
-            <h4 class="product-price">totally: ${order.total} BGN</h4>
-          </footer>
-        </article>
-      `
-    )}
-  </div>
 `;
 
 export async function yourOrderPage(ctx) {
@@ -78,17 +118,75 @@ export async function yourOrderPage(ctx) {
     const data = chosenWines;
     const user = sessionStorage.getItem("userId");
     const yourOrders = await myOrders(user);
-    const order = yourOrders.map((x) => JSON.parse(x.order)).flat();
-    const total = order
+
+    let chosenOrders = yourOrders.map((x) => JSON.parse(x.order)).flat();
+    const orderId = yourOrders.map((x) => x._id);
+    const orderTime = yourOrders
+      .map((x) => x._createdOn)
+      .map((t) => new Date(t).toLocaleString("sv"));
+
+    let totalAllOrders = chosenOrders
       .map((x) => Number(x.total))
       .reduce((a, b) => a + b, 0)
       .toFixed(2);
 
-    ctx.render(yourOrderTemplate(data, order, total, chooseOrder));
+    let showTotalAllOrders = true;
+
+    ctx.render(
+      yourOrderTemplate(
+        orderId,
+        orderTime,
+        data,
+        chosenOrders,
+        totalAllOrders,
+        chooseAllOrders,
+        chooseSingleOrder,
+        showTotalAllOrders
+      )
+    );
     setUserNav();
 
-    function chooseOrder(e) {
-      
+    function chooseAllOrders() {
+      showTotalAllOrders = true;
+
+      chosenOrders = yourOrders.map((x) => JSON.parse(x.order)).flat();
+
+      ctx.render(
+        yourOrderTemplate(
+          orderId,
+          orderTime,
+          data,
+          chosenOrders,
+          totalAllOrders,
+          chooseAllOrders,
+          chooseSingleOrder,
+          showTotalAllOrders
+        )
+      );
+    }
+
+    function chooseSingleOrder(e) {
+      showTotalAllOrders = false;
+      const orderNr = e.target.id;
+      chosenOrders = yourOrders
+        .filter((x) => x._id == orderNr)
+        .map((x) => JSON.parse(x.order))
+        .flat();
+
+      console.log("chosenOrders", chosenOrders);
+
+      ctx.render(
+        yourOrderTemplate(
+          orderId,
+          orderTime,
+          data,
+          chosenOrders,
+          totalAllOrders,
+          chooseAllOrders,
+          chooseSingleOrder,
+          showTotalAllOrders
+        )
+      );
     }
   } catch (error) {
     console.log(error);
