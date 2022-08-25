@@ -103,10 +103,15 @@ export const productsTemplate = () =>
             </h3> `}
       </div>
     </section>
+
     <!-- page loading -->
-    <!-- <div class="page-loading">
-      <h2>Loading...</h2>
-    </div> -->
+    ${!selectedWines
+      ? html`
+          <div class="page-loading">
+            <h2>Loading...</h2>
+          </div>
+        `
+      : nothing}
   `;
 
 const data = await getList();

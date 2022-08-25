@@ -61,7 +61,7 @@ const productTemplate = (chosenWines, wine) => html`
       <article class="single-product-info">
         <div>
           <h2 class="single-product-title">${wine.name}</h2>
-          <p class="single-product-company text-slanted">${wine.type}</p>
+          <p class="single-product-company text-slanted">type: ${wine.type}</p>
           <p class="single-product-price">Price: ${wine.price} BGN</p>
           <div class="single-product-colors"></div>
           <p class="single-product-desc">Origine: ${wine.origin}</p>

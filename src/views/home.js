@@ -112,9 +112,9 @@ const homeTemplate = (
       <h2><span>/</span>Wines of the Week</h2>
     </div>
     <div class="featured-center section-center">
-      <!-- <h2 class="section-loading">
-          loading...
-        </h2> -->
+      ${!winesOfWeek
+        ? html` <h2 class="section-loading">loading...</h2> `
+        : nothing}
 
       <!-- single product -->
       ${repeat(
@@ -159,6 +159,7 @@ const homeTemplate = (
 
 export async function homePage(ctx) {
   const data = await getList();
+
   const winesOfWeek = data.filter((w, i) => {
     if (i == 1 || i == 5 || i == 9) {
       return w;
@@ -177,3 +178,27 @@ export async function homePage(ctx) {
     chooseAll();
   }
 }
+
+//======
+// export async function homePage(ctx) {
+//   ctx.render(until(homeWrapper(ctx), 'Loading ...'));
+// }
+
+// async function homeWrapper(ctx) {
+//   const data = await getList();
+//   const winesOfWeek = data.filter((w, i) => {
+//     if (i == 1 || i == 5 || i == 9) {
+//       return w;
+//     }
+//   });
+
+//   return homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
+
+//   // setUserNav();
+//   function showAll() {
+//     ctx.page.redirect("/products");
+
+//     chooseAll();
+//   }
+
+// }
