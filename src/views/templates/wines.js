@@ -1,4 +1,4 @@
-import { html, repeat, nothing } from "../../../src/lib.js";
+import { html, repeat, nothing } from "../../lib.js";
 import {
   selectedWines,
   disablePrice,

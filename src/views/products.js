@@ -2,7 +2,7 @@ import { html } from "../lib.js";
 import { setUserNav } from "../utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { navTemplate } from "./templates/navbar.js";
-import { productsTemplate } from "./templates/products.js";
+import { productsTemplate } from "./templates/wines.js";
 import { getStoredOrder } from "../utils.js";
 
 const generalTemplate = (dataForCart) =>
