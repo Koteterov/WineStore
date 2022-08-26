@@ -1,12 +1,12 @@
 import { html, repeat, nothing } from "../lib.js";
+import { until } from "../lib.js";
 import { page } from "../lib.js";
 import { getList, getSingleWine } from "../api/data.js";
-import { setUserNav } from "./utils.js";
+import { setUserNav } from "../utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { navTemplate } from "./templates/navbar.js";
 import { productsTemplate } from "./templates/products.js";
-import { getStoredOrder } from "./utils.js";
-import { toggleCart } from "./utils.js";
+import { getStoredOrder } from "../utils.js";
 
 const generalTemplate = (dataForCart) =>
   html`
@@ -57,21 +57,13 @@ const generalTemplate = (dataForCart) =>
     ${productsTemplate()}
   `;
 
-
 export let chosenWines = getStoredOrder("tempOrder");
 
 // initial page rendering
 export async function productsPage(ctx) {
-  const data = await getList();
-  const types = new Set(data.map((t) => t.type));
-  const prices = data.map((p) => p.price);
-  const maxPrice = Math.max(...prices);
-
   const dataForCart = chosenWines;
 
   ctx.render(generalTemplate(dataForCart));
 
   setUserNav();
-
-
 }

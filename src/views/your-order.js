@@ -1,5 +1,5 @@
 import { html, repeat, page } from "../lib.js";
-import { setUserNav } from "./utils.js";
+import { setUserNav } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";

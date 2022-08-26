@@ -1,10 +1,9 @@
 import { html, repeat, nothing } from "../lib.js";
-import { setUserNav } from "./utils.js";
-import { logout } from "../api/data.js";
+import { setUserNav } from "../utils.js";
 import { chosenWines } from "./products.js";
-import { toggleCart } from "./utils.js";
+import { toggleCart } from "../utils.js";
 import { cartTemplate } from "./templates/cart.js";
-import { OnLogout } from "./utils.js";
+import { OnLogout } from "../utils.js";
 import { getList } from "../api/data.js";
 import { addToCart } from "./templates/products.js";
 import { chooseAll } from "./templates/products.js";
@@ -179,26 +178,3 @@ export async function homePage(ctx) {
   }
 }
 
-//======
-// export async function homePage(ctx) {
-//   ctx.render(until(homeWrapper(ctx), 'Loading ...'));
-// }
-
-// async function homeWrapper(ctx) {
-//   const data = await getList();
-//   const winesOfWeek = data.filter((w, i) => {
-//     if (i == 1 || i == 5 || i == 9) {
-//       return w;
-//     }
-//   });
-
-//   return homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
-
-//   // setUserNav();
-//   function showAll() {
-//     ctx.page.redirect("/products");
-
-//     chooseAll();
-//   }
-
-// }

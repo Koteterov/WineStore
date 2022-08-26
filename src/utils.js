@@ -1,5 +1,5 @@
-import { page } from "../lib.js";
-import { logout } from "../api/data.js";
+import { page } from "./lib.js";
+import { logout } from "./api/data.js";
 
 export function setUserNav() {
   const userId = sessionStorage.getItem("userId");

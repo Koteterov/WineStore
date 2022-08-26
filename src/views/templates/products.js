@@ -1,7 +1,7 @@
 import { html, repeat, page, nothing } from "../../../src/lib.js";
 import { getList, getSingleWine, getWineType } from "../../api/data.js";
 import { chosenWines } from "../products.js";
-import { toggleCart } from "../utils.js";
+import { toggleCart } from "../../utils.js";
 
 export const productsTemplate = () =>
   html`
@@ -113,6 +113,7 @@ export const productsTemplate = () =>
         `
       : nothing}
   `;
+
 
 const data = await getList();
 const types = new Set(data.map((t) => t.type));
