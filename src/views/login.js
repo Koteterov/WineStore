@@ -1,4 +1,4 @@
-import { html, page } from "../lib.js";
+import { html } from "../lib.js";
 import { login } from "../api/data.js";
 import { setUserNav } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";

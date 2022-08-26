@@ -3,7 +3,6 @@ import { setStoredOrder, notify } from "./utils.js";
 import { chosenWines } from "./views/products.js";
 
 
-
 // remove wine
 export function onRemove(e) {
   const path = `/${e.target.baseURI.split("/")[3]}`;

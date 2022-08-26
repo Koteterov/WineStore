@@ -1,7 +1,4 @@
-import { html, repeat, nothing } from "../lib.js";
-import { until } from "../lib.js";
-import { page } from "../lib.js";
-import { getList, getSingleWine } from "../api/data.js";
+import { html } from "../lib.js";
 import { setUserNav } from "../utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { navTemplate } from "./templates/navbar.js";

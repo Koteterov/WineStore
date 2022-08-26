@@ -5,8 +5,8 @@ import { toggleCart } from "../utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { OnLogout } from "../utils.js";
 import { getList } from "../api/data.js";
-import { addToCart } from "./templates/products.js";
-import { chooseAll } from "./templates/products.js";
+import { addToCart } from "../orderFunctionality.js";
+import { chooseAll } from "../orderFunctionality.js";
 
 const homeTemplate = (
   chosenWines,
@@ -177,4 +177,3 @@ export async function homePage(ctx) {
     chooseAll();
   }
 }
-

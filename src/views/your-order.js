@@ -1,4 +1,4 @@
-import { html, repeat, page } from "../lib.js";
+import { html, repeat } from "../lib.js";
 import { setUserNav } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
@@ -101,7 +101,9 @@ const yourOrderTemplate = (
                   <p class="product-name">type: ${order.type}</p>
                   <p class="product-name">price / pc: ${order.price} BGN</p>
                   <p class="product-name">ordered quantity: ${order.qty}</p>
-                  <h4 class="product-price">totally: ${Number(order.total).toFixed(2)} BGN</h4>
+                  <h4 class="product-price">
+                    totally: ${Number(order.total).toFixed(2)} BGN
+                  </h4>
                 </footer>
               </article>
             `
