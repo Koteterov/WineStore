@@ -1,5 +1,5 @@
 import { html } from "../lib.js";
-import { setUserNav } from "../utils.js";
+import { setUserNav, toggleNavigation } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
@@ -71,5 +71,6 @@ const aboutTemplate = (chosenWines) => html`
 export async function aboutPage(ctx) {
   ctx.render(aboutTemplate(chosenWines));
 
+  toggleNavigation();
   setUserNav();
 }

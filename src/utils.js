@@ -5,15 +5,27 @@ export function setUserNav() {
   const userId = sessionStorage.getItem("userId");
 
   if (userId != null) {
-    document.getElementById("loginBtn").style.display = "none";
+    document
+      .querySelectorAll(".loginBtn")
+      .forEach((x) => (x.style.display = "none"));
     document.getElementById("registerBtn").style.display = "none";
-    document.getElementById("logoutBtn").style.display = "inline";
-    document.getElementById("yourOrderBtn").style.display = "inline";
+    document
+      .querySelectorAll(".logoutBtn")
+      .forEach((x) => (x.style.display = "block"));
+    document
+      .querySelectorAll(".yourOrderBtn")
+      .forEach((x) => (x.style.display = "block"));
   } else {
-    document.getElementById("loginBtn").style.display = "inline";
+    document
+      .querySelectorAll(".loginBtn")
+      .forEach((x) => (x.style.display = "inline"));
     document.getElementById("registerBtn").style.display = "inline";
-    document.getElementById("logoutBtn").style.display = "none";
-    document.getElementById("yourOrderBtn").style.display = "none";
+    document
+      .querySelectorAll(".logoutBtn")
+      .forEach((x) => (x.style.display = "none"));
+    document
+      .querySelectorAll(".yourOrderBtn")
+      .forEach((x) => (x.style.display = "none"));
   }
 }
 
@@ -22,6 +34,19 @@ export function toggleCart(path) {
   cartOverlay.classList.add("show");
 
   page.redirect(path);
+}
+
+export function toggleNavigation() {
+  const toggleNav = document.querySelector(".toggle-nav");
+  const sidebarOverlay = document.querySelector(".sidebar-overlay");
+  const closeBtn = document.querySelector(".sidebar-close");
+
+  toggleNav.addEventListener("click", () => {
+    sidebarOverlay.classList.add("show");
+  });
+  closeBtn.addEventListener("click", () => {
+    sidebarOverlay.classList.remove("show");
+  });
 }
 
 export const getStoredOrder = (item) => {

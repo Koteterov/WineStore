@@ -1,6 +1,6 @@
 import { html } from "../lib.js";
 import { register } from "../api/data.js";
-import { setUserNav, notify } from "../utils.js";
+import { setUserNav, notify, toggleNavigation } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
@@ -52,6 +52,7 @@ export async function registerPage(ctx) {
   const data = chosenWines;
 
   ctx.render(registerTemplate(data, onSubmit));
+  toggleNavigation()
   setUserNav();
 
   async function onSubmit(e) {
@@ -72,6 +73,7 @@ export async function registerPage(ctx) {
       }
 
       await register(email, password);
+      toggleNavigation();
       setUserNav();
       ctx.page.redirect("/products");
     } catch (error) {

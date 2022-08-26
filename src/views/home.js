@@ -1,5 +1,5 @@
 import { html, repeat, nothing } from "../lib.js";
-import { setUserNav } from "../utils.js";
+import { setUserNav, toggleNavigation } from "../utils.js";
 import { chosenWines } from "./products.js";
 import { toggleCart } from "../utils.js";
 import { cartTemplate } from "./templates/cart.js";
@@ -33,17 +33,17 @@ const homeTemplate = (
           <li>
             <a href="/about" class="nav-link"> about </a>
           </li>
-          <li id="loginBtn">
+          <li class="loginBtn">
             <a href="/login" class="nav-link"> login </a>
           </li>
           <li id="registerBtn">
             <a href="/register" class="nav-link"> register </a>
           </li>
-          <li id="yourOrderBtn">
+          <li class="yourOrderBtn">
             <a href="/your-order" class="nav-link"> your orders </a>
           </li>
 
-          <li id="logoutBtn">
+          <li class="logoutBtn">
             <a @click=${OnLogout} href="javascript:void(0)" class="nav-link">
               logout
             </a>
@@ -82,20 +82,44 @@ const homeTemplate = (
       <ul class="sidebar-links">
         <li>
           <a href="/" class="sidebar-link">
-            <i class="fas fa-home fa-fw"></i>
+            <i>&#9750;</i>
             home
           </a>
         </li>
         <li>
           <a href="/products" class="sidebar-link">
-            <i class="fas fa-couch fa-fw"></i>
+            <i>&#8473;</i>
             products
           </a>
         </li>
         <li>
           <a href="/about" class="sidebar-link">
-            <i class="fas fa-book fa-fw"></i>
+            <i>&#10064;</i>
             about
+          </a>
+        </li>
+        <li class="loginBtn">
+          <a href="/login" class="sidebar-link">
+            <i>&#10004;</i>
+            login
+          </a>
+        </li>
+        <li id="registerBtn">
+          <a href="/register" class="sidebar-link">
+            <i>&#9997;</i>
+            register
+          </a>
+        </li>
+        <li class="yourOrderBtn">
+          <a href="/your-order" class="sidebar-link">
+            <i>&#9871;</i>
+            your orders
+          </a>
+        </li>
+        <li class="logoutBtn">
+          <a @click=${OnLogout} href="javascript:void(0)" class="sidebar-link">
+            <i>&#10006;</i>
+            logout
           </a>
         </li>
       </ul>
@@ -169,6 +193,7 @@ export async function homePage(ctx) {
     homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
   );
 
+  toggleNavigation();
   setUserNav();
 
   function showAll() {

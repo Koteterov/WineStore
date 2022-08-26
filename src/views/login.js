@@ -1,6 +1,6 @@
 import { html } from "../lib.js";
 import { login } from "../api/data.js";
-import { setUserNav, notify } from "../utils.js";
+import { setUserNav, notify, toggleNavigation } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
@@ -50,6 +50,7 @@ export async function loginPage(ctx) {
 
   ctx.render(loginTemplate(data, onSubmit));
 
+  toggleNavigation();
   setUserNav();
 
   async function onSubmit(e) {

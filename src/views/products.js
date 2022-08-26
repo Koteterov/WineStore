@@ -1,9 +1,8 @@
 import { html } from "../lib.js";
-import { setUserNav } from "../utils.js";
+import { setUserNav, toggleNavigation, getStoredOrder } from "../utils.js";
 import { cartTemplate } from "./templates/cart.js";
 import { navTemplate } from "./templates/navbar.js";
 import { productsTemplate } from "./templates/wines.js";
-import { getStoredOrder } from "../utils.js";
 
 const generalTemplate = (dataForCart) =>
   html`
@@ -16,36 +15,6 @@ const generalTemplate = (dataForCart) =>
         <h3 class="page-hero-title">Home / Products</h3>
       </div>
     </section>
-    <!-- sidebar -->
-    <div class="sidebar-overlay">
-      <aside class="sidebar">
-        <!-- close -->
-        <button class="sidebar-close">
-          <i class="fas fa-times"></i>
-        </button>
-        <!-- links -->
-        <ul class="sidebar-links">
-          <li>
-            <a href="/" class="sidebar-link">
-              <i class="fas fa-home fa-fw"></i>
-              home
-            </a>
-          </li>
-          <li>
-            <a href="/products" class="sidebar-link">
-              <i class="fas fa-couch fa-fw"></i>
-              products
-            </a>
-          </li>
-          <li>
-            <a href="/about" class="sidebar-link">
-              <i class="fas fa-book fa-fw"></i>
-              about
-            </a>
-          </li>
-        </ul>
-      </aside>
-    </div>
 
     <!-- cart -->
     ${cartTemplate(dataForCart)}
@@ -62,5 +31,6 @@ export async function productsPage(ctx) {
 
   ctx.render(generalTemplate(dataForCart));
 
+  toggleNavigation()
   setUserNav();
 }
