@@ -24,10 +24,6 @@ export function toggleCart(path) {
   page.redirect(path);
 }
 
-export function getTempData(data) {
-  return data;
-}
-
 export const getStoredOrder = (item) => {
   let storageItem = localStorage.getItem(item);
   if (storageItem) {
