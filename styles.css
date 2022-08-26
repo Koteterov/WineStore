@@ -624,8 +624,7 @@ product
 ===============
 */
 .product-img {
-  height: 15rem;
-  object-fit: cover;
+  height: 28rem;
   border-radius: var(--radius);
 }
 
@@ -805,7 +804,7 @@ Products Page
   }
 
   .products-container .product-img {
-    height: 31rem;
+    height: 17rem;
   }
 
   .products-container .product-name {
