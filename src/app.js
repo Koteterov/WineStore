@@ -4,6 +4,7 @@ import { aboutPage } from "./views/about.js";
 import { detailsPage } from "./views/details.js";
 import { homePage } from "./views/home.js";
 import { loginPage } from "./views/login.js";
+import { notFoundPage } from "./views/notFound.js";
 import { orderPage } from "./views/order.js";
 import { productsPage } from "./views/products.js";
 import { registerPage } from "./views/register.js";
@@ -22,6 +23,8 @@ page("/login", loginPage);
 page("/register", registerPage);
 page("/order", orderPage);
 page("/your-order", yourOrderPage);
+page("*", notFoundPage);
+
 
 page.start();
 
