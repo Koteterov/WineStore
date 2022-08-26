@@ -4,7 +4,6 @@ import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
 import { orderWines } from "../api/data.js";
-// import { notify } from "../utils.js";
 
 const orderTemplate = (data, onSubmit, totalBottles) => html`
     <!-- navbar -->
@@ -67,8 +66,8 @@ export async function orderPage(ctx) {
   async function onSubmit(e) {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
-    const order = formData.get("order").trim();
+    // // ....validation + notification for the order....
+    // const formData = new FormData(e.target);
 
     try {
       await orderWines({

@@ -1,6 +1,6 @@
 import { html } from "../lib.js";
 import { register } from "../api/data.js";
-import { setUserNav } from "../utils.js";
+import { setUserNav, notify } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
@@ -64,18 +64,19 @@ export async function registerPage(ctx) {
 
     try {
       if (!email || !password) {
-        throw new Error("Please fill in all fields");
+        return notify("Please fill in all fields!");
       }
 
       if (password != rePassword) {
-        throw new Error("Paswords don't match");
+        return notify("Paswords don't match!");
       }
 
       await register(email, password);
       setUserNav();
       ctx.page.redirect("/products");
     } catch (error) {
-      alert(error.message);
+      console.log(object);
+      error.message;
     }
   }
 }

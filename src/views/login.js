@@ -1,6 +1,6 @@
 import { html } from "../lib.js";
 import { login } from "../api/data.js";
-import { setUserNav } from "../utils.js";
+import { setUserNav, notify } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
@@ -60,8 +60,7 @@ export async function loginPage(ctx) {
     const password = formData.get("password").trim();
 
     if (!email || !password) {
-      alert("Please fill in both fields!");
-      return;
+      return notify("Please fill in both fields!");
     }
 
     try {
@@ -69,7 +68,7 @@ export async function loginPage(ctx) {
 
       ctx.page.redirect("/products");
     } catch (error) {
-      alert(error.message);
+      clg(error.message);
     }
   }
 }
