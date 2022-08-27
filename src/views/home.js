@@ -203,7 +203,7 @@ async function homeWrapper(ctx) {
     }
   });
 
-  return homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll);
+  return homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll, data);
 
   function showAll() {
     ctx.page.redirect("/products");
