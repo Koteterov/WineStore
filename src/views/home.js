@@ -184,9 +184,9 @@ export async function homePage(ctx) {
   ctx.render(
     until(homeWrapper(ctx),
       html`
-        <div class="page-loading">
+        <!-- <div class="page-loading"> -->
           <h2>Loading...</h2>
-        </div>
+        <!-- </div> -->
       `
     )
   );
