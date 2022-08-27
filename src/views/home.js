@@ -201,18 +201,17 @@ export async function homeWrapper(ctx) {
     }
   });
 
-  ctx.render(
+ return (
     homeTemplate(
       chosenWines,
       OnLogout,
       toggleCart,
       winesOfWeek,
       showAll,
-      data
     )
   );
-  toggleNavigation();
-  setUserNav();
+  // toggleNavigation();
+  // setUserNav();
 
   function showAll() {
     ctx.page.redirect("/products");
