@@ -13,7 +13,7 @@ const homeTemplate = (
   OnLogout,
   toggleCart,
   winesOfWeek,
-  showAll
+  showAll,
 ) => html`
   <!-- navbar -->
   <nav class="navbar">
@@ -180,8 +180,19 @@ const homeTemplate = (
   </section>
 `;
 
-
 export async function homePage(ctx) {
+  ctx.render(
+    until(homeWrapper(ctx),
+      html`
+        <div class="page-loading">
+          <h2>Loading...</h2>
+        </div>
+      `
+    )
+  );
+}
+
+export async function homeWrapper(ctx) {
   const data = await getList();
 
   const winesOfWeek = data.filter((w, i) => {
@@ -191,9 +202,14 @@ export async function homePage(ctx) {
   });
 
   ctx.render(
-    homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
+    homeTemplate(
+      chosenWines,
+      OnLogout,
+      toggleCart,
+      winesOfWeek,
+      showAll,
+    )
   );
-
   toggleNavigation();
   setUserNav();
 
