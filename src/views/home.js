@@ -1,4 +1,4 @@
-import { html, repeat, nothing } from "../lib.js";
+import { html, repeat, nothing, until } from "../lib.js";
 import { setUserNav, toggleNavigation } from "../utils.js";
 import { chosenWines } from "./products.js";
 import { toggleCart } from "../utils.js";
@@ -181,6 +181,20 @@ const homeTemplate = (
 `;
 
 export async function homePage(ctx) {
+  ctx.render(
+    until(homeWrapper(ctx),
+      html`
+        <div class="page-loading">
+          <h2>Loading...</h2>
+        </div>
+      `
+    )
+  );
+  toggleNavigation();
+  setUserNav();
+}
+
+async function homeWrapper(ctx) {
   const data = await getList();
 
   const winesOfWeek = data.filter((w, i) => {
@@ -189,12 +203,7 @@ export async function homePage(ctx) {
     }
   });
 
-  ctx.render(
-    homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
-  );
-
-  toggleNavigation();
-  setUserNav();
+  return homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll);
 
   function showAll() {
     ctx.page.redirect("/products");
@@ -202,3 +211,4 @@ export async function homePage(ctx) {
     chooseAll();
   }
 }
+
