@@ -208,6 +208,7 @@ export async function homeWrapper(ctx) {
       toggleCart,
       winesOfWeek,
       showAll,
+      data
     )
   );
   toggleNavigation();
