@@ -295,7 +295,7 @@
         <div class="page-loading">
           <h2>Loading...</h2>
         </div>
-      `))}async function p(t){const e=(await(0,c.gp)()).filter(((t,e)=>{if(1==e||5==e||9==e)return t}));return h(r.o,n.lg,n.l6,e,(function(){t.page.redirect("/products"),(0,l.RT)()}))}i()}catch(f){i(f)}}))},452:(t,e,s)=>{s.a(t,(async(t,i)=>{try{s.d(e,{K:()=>u});var a=s(885),n=s(40),r=s(555),o=s(160),c=s(718),l=s(18),d=t([o,c,l]);[o,c,l]=d.then?(await d)():d;const h=(t,e)=>a.dy`
+      `))}async function p(t){const e=(await(0,c.gp)()).filter(((t,e)=>{if(1==e||5==e||9==e)return t}));t.render(h(r.o,n.lg,n.l6,e,(function(){t.page.redirect("/products"),(0,l.RT)()}))),document.querySelector(".page-loading").style.display="none",(0,n.MN)(),(0,n.l$)()}i()}catch(f){i(f)}}))},452:(t,e,s)=>{s.a(t,(async(t,i)=>{try{s.d(e,{K:()=>u});var a=s(885),n=s(40),r=s(555),o=s(160),c=s(718),l=s(18),d=t([o,c,l]);[o,c,l]=d.then?(await d)():d;const h=(t,e)=>a.dy`
 
     <!-- navbar -->
     ${(0,o.y)()}

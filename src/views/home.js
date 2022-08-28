@@ -180,6 +180,7 @@ const homeTemplate = (
   </section>
 `;
 
+
 export async function homePage(ctx) {
   ctx.render(
     until(homeWrapper(ctx),
@@ -192,7 +193,7 @@ export async function homePage(ctx) {
   );
 }
 
-export async function homeWrapper(ctx) {
+async function homeWrapper(ctx) {
   const data = await getList();
 
   const winesOfWeek = data.filter((w, i) => {
@@ -201,17 +202,13 @@ export async function homeWrapper(ctx) {
     }
   });
 
- return (
-    homeTemplate(
-      chosenWines,
-      OnLogout,
-      toggleCart,
-      winesOfWeek,
-      showAll,
-    )
+  ctx.render(
+    homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
   );
-  // toggleNavigation();
-  // setUserNav();
+  
+  document.querySelector(".page-loading").style.display = "none";
+  toggleNavigation();
+  setUserNav();
 
   function showAll() {
     ctx.page.redirect("/products");
