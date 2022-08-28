@@ -1,6 +1,6 @@
 import { page } from "./lib.js";
 import { chosenWines } from "./views/products.js";
-import { toggleCart } from "./utils.js";
+import { notify, toggleCart } from "./utils.js";
 import { getList, getSingleWine, getWineType } from "./api/data.js";
 
 const data = await getList();
@@ -57,6 +57,7 @@ export async function addToCart(e) {
   } else if (url == "") {
     page.redirect("/");
   } else {
+    notify("Your wine is added to the cart.");
     page.redirect("/products");
   }
 

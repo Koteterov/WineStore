@@ -2,7 +2,6 @@ import { page } from "./lib.js";
 import { setStoredOrder, notify } from "./utils.js";
 import { chosenWines } from "./views/products.js";
 
-
 // remove wine
 export function onRemove(e) {
   const path = `/${e.target.baseURI.split("/")[3]}`;
@@ -60,8 +59,6 @@ export function onDecrease(e) {
 
   const decreasedQty = chosenWines.find((x) => x.id == wineId);
 
-  chosenWines.find((x) => {});
-
   const price = chosenWines.find((x) => x.id == wineId).price;
 
   const index = chosenWines.indexOf(decreasedQty);
@@ -97,8 +94,14 @@ export function onCheckout() {
   setStoredOrder("tempOrder", chosenWines);
   const user = sessionStorage.getItem("userId");
 
+  if (chosenWines.length == 0) {
+    page.redirect("/products");
+    return notify("Please choose wines!");
+  }
+
   if (user) {
     cartOverlay.classList.remove("show");
+    notify("Please login to finalize your order!");
     page.redirect("/order");
   } else {
     notify("Please login to finalize your order!");

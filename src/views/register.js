@@ -81,7 +81,6 @@ export async function registerPage(ctx) {
       setUserNav();
       ctx.page.redirect("/products");
     } catch (error) {
-      console.log(object);
       error.message;
     }
   }

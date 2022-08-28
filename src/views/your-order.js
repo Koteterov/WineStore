@@ -179,7 +179,6 @@ export async function yourOrderPage(ctx) {
         .map((x) => JSON.parse(x.order))
         .flat();
 
-      console.log("chosenOrders", chosenOrders);
 
       ctx.render(
         yourOrderTemplate(

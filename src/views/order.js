@@ -1,5 +1,5 @@
-import { html } from "../lib.js";
-import { setUserNav, toggleNavigation } from "../utils.js";
+import { html, nothing } from "../lib.js";
+import { setUserNav, toggleNavigation, notify } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
@@ -26,9 +26,17 @@ const orderTemplate = (data, onSubmit, totalBottles) => html`
             <h2>Your Order</h2>
             <form @submit=${onSubmit} class="login-form">
             <label for="total">Total Sum</label>
-            <input type="text" name="total" disabled .value=${
-              data[0].grandTotal.toFixed(2) + " BGN"
-            }/>
+            ${data[0]
+                ? html`
+                    <input
+                      type="text"
+                      name="total"
+                      disabled
+                      .value=${data[0].grandTotal.toFixed(2) + " BGN"}
+                    />
+                  `
+                : nothing
+            }
 
             <label for="quantity">Quantity of Bottles</label>
             <input type="text" name="quantity" disabled .value=${
@@ -79,7 +87,8 @@ export async function orderPage(ctx) {
       });
       localStorage.removeItem("tempOrder");
       chosenWines.length = 0;
-      ctx.page.redirect("/products");
+      notify("Your order has been received. This is a list of all your orders.");
+      ctx.page.redirect("/your-order");
     } catch (error) {
       alert(error.message);
     }
