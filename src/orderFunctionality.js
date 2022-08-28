@@ -1,7 +1,8 @@
 import { page } from "./lib.js";
 import { chosenWines } from "./views/products.js";
-import { notify, toggleCart } from "./utils.js";
+import { notify } from "./utils.js";
 import { getList, getSingleWine, getWineType } from "./api/data.js";
+import { toggleCart } from "./cartFunctionality.js";
 
 const data = await getList();
 export const types = new Set(data.map((t) => t.type));

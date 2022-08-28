@@ -29,12 +29,6 @@ export function setUserNav() {
   }
 }
 
-export function toggleCart(path) {
-  const cartOverlay = document.querySelector(".cart-overlay");
-  cartOverlay.classList.add("show");
-
-  page.redirect(path);
-}
 
 export function toggleNavigation() {
   const toggleNav = document.querySelector(".toggle-nav");

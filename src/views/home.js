@@ -1,7 +1,7 @@
 import { html, repeat, nothing, until } from "../lib.js";
 import { setUserNav, toggleNavigation } from "../utils.js";
 import { chosenWines } from "./products.js";
-import { toggleCart } from "../utils.js";
+import { toggleCart } from "../cartFunctionality.js"; 
 import { cartTemplate } from "./templates/cart.js";
 import { OnLogout } from "../utils.js";
 import { getList } from "../api/data.js";
@@ -180,19 +180,8 @@ const homeTemplate = (
   </section>
 `;
 
-export async function homePage(ctx) {
-  ctx.render(
-    until(homeWrapper(ctx),
-      html`
-        <div class="page-loading">
-          <h2>Loading...</h2>
-        </div>
-      `
-    )
-  );
-}
 
-async function homeWrapper(ctx) {
+export async function homePage(ctx) {
   const data = await getList();
 
   const winesOfWeek = data.filter((w, i) => {

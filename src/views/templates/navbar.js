@@ -1,6 +1,7 @@
 import { html } from "../../../src/lib.js";
 import { chosenWines } from "../products.js";
-import { toggleCart, OnLogout } from "../../utils.js";
+import {  OnLogout } from "../../utils.js";
+import { toggleCart } from "../../cartFunctionality.js";
 
 export const navTemplate = () => html`
   <!-- navbar -->

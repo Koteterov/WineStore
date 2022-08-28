@@ -81,6 +81,14 @@ export function onDecrease(e) {
   chosenWines.forEach((x) => (x.grandTotal = tempGrandTotal));
 }
 
+// display cart
+export function toggleCart(path) {
+  const cartOverlay = document.querySelector(".cart-overlay");
+  cartOverlay.classList.add("show");
+
+  page.redirect(path);
+}
+
 // close cart
 export function closeCart() {
   const cartOverlay = document.querySelector(".cart-overlay");
