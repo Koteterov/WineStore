@@ -101,10 +101,10 @@ export function onCheckout() {
 
   if (user) {
     cartOverlay.classList.remove("show");
-    notify("Please login to finalize your order!");
     page.redirect("/order");
+    return notify("Please confirm your order!");
   } else {
-    notify("Please login to finalize your order!");
     page.redirect("/login");
+    return notify("Please login to finalize your order!");
   }
 }
