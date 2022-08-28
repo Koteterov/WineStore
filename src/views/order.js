@@ -61,6 +61,9 @@ export async function orderPage(ctx) {
 
   ctx.render(orderTemplate(data, onSubmit, totalBottles));
 
+  // due to HEROKU service...
+  document.querySelector(".page-loading").style.display = "none";
+
   toggleNavigation();
   setUserNav();
 

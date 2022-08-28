@@ -52,6 +52,10 @@ export async function registerPage(ctx) {
   const data = chosenWines;
 
   ctx.render(registerTemplate(data, onSubmit));
+  
+    // due to HEROKU service...
+    document.querySelector(".page-loading").style.display = "none";
+
   toggleNavigation()
   setUserNav();
 

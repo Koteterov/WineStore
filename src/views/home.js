@@ -205,8 +205,9 @@ async function homeWrapper(ctx) {
   ctx.render(
     homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
   );
-  
+  // due to HEROKU service...
   document.querySelector(".page-loading").style.display = "none";
+  
   toggleNavigation();
   setUserNav();
 

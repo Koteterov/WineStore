@@ -146,6 +146,9 @@ export async function yourOrderPage(ctx) {
         showTotalAllOrders
       )
     );
+    // due to HEROKU service...
+    document.querySelector(".page-loading").style.display = "none";
+
     toggleNavigation();
     setUserNav();
 

@@ -85,6 +85,9 @@ export async function detailsPage(ctx) {
     const wine = await getSingleWine(ctx.params.id);
 
     ctx.render(productTemplate(chosenWines, wine));
+    // due to HEROKU service...
+    document.querySelector(".page-loading").style.display = "none";
+
     toggleNavigation();
     setUserNav();
   } catch (error) {
