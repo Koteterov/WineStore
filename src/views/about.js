@@ -71,8 +71,8 @@ const aboutTemplate = (chosenWines) => html`
 export async function aboutPage(ctx) {
   ctx.render(aboutTemplate(chosenWines));
 
-    // due to HEROKU service...
-    document.querySelector(".page-loading").style.display = "none";
+  // due to HEROKU service...
+  document.querySelector(".page-loading").style.display = "none";
 
   toggleNavigation();
   setUserNav();

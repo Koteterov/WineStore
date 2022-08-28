@@ -50,9 +50,8 @@ export async function loginPage(ctx) {
 
   ctx.render(loginTemplate(data, onSubmit));
 
-    // due to HEROKU service...
-    document.querySelector(".page-loading").style.display = "none";
-
+  // due to HEROKU service...
+  document.querySelector(".page-loading").style.display = "none";
 
   toggleNavigation();
   setUserNav();

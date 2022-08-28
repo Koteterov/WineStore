@@ -31,9 +31,9 @@ export async function productsPage(ctx) {
 
   ctx.render(generalTemplate(dataForCart));
 
-    // due to HEROKU service...
-    document.querySelector(".page-loading").style.display = "none";
+  // due to HEROKU service...
+  document.querySelector(".page-loading").style.display = "none";
 
-  toggleNavigation()
+  toggleNavigation();
   setUserNav();
 }

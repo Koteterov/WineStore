@@ -13,7 +13,7 @@ const homeTemplate = (
   OnLogout,
   toggleCart,
   winesOfWeek,
-  showAll,
+  showAll
 ) => html`
   <!-- navbar -->
   <nav class="navbar">
@@ -180,7 +180,6 @@ const homeTemplate = (
   </section>
 `;
 
-
 export async function homePage(ctx) {
   ctx.render(
     until(homeWrapper(ctx),
@@ -207,7 +206,7 @@ async function homeWrapper(ctx) {
   );
   // due to HEROKU service...
   document.querySelector(".page-loading").style.display = "none";
-  
+
   toggleNavigation();
   setUserNav();
 
@@ -217,4 +216,3 @@ async function homeWrapper(ctx) {
     chooseAll();
   }
 }
-
