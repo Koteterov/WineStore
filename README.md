@@ -11,8 +11,8 @@ The main CRUD operations - GET, POST, PUT have been implemented as well as stori
 ## :information_source: Structure
 The application has the following parts:
 ### Home page
-* They can visit all other sections depending on the authentication status
-* Guests can see wines of the week 
+* Guests can visit all other sections depending on the authentication status
+* They can see wines of the week 
 * They can add wines to the shopping cart
 ### Products
 Products can be filtered by type and price simultaneously.
