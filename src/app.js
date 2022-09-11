@@ -21,8 +21,8 @@ page("/about", aboutPage);
 page("/details/:id", detailsPage);
 page("/login", loginPage);
 page("/register", registerPage);
-page("/order", orderPage);
-page("/your-order", yourOrderPage);
+page("/order", isGuest, orderPage);
+page("/your-order", isGuest, yourOrderPage);
 page("*", notFoundPage);
 
 
@@ -32,4 +32,12 @@ function decorateContext(ctx, next) {
   ctx.render = (content) => render(content, bodyEl);
 
   next();
+}
+
+function isGuest(ctx, next) {
+  const user = sessionStorage.getItem("userId");
+  if (user == null) {
+   return page.redirect("/login")
+  } 
+  next()
 }

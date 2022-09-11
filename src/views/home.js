@@ -1,7 +1,7 @@
 import { html, repeat, nothing, until } from "../lib.js";
 import { setUserNav, toggleNavigation } from "../utils.js";
 import { chosenWines } from "./products.js";
-import { toggleCart } from "../cartFunctionality.js"; 
+import { toggleCart } from "../cartFunctionality.js";
 import { cartTemplate } from "./templates/cart.js";
 import { OnLogout } from "../utils.js";
 import { getList } from "../api/data.js";
@@ -180,28 +180,31 @@ const homeTemplate = (
   </section>
 `;
 
-
 export async function homePage(ctx) {
-  const data = await getList();
+  try {
+    const data = await getList();
 
-  const winesOfWeek = data.filter((w, i) => {
-    if (i == 1 || i == 5 || i == 9) {
-      return w;
+    const winesOfWeek = data.filter((w, i) => {
+      if (i == 1 || i == 5 || i == 9) {
+        return w;
+      }
+    });
+
+    ctx.render(
+      homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
+    );
+    // due to HEROKU service...
+    document.querySelector(".page-loading").style.display = "none";
+
+    toggleNavigation();
+    setUserNav();
+
+    function showAll() {
+      ctx.page.redirect("/products");
+
+      chooseAll();
     }
-  });
-
-  ctx.render(
-    homeTemplate(chosenWines, OnLogout, toggleCart, winesOfWeek, showAll)
-  );
-  // due to HEROKU service...
-  document.querySelector(".page-loading").style.display = "none";
-
-  toggleNavigation();
-  setUserNav();
-
-  function showAll() {
-    ctx.page.redirect("/products");
-
-    chooseAll();
+  } catch (error) {
+    console.log(error);
   }
 }
