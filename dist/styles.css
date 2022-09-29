@@ -110,6 +110,9 @@ p {
   color: var(--clr-grey-5);
 }
 
+.product {
+  width: fit-content;
+}
 @media screen and (min-width: 800px) {
   h1 {
     font-size: 4rem;
@@ -137,11 +140,6 @@ p {
   h4 {
     line-height: 1;
   }
-}
-
-.img {
-  width: 100%;
-  display: block;
 }
 
 .text-slanted {
@@ -279,7 +277,7 @@ Navbar
 
   .nav-logo {
     position: absolute;
-    top: 50%;
+    top: 330%;
     left: 65%;
     transform: translate(-50%, -50%);
   }
@@ -307,11 +305,14 @@ Navbar
   }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1155px) {
   .nav-logo {
     left: 68%;
+    top: 50%;
+
   }
 }
+
 
 .logo-text {
   font-family: 'Kaushan Script';
