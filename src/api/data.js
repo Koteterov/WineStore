@@ -1,7 +1,8 @@
 import * as api from "./api.js";
 
-// const host = "http://localhost:3030";
-const host = "https://wines-store-api.herokuapp.com";
+// const host = "http://localhost:3040";
+const host = "https://api-wine-store.herokuapp.com"
+// const host = "https://wines-store-api.herokuapp.com";
 api.settings.host = host;
 
 export const login = api.login;

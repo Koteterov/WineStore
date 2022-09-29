@@ -1,5 +1,5 @@
 import { html, repeat } from "../lib.js";
-import { setUserNav, toggleNavigation } from "../utils.js";
+import { setUserNav, toggleNavigation, notify } from "../utils.js";
 import { navTemplate } from "./templates/navbar.js";
 import { cartTemplate } from "./templates/cart.js";
 import { chosenWines } from "./products.js";
@@ -124,8 +124,7 @@ export async function yourOrderPage(ctx) {
     let chosenOrders = yourOrders.map((x) => JSON.parse(x.order)).flat();
     const orderId = yourOrders.map((x) => x._id);
     const orderTime = yourOrders
-      .map((x) => x._createdOn)
-      .map((t) => new Date(t).toLocaleString("sv"));
+      .map((x) => x.createdAt);
 
     let totalAllOrders = chosenOrders
       .map((x) => Number(x.total))
@@ -194,6 +193,7 @@ export async function yourOrderPage(ctx) {
       );
     }
   } catch (error) {
-    console.log(error);
+    alert(error.message)
+    notify(error.message);
   }
 }

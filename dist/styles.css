@@ -624,7 +624,6 @@ product
 ===============
 */
 .product-img {
-  height: 28rem;
   border-radius: var(--radius);
 }
 

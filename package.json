@@ -4,6 +4,7 @@
   "description": "Wine Store",
   "main": "index.js",
   "scripts": {
+    "lite": "lite-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd dist && http-server -a localhost -p 3000 -P http://localhost:3000?",
     "build": "webpack",
@@ -23,6 +24,7 @@
     "firebase-tools": "^11.8.0",
     "isarray": "^0.0.1",
     "lit-html": "^2.2.7",
+    "lite-server": "^2.6.1",
     "page": "^1.11.6",
     "path-to-regexp": "^1.2.1"
   },

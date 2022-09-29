@@ -72,7 +72,7 @@ export async function loginPage(ctx) {
 
       ctx.page.redirect("/products");
     } catch (error) {
-      clg(error.message);
+      notify(error.message)
     }
   }
 }
