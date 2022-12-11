@@ -21,8 +21,8 @@ The application has the following parts:
 Products can be filtered by type and price simultaneously.
 Items can be searched by the first letters of product name. Searching is case-insensitive.
 Guests and users can see product details and add items to the cart from this page. 
-
 ### Login
+![finalize](https://user-images.githubusercontent.com/102145445/206911812-3d7f1ace-5ee1-4d47-a793-f0417ac323f6.jpg)
 To finalize the order, any guest should log in first.
 The application has two users preliminary registered which can be used for immediate testing: 
 * email: "ivan@abv.bg", password: 123456
