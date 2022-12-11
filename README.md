@@ -11,6 +11,8 @@ The main CRUD operations - GET, POST, PUT have been implemented as well as stori
 ## :information_source: Structure
 The application has the following parts:
 ### Home page
+![home1](https://user-images.githubusercontent.com/102145445/206911092-907f479d-975f-4cac-8a27-4e920df9bddc.jpg)
+
 * Guests can visit all other sections depending on the authentication status
 * They can see wines of the week 
 * They can add wines to the shopping cart
