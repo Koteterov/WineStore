@@ -21,6 +21,7 @@ The application has the following parts:
 Products can be filtered by type and price simultaneously.
 Items can be searched by the first letters of product name. Searching is case-insensitive.
 Guests and users can see product details and add items to the cart from this page. 
+
 ### Login
 To finalize the order, any guest should log in first.
 The application has two users preliminary registered which can be used for immediate testing: 
@@ -31,6 +32,7 @@ In case the guest has no account, he can register at the Register Page.
 ### Details
 This page shows more details about a single product and supports the option to add the item to the shopping cart.
 ### Ordering process and cart functionality
+![order](https://user-images.githubusercontent.com/102145445/206911388-9588c738-0b17-4bf5-9c2f-79be123d505b.jpg)
 Guests and users can choose wines from the Products and Details Pages. Quantity can be increased / decreased and the total amount of the order is immediately calculated. When quantity reaches 0, the item is automatically  removed from the cart.
 There is an option to remove a product from the shopping cart.
 ### Customer's order
