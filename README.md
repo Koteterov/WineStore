@@ -37,6 +37,7 @@ This page shows more details about a single product and supports the option to a
 Guests and users can choose wines from the Products and Details Pages. Quantity can be increased / decreased and the total amount of the order is immediately calculated. When quantity reaches 0, the item is automatically  removed from the cart.
 There is an option to remove a product from the shopping cart.
 ### Customer's order
+![orders](https://user-images.githubusercontent.com/102145445/206912175-a7d4923d-5c24-4db9-8edc-c211cbc527de.jpg)
 The logged in user can see all his orders with information of the exact time of creation. Total amount of orders as well as total of the specific order is shown.
 If a quest is not logged in he is prompted to log in before confirming his order.
 ### About page
