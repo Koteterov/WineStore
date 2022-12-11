@@ -30,6 +30,7 @@ The application has two users preliminary registered which can be used for immed
 ### Register 
 In case the guest has no account, he can register at the Register Page.
 ### Details
+![details](https://user-images.githubusercontent.com/102145445/206911945-14ec8160-4c12-4324-8232-1b719eace9f9.jpg)
 This page shows more details about a single product and supports the option to add the item to the shopping cart.
 ### Ordering process and cart functionality
 ![order](https://user-images.githubusercontent.com/102145445/206911388-9588c738-0b17-4bf5-9c2f-79be123d505b.jpg)
