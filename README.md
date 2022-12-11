@@ -17,6 +17,7 @@ The application has the following parts:
 * They can see wines of the week 
 * They can add wines to the shopping cart
 ### Products
+![all](https://user-images.githubusercontent.com/102145445/206911241-c6ac630b-5327-4cbf-a6fa-922ee9f08010.jpg)
 Products can be filtered by type and price simultaneously.
 Items can be searched by the first letters of product name. Searching is case-insensitive.
 Guests and users can see product details and add items to the cart from this page. 
